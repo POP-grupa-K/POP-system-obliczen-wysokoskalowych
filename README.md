@@ -2,7 +2,7 @@
 
 ## Diagram komponentów
 
-![](DiagramKomponentow.png)
+![](diagrams/DiagramKomponentow.png)
 
 ## Diagramy sekwencji
 
@@ -10,54 +10,54 @@
 
 ##### Dodawanie aplikacji do AppStore
 
-![](ds_dodanie_aplikacji.png)
+![](diagrams/ds_dodanie_aplikacji.png)
 
 ##### Aktualizacja aplikacji w AppStore
 
-![](ds_aktualizacja_app.png)
+![](diagrams/ds_aktualizacja_app.png)
 
 ##### Usuwanie aplikacji z AppStore
 
-![](usuwanie_aplikacji.png)
+![](diagrams/usuwanie_aplikacji.png)
 
 ##### Dodanie oceny aplikacji
 
-![](ocena_aplikacji.png)
+![](diagrams/ocena_aplikacji.png)
 
 ##### Wyświetlenie szczegółów aplikacji w AppStore
 
-![](ds_szczegoly_aplikacji.png)
+![](diagrams/ds_szczegoly_aplikacji.png)
 
 
 ### Kokpit obliczeniowy
 
 ##### Inicjalizacja zadania obliczeniowego
 
-![](ds_inicjalizacja_taska.png)
+![](diagrams/ds_inicjalizacja_taska.png)
 
 ##### Inicjalizacja zadania na bazie zakończonego zadania
 
-![](inicjalizacja_na_bazie_starego.png)
+![](diagrams/inicjalizacja_na_bazie_starego.png)
 
 ##### Przerwanie zadania
 
-![](ds_przerwanie_zadania.png)
+![](diagrams/ds_przerwanie_zadania.png)
 
 ##### Wyświetlenie szczegółów zadania
 
-![](szczegoly_zadania.png)
+![](diagrams/szczegoly_zadania.png)
 
 ##### Archiwizacja zadania
 
-![](ds_archiwizacja.png)
+![](diagrams/ds_archiwizacja.png)
 
 ### DataShelf
 
 ##### Utworzenie DataSet
 
-![](utworzenie_dataset.png)
+![](diagrams/utworzenie_dataset.png)
 
 
 ##### Aktualizacja DataSet
 
-![](aktualizacja_dataset.png)
+![](diagrams/aktualizacja_dataset.png)
