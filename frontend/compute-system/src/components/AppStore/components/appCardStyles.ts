@@ -3,7 +3,8 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 const appCardStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
-      maxWidth: "640px",
+      backgroundColor: theme.palette.backgroundColor.light,
+      maxWidth: "578px",
       padding: theme.spacing(2),
     },
     icon: {
@@ -17,6 +18,16 @@ const appCardStyles = makeStyles((theme: Theme) =>
       "&:hover": {
         backgroundColor: theme.palette.tertiary.dark,
       },
+    },
+    textBox: {
+      marginLeft: theme.spacing(2),
+      width: "750px",
+    },
+    updatedText: {
+      marginBottom: theme.spacing(1),
+    },
+    usedRateBox: {
+      marginBottom: theme.spacing(2),
     },
   })
 );

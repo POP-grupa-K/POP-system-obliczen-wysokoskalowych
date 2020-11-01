@@ -20,20 +20,26 @@ const AppCard = (props: AppCardProps) => {
         <Grid item>
           <PanoramaOutlined className={classes.icon} />
         </Grid>
-        <Grid item container direction="column" wrap="nowrap">
+        <Grid
+          item
+          container
+          direction="column"
+          wrap="nowrap"
+          className={classes.textBox}
+        >
           <Grid item>
             <Typography variant="h5">{props.title}</Typography>
           </Grid>
-          <Grid item>
+          <Grid item className={classes.updatedText}>
             <Typography variant="body1">{`Updated on ${props.updatedDate}`}</Typography>
           </Grid>
           <Grid item>
             <Typography variant="caption">{props.description}</Typography>
           </Grid>
         </Grid>
-        <Grid item container direction="column">
-          <Grid item container wrap="nowrap">
-            <Grid item container direction="column">
+        <Grid item container direction="column" alignItems="center">
+          <Grid item container wrap="nowrap" className={classes.usedRateBox}>
+            <Grid item container direction="column" alignItems="center">
               <Grid item>
                 <Typography variant="subtitle2">{props.timesUsed}</Typography>
               </Grid>
@@ -41,7 +47,7 @@ const AppCard = (props: AppCardProps) => {
                 <Typography variant="caption">Used</Typography>
               </Grid>
             </Grid>
-            <Grid item container direction="column">
+            <Grid item container direction="column" alignItems="center">
               <Grid item>
                 <Typography variant="subtitle2">{props.rate}</Typography>
               </Grid>
