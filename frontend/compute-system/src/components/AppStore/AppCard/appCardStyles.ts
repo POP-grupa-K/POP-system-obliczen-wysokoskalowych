@@ -19,13 +19,6 @@ const appCardStyles = makeStyles((theme: Theme) =>
         backgroundColor: theme.palette.tertiary.dark,
       },
     },
-    textBox: {
-      marginLeft: theme.spacing(2),
-      width: "750px",
-    },
-    updatedText: {
-      marginBottom: theme.spacing(1),
-    },
     usedRateBox: {
       marginBottom: theme.spacing(2),
     },

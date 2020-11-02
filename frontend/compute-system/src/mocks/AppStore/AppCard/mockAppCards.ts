@@ -1,4 +1,4 @@
-import AppCard from "../../../components/AppStore/interfaces/appCard";
+import AppCard from "../../../components/AppStore/AppCard/interfaces/appCard";
 
 const mocksAppCards: AppCard[] = [
   {
