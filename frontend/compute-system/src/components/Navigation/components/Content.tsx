@@ -1,23 +1,12 @@
 import React, { ReactNode, ReactNodeArray } from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { toolbarStyle } from "../styles";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-    },
-    toolbar: toolbarStyle(theme),
-  })
-);
+import { contentStyles } from "../styles";
 
 interface ContentProps {
   children?: ReactNode | ReactNodeArray;
 }
 
 const Content: React.FC<ContentProps> = ({ children }) => {
-  const classes = useStyles();
+  const classes = contentStyles();
 
   return (
     <main className={classes.content}>
