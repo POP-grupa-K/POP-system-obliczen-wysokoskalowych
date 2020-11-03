@@ -1,7 +1,7 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { drawerWidth } from "../../const/values";
 
-export const toolbarStyles = (theme: Theme) => {
+export const toolbarStyle = (theme: Theme) => {
   return {
     display: "flex",
     alignItems: "center",
@@ -11,7 +11,7 @@ export const toolbarStyles = (theme: Theme) => {
   };
 };
 
-export const rootStyles = () => {
+export const rootStyle = () => {
   return { display: "flex" };
 };
 
@@ -21,13 +21,13 @@ export const contentStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing(3),
     },
-    toolbar: toolbarStyles(theme),
+    toolbar: toolbarStyle(theme),
   })
 );
 
 export const navDrawerStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: rootStyles(),
+    root: rootStyle(),
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
@@ -82,7 +82,7 @@ export const topBarStyles = makeStyles((theme: Theme) =>
 
 export const navigationStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: rootStyles(),
-    toolbar: toolbarStyles(theme),
+    root: rootStyle(),
+    toolbar: toolbarStyle(theme),
   })
 );
