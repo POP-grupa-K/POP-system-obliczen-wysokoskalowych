@@ -8,17 +8,11 @@ const browserHistory = createBrowserHistory();
 
 function App() {
   return (
-    <Router history={browserHistory}>
-      <Route
-        exact
-        path="/"
-        render={() => (
-          <Navigation>
-            <AppStore />
-          </Navigation>
-        )}
-      />
-    </Router>
+    <Navigation>
+      <Router history={browserHistory}>
+        <Route exact path="/" render={() => <AppStore />} />
+      </Router>
+    </Navigation>
   );
 }
 
