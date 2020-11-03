@@ -14,6 +14,7 @@ export const toolbarStyles = (theme: Theme) => {
 export const rootStyles = () => {
   return { display: "flex" };
 };
+
 export const contentStyles = makeStyles((theme: Theme) =>
   createStyles({
     content: {
@@ -23,6 +24,7 @@ export const contentStyles = makeStyles((theme: Theme) =>
     toolbar: toolbarStyles(theme),
   })
 );
+
 export const navDrawerStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: rootStyles(),
@@ -51,6 +53,7 @@ export const navDrawerStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
 export const topBarStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
@@ -76,6 +79,7 @@ export const topBarStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
 export const navigationStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: rootStyles(),
