@@ -1,6 +1,6 @@
-import React, {ReactNode, ReactNodeArray} from "react";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {toolbarStyle} from "../styles";
+import React, { ReactNode, ReactNodeArray } from "react";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { toolbarStyle } from "../styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -9,23 +9,22 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(3),
     },
     toolbar: toolbarStyle(theme),
-  }),
+  })
 );
 
 interface ContentProps {
   children?: ReactNode | ReactNodeArray;
 }
 
-const Content: React.FC<ContentProps> = ({children}) => {
+const Content: React.FC<ContentProps> = ({ children }) => {
   const classes = useStyles();
-
 
   return (
     <main className={classes.content}>
-      <div className={classes.toolbar}/>
+      <div className={classes.toolbar} />
       {children}
     </main>
-  )
+  );
 };
 
 export default Content;

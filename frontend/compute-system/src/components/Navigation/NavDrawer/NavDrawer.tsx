@@ -1,9 +1,9 @@
-import React, {ReactNode, ReactNodeArray} from "react";
-import clsx from 'clsx';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import {drawerWidth} from "../../../const/values";
-import {rootStyle} from "../styles";
+import React, { ReactNode, ReactNodeArray } from "react";
+import clsx from "clsx";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import { drawerWidth } from "../../../const/values";
+import { rootStyle } from "../styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,27 +11,27 @@ const useStyles = makeStyles((theme: Theme) =>
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
-      whiteSpace: 'nowrap',
+      whiteSpace: "nowrap",
     },
     drawerOpen: {
       width: drawerWidth,
-      transition: theme.transitions.create('width', {
+      transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
     },
     drawerClose: {
-      transition: theme.transitions.create('width', {
+      transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
-      overflowX: 'hidden',
+      overflowX: "hidden",
       width: theme.spacing(7) + 1,
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up("sm")]: {
         width: theme.spacing(9) + 1,
       },
     },
-  }),
+  })
 );
 
 interface NavDrawerProps {
@@ -39,7 +39,7 @@ interface NavDrawerProps {
   children?: ReactNode | ReactNodeArray;
 }
 
-const NavDrawer: React.FC<NavDrawerProps> = ({isOpen, children}) => {
+const NavDrawer: React.FC<NavDrawerProps> = ({ isOpen, children }) => {
   const classes = useStyles();
 
   return (
@@ -61,6 +61,6 @@ const NavDrawer: React.FC<NavDrawerProps> = ({isOpen, children}) => {
       </Drawer>
     </div>
   );
-}
+};
 
 export default NavDrawer;

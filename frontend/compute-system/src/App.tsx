@@ -1,6 +1,6 @@
-import {createBrowserHistory} from "history";
+import { createBrowserHistory } from "history";
 import React from "react";
-import {Route, Router} from "react-router-dom";
+import { Route, Router } from "react-router-dom";
 import AppStore from "./components/AppStore/AppStore";
 import Navigation from "./components/Navigation/Navigation";
 
@@ -14,7 +14,7 @@ function App() {
         path="/"
         render={() => (
           <Navigation>
-            <AppStore/>
+            <AppStore />
           </Navigation>
         )}
       />

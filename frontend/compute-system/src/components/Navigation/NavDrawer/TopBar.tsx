@@ -5,14 +5,14 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Typography from "@material-ui/core/Typography";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {drawerWidth} from "../../../const/values";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { drawerWidth } from "../../../const/values";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(['width', 'margin'], {
+      transition: theme.transitions.create(["width", "margin"], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     appBarShift: {
       marginLeft: drawerWidth,
       width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
+      transition: theme.transitions.create(["width", "margin"], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
@@ -29,9 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: 36,
     },
     hide: {
-      display: 'none',
+      display: "none",
     },
-  }),
+  })
 );
 
 interface TopBarProps {
@@ -40,7 +40,7 @@ interface TopBarProps {
   onDrawerOpen?: () => void;
 }
 
-const TopBar: React.FC<TopBarProps> = ({title, isOpen, onDrawerOpen}) => {
+const TopBar: React.FC<TopBarProps> = ({ title, isOpen, onDrawerOpen }) => {
   const classes = useStyles();
 
   return (
@@ -60,14 +60,14 @@ const TopBar: React.FC<TopBarProps> = ({title, isOpen, onDrawerOpen}) => {
             [classes.hide]: isOpen,
           })}
         >
-          <MenuIcon/>
+          <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap>
           {title}
         </Typography>
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
 
 export default TopBar;
