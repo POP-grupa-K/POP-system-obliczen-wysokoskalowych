@@ -1,4 +1,4 @@
-export default interface Rating {
+export default interface AppRating {
     description : string,
     rate: number
 }

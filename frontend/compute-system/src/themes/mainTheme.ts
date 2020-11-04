@@ -5,12 +5,14 @@ declare module "@material-ui/core/styles/createPalette" {
     tertiary: PaletteColor;
     backgroundColor: PaletteColor;
     white: PaletteColor;
+    sLight: PaletteColor;
   }
 
   interface PaletteOptions {
     tertiary: PaletteColorOptions;
     backgroundColor: PaletteColorOptions;
     white: PaletteColorOptions;
+    sLight: PaletteColorOptions;
   }
 }
 
@@ -39,6 +41,9 @@ const mainTheme = createMuiTheme({
     white: {
       main: "#FFFFFF",
     },
+    sLight: {
+      main: "#FF7961",
+    }
   },
 });
 

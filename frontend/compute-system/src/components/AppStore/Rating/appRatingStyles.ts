@@ -21,9 +21,11 @@ const ratingStyles = makeStyles((theme: Theme) =>
       minHeight: "100px",
       padding: theme.spacing(2),
     },
-
     rateValue:{
       color: theme.palette.primary.main,
+    },
+    stars: {
+      color: theme.palette.sLight.main,
     },
   })
 );
