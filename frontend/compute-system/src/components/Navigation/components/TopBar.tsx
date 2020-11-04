@@ -9,29 +9,21 @@ import { topBarStyles } from "../styles";
 
 interface TopBarProps {
   title: string;
-  isOpen: boolean;
   onDrawerOpen?: () => void;
 }
 
-const TopBar: React.FC<TopBarProps> = ({ title, isOpen, onDrawerOpen }) => {
+const TopBar: React.FC<TopBarProps> = ({ title, onDrawerOpen }) => {
   const classes = topBarStyles();
 
   return (
-    <AppBar
-      position="fixed"
-      className={clsx(classes.appBar, {
-        [classes.appBarShift]: isOpen,
-      })}
-    >
+    <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"
           onClick={onDrawerOpen}
           edge="start"
-          className={clsx(classes.menuButton, {
-            [classes.hide]: isOpen,
-          })}
+          className={classes.menuButton}
         >
           <MenuIcon />
         </IconButton>

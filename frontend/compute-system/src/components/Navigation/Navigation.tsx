@@ -8,12 +8,12 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import StoreIcon from "@material-ui/icons/Store";
 import SaveIcon from "@material-ui/icons/Save";
 import ComputerIcon from "@material-ui/icons/Computer";
-import NavDrawer from "./components/NavDrawer";
 import TopBar from "./components/TopBar";
 import NavDrawerLink from "./components/NavDrawerLink";
 import Content from "./components/Content";
 import { navigationStyles } from "./styles";
 import { appName } from "../../const/strings";
+import { Drawer } from "@material-ui/core";
 
 const AppStoreLink = () => (
   <NavDrawerLink name="App Store">
@@ -52,8 +52,8 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
 
   return (
     <div className={classes.root}>
-      <TopBar title={appName} isOpen={open} onDrawerOpen={handleDrawerOpen} />
-      <NavDrawer isOpen={open}>
+      <TopBar title={appName} onDrawerOpen={handleDrawerOpen} />
+      <Drawer anchor="left" open={open} onClose={handleDrawerClose}>
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
@@ -69,7 +69,7 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
           <DataShelfLink />
           <ComputationCockpitLink />
         </List>
-      </NavDrawer>
+      </Drawer>
       <Content>{children}</Content>
     </div>
   );
