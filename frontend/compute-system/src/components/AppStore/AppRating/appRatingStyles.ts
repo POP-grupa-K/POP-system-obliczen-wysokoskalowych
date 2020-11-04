@@ -13,6 +13,9 @@ const ratingStyles = makeStyles((theme: Theme) =>
       borderTopLeftRadius: "10px",
       borderTopRightRadius: "10px",
       padding: theme.spacing(2),
+      borderBottomWidth: "1px", 
+      borderBottomColor: 'black',
+      borderBottomStyle: 'solid',
     },
     comment: {
       backgroundColor: theme.palette.backgroundColor.main,

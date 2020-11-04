@@ -2,7 +2,7 @@ import { createBrowserHistory } from "history";
 import React from "react";
 import { Route, Router } from "react-router-dom";
 import AppStore from "./components/AppStore/AppStore";
-import AppRating from "./components/AppStore/Rating/AppRating";
+import AppRating from "./components/AppStore/AppRating/AppRating";
 import mockRatings from "./mocks/AppStore/Rating/mockRatings"
 
 const browserHistory = createBrowserHistory();

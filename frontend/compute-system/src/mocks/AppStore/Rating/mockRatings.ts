@@ -1,4 +1,4 @@
-import AppRating from "../../../components/AppStore/Rating/interfaces/appRating";
+import AppRating from "../../../components/AppStore/AppRating/interfaces/appRating";
 
 
 const mockRatings: AppRating[] = [

@@ -28,11 +28,11 @@ const AppRating = (props: AppRatingProps) => {
 
     return (
         <Grid container alignItems="center" className={classes.grid}>
-            <Grid item container xs={12} alignItems="baseline" className={classes.header}>
-                <Grid item xs={1} >
+            <Grid item container alignItems="center" className={classes.header}>
+                <Grid item xs={1}>
                     <Typography variant="h6" className={classes.rateValue}>{props.rate}/10</Typography>
                 </Grid>
-                <Grid item xs={11}>
+                <Grid item xs={10}>
                     {stars}
                 </Grid>
             </Grid>
