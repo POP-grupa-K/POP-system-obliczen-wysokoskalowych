@@ -14,23 +14,54 @@ import Content from "./components/Content";
 import { navigationStyles } from "./styles";
 import { appName } from "../../const/strings";
 import { Drawer } from "@material-ui/core";
+import { NavLink } from "react-router-dom";
+import { routes } from "../../const/routes";
 
-const AppStoreLink = () => (
-  <NavDrawerLink name="App Store">
-    <StoreIcon />
-  </NavDrawerLink>
+interface LinkProps {
+  className?: string;
+  onClick?: () => void;
+}
+
+const AppStoreLink: React.FC<LinkProps> = ({ className, onClick }) => (
+  <NavLink
+    to={routes.appStore.path}
+    className={className}
+    onClick={onClick}
+    exact
+  >
+    <NavDrawerLink name="App Store">
+      <StoreIcon />
+    </NavDrawerLink>
+  </NavLink>
 );
 
-const DataShelfLink = () => (
-  <NavDrawerLink name="Data Shelf">
-    <SaveIcon />
-  </NavDrawerLink>
+const DataShelfLink: React.FC<LinkProps> = ({ className, onClick }) => (
+  <NavLink
+    to={routes.dataShelf.path}
+    className={className}
+    onClick={onClick}
+    exact
+  >
+    <NavDrawerLink name="Data Shelf">
+      <SaveIcon />
+    </NavDrawerLink>
+  </NavLink>
 );
 
-const ComputationCockpitLink = () => (
-  <NavDrawerLink name="Computation Cockpit">
-    <ComputerIcon />
-  </NavDrawerLink>
+const ComputationCockpitLink: React.FC<LinkProps> = ({
+  className,
+  onClick,
+}) => (
+  <NavLink
+    to={routes.computationCockpit.path}
+    className={className}
+    onClick={onClick}
+    exact
+  >
+    <NavDrawerLink name="Computation Cockpit">
+      <ComputerIcon />
+    </NavDrawerLink>
+  </NavLink>
 );
 
 interface NavigationProps {
@@ -65,9 +96,18 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
         </div>
         <Divider />
         <List>
-          <AppStoreLink />
-          <DataShelfLink />
-          <ComputationCockpitLink />
+          <AppStoreLink
+            className={classes.navLink}
+            onClick={handleDrawerClose}
+          />
+          <DataShelfLink
+            className={classes.navLink}
+            onClick={handleDrawerClose}
+          />
+          <ComputationCockpitLink
+            className={classes.navLink}
+            onClick={handleDrawerClose}
+          />
         </List>
       </Drawer>
       <Content>{children}</Content>

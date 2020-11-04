@@ -43,5 +43,12 @@ export const navigationStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: rootStyle(),
     toolbar: toolbarStyle(theme),
+    navLink: {
+      textDecoration: "none",
+      color: theme.palette.text.secondary,
+      "&.active": {
+        color: theme.palette.text.primary,
+      },
+    },
   })
 );
