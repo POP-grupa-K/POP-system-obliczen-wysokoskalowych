@@ -8,29 +8,60 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import StoreIcon from "@material-ui/icons/Store";
 import SaveIcon from "@material-ui/icons/Save";
 import ComputerIcon from "@material-ui/icons/Computer";
-import NavDrawer from "./components/NavDrawer";
 import TopBar from "./components/TopBar";
 import NavDrawerLink from "./components/NavDrawerLink";
 import Content from "./components/Content";
 import { navigationStyles } from "./styles";
 import { appName } from "../../const/strings";
+import { Drawer } from "@material-ui/core";
+import { NavLink } from "react-router-dom";
+import { routes } from "../../const/routes";
 
-const AppStoreLink = () => (
-  <NavDrawerLink name="App Store">
-    <StoreIcon />
-  </NavDrawerLink>
+interface LinkProps {
+  className?: string;
+  onClick?: () => void;
+}
+
+const AppStoreLink: React.FC<LinkProps> = ({ className, onClick }) => (
+  <NavLink
+    to={routes.appStore.path}
+    className={className}
+    onClick={onClick}
+    exact
+  >
+    <NavDrawerLink name="App Store">
+      <StoreIcon />
+    </NavDrawerLink>
+  </NavLink>
 );
 
-const DataShelfLink = () => (
-  <NavDrawerLink name="Data Shelf">
-    <SaveIcon />
-  </NavDrawerLink>
+const DataShelfLink: React.FC<LinkProps> = ({ className, onClick }) => (
+  <NavLink
+    to={routes.dataShelf.path}
+    className={className}
+    onClick={onClick}
+    exact
+  >
+    <NavDrawerLink name="Data Shelf">
+      <SaveIcon />
+    </NavDrawerLink>
+  </NavLink>
 );
 
-const ComputationCockpitLink = () => (
-  <NavDrawerLink name="Computation Cockpit">
-    <ComputerIcon />
-  </NavDrawerLink>
+const ComputationCockpitLink: React.FC<LinkProps> = ({
+  className,
+  onClick,
+}) => (
+  <NavLink
+    to={routes.computationCockpit.path}
+    className={className}
+    onClick={onClick}
+    exact
+  >
+    <NavDrawerLink name="Computation Cockpit">
+      <ComputerIcon />
+    </NavDrawerLink>
+  </NavLink>
 );
 
 interface NavigationProps {
@@ -52,8 +83,8 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
 
   return (
     <div className={classes.root}>
-      <TopBar title={appName} isOpen={open} onDrawerOpen={handleDrawerOpen} />
-      <NavDrawer isOpen={open}>
+      <TopBar title={appName} onDrawerOpen={handleDrawerOpen} />
+      <Drawer anchor="left" open={open} onClose={handleDrawerClose}>
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
@@ -65,11 +96,20 @@ const Navigation: React.FC<NavigationProps> = ({ children }) => {
         </div>
         <Divider />
         <List>
-          <AppStoreLink />
-          <DataShelfLink />
-          <ComputationCockpitLink />
+          <AppStoreLink
+            className={classes.navLink}
+            onClick={handleDrawerClose}
+          />
+          <DataShelfLink
+            className={classes.navLink}
+            onClick={handleDrawerClose}
+          />
+          <ComputationCockpitLink
+            className={classes.navLink}
+            onClick={handleDrawerClose}
+          />
         </List>
-      </NavDrawer>
+      </Drawer>
       <Content>{children}</Content>
     </div>
   );
