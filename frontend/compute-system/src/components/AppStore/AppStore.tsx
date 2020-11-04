@@ -1,16 +1,23 @@
 import * as React from "react";
-import mocksAppCards from "../../mocks/AppStore/AppCard/mockAppCards";
+import mockAppCard from "../../mocks/AppStore/AppCard/mockAppCards";
 import AppCard from "./AppCard/AppCard";
+import {Container, GridList, GridListTile} from "@material-ui/core";
 
 const AppStore = () => {
   return (
-    <AppCard
-      title={mocksAppCards[0].title}
-      updatedDate={mocksAppCards[0].updatedDate}
-      description={mocksAppCards[0].description}
-      timesUsed={mocksAppCards[0].timesUsed}
-      rate={mocksAppCards[0].rate}
-    />
+    <Container maxWidth="lg">
+      <GridList cols={2}>
+        {
+          Array(10).fill(mockAppCard).map(
+            (appCard, index) => (
+              <GridListTile key={index} cols={1}>
+                <AppCard {...appCard}/>
+              </GridListTile>
+            )
+          )
+        }
+      </GridList>
+    </Container>
   );
 };
 
