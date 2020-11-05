@@ -24,12 +24,13 @@ function App() {
             path={routes.computationCockpit.path}
             component={ComputationCockpit}
           />
-          <Route 
-         exact path="/rating" 
+          <Route
+            exact
+            path={routes.rating.path}
             render={() => (
-        <AppRating rate={mockRatings[0].rate} description={mockRatings[0].description}/>
-        )} 
-      />
+              <AppRating rate={mockRatings[0].rate} description={mockRatings[0].description} />
+            )}
+          />
         </Switch>
       </Navigation>
     </Router>
