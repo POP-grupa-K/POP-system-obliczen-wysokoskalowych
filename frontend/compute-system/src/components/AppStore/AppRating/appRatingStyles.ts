@@ -13,9 +13,9 @@ const ratingStyles = makeStyles((theme: Theme) =>
       borderTopLeftRadius: "10px",
       borderTopRightRadius: "10px",
       padding: theme.spacing(2),
-      borderBottomWidth: "1px", 
-      borderBottomColor: 'black',
-      borderBottomStyle: 'solid',
+      borderBottomWidth: "1px",
+      borderBottomColor: "black",
+      borderBottomStyle: "solid",
     },
     comment: {
       backgroundColor: theme.palette.backgroundColor.main,
@@ -24,11 +24,8 @@ const ratingStyles = makeStyles((theme: Theme) =>
       minHeight: "100px",
       padding: theme.spacing(2),
     },
-    rateValue:{
+    rateValue: {
       color: theme.palette.primary.main,
-    },
-    stars: {
-      color: theme.palette.sLight.main,
     },
   })
 );

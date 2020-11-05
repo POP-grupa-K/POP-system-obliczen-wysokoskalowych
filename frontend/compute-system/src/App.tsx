@@ -3,12 +3,11 @@ import React from "react";
 import { Route, Router, Switch } from "react-router-dom";
 import AppStore from "./components/AppStore/AppStore";
 import AppRating from "./components/AppStore/AppRating/AppRating";
-import mockRatings from "./mocks/AppStore/Rating/mockRatings"
+import mockRatings from "./mocks/AppStore/Rating/mockRatings";
 import Navigation from "./components/Navigation/Navigation";
 import { routes } from "./const/routes";
 import DataShelf from "./components/DataShelf/DataShelf";
 import ComputationCockpit from "./components/ComputationCockpit/ComputationCockpit";
-
 
 const browserHistory = createBrowserHistory();
 
@@ -28,7 +27,10 @@ function App() {
             exact
             path={routes.rating.path}
             render={() => (
-              <AppRating rate={mockRatings[0].rate} description={mockRatings[0].description} />
+              <AppRating
+                rate={mockRatings[0].rate}
+                description={mockRatings[0].description}
+              />
             )}
           />
         </Switch>

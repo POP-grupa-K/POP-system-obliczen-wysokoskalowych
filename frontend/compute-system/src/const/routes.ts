@@ -14,5 +14,5 @@ export const routes = {
   rating: {
     path: "/rating",
     title: "Show rating component",
-  }
+  },
 };
