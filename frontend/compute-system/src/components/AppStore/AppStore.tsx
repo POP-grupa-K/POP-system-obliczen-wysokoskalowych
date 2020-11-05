@@ -1,16 +1,32 @@
 import * as React from "react";
-import mocksAppCards from "../../mocks/AppStore/AppCard/mockAppCards";
+import mockAppCard from "../../mocks/AppStore/AppCard/mockAppCards";
 import AppCard from "./AppCard/AppCard";
+import {
+  Container,
+  GridList,
+  GridListTile,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
+import { appStoreStyles } from "./styles";
 
 const AppStore = () => {
+  const classes = appStoreStyles();
+  const theme = useTheme();
+  const largeWidth = useMediaQuery(theme.breakpoints.up("lg"));
+
   return (
-    <AppCard
-      title={mocksAppCards[0].title}
-      updatedDate={mocksAppCards[0].updatedDate}
-      description={mocksAppCards[0].description}
-      timesUsed={mocksAppCards[0].timesUsed}
-      rate={mocksAppCards[0].rate}
-    />
+    <Container maxWidth="lg">
+      <GridList cols={largeWidth ? 2 : 1}>
+        {Array(10)
+          .fill(mockAppCard)
+          .map((appCard, index) => (
+            <GridListTile key={index} cols={1} className={classes.root}>
+              <AppCard {...appCard} />
+            </GridListTile>
+          ))}
+      </GridList>
+    </Container>
   );
 };
 
