@@ -6,8 +6,15 @@ const appDetailsStyles = makeStyles((theme: Theme) =>
       width: "150px",
       height: "150px",
     },
-    root: {
+    iconSmall: {
+      width: "100px",
+      height: "100px",
+    },
+    body: {
       backgroundColor: theme.palette.backgroundColor.main,
+    },
+    header: {
+      backgroundColor: theme.palette.backgroundColor.dark,
     },
   })
 );

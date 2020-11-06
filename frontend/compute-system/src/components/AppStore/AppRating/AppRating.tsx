@@ -10,12 +10,17 @@ interface AppRatingProps {
 
 const AppRating = (props: AppRatingProps) => {
   const classes = ratingStyles();
-  const matches = useMediaQuery("(min-width:700px)");
+  const matches = useMediaQuery("(min-width:870px)");
 
   return (
     <Grid container alignItems="center" className={classes.grid}>
-      <Grid item container alignItems="center" className={classes.header}>
-        <Grid item xs={matches ? 1 : 2}>
+      <Grid
+        item
+        container
+        alignItems="center"
+        className={matches ? classes.header : classes.headerSmallWindow}
+      >
+        <Grid item xs={matches ? 1 : 3}>
           <Typography variant="h6" className={classes.rateValue}>
             {props.rate}/10
           </Typography>
