@@ -22,22 +22,7 @@ function App() {
             path={routes.computationCockpit.path}
             component={ComputationCockpit}
           />
-          <Route
-            exact
-            path={routes.appDetails.path}
-            render={() => (
-              <AppDetails
-                id={1}
-                title={"App title"}
-                updatedDate={"April 2nd 2005, 9:37PM"}
-                description={
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nibh augue, suscipit a, scelerisque sed, lacinia in, mi. Cras vel lorem."
-                }
-                rate={6.9}
-                timesUsed={911420}
-              />
-            )}
-          />
+          <Route exact path={routes.appDetails.path} component={AppDetails} />
         </Switch>
       </Navigation>
     </Router>

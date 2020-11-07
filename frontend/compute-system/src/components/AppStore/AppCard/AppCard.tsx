@@ -44,7 +44,11 @@ const AppCard = (props: AppCardProps) => {
             <UsedRateRow isRate={true} rate={props.rate} />
           </Grid>
           <Grid item>
-            <Button className={classes.addButton} onClick={addToCockpit}>
+            <Button
+              variant="contained"
+              className={classes.addButton}
+              onClick={addToCockpit}
+            >
               Add to cockpit
             </Button>
           </Grid>

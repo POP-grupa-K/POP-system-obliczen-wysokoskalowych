@@ -4,30 +4,42 @@ import AppRating from "../AppRating/AppRating";
 import mockRatings from "../../../mocks/AppStore/Rating/mockRatings";
 import appDetailsStyles from "./appDetailsStyles";
 import AppDetailsHeader from "./components/AppDetailsHeader";
+import mockAppCard from "../../../mocks/AppStore/AppCard/mockAppCards";
+import { RouteComponentProps } from "react-router-dom";
 
-interface AppDetailsProps {
-  id: number;
-  title: string;
-  updatedDate: string;
-  description: string;
-  timesUsed: number;
-  rate: number;
+interface AppDetailsContextProps {
+  absoluteUrl: string;
 }
+
+interface AppDetailsRouteParams {
+  id: string;
+}
+
+interface AppDetailsRouteProps
+  extends RouteComponentProps<AppDetailsRouteParams> {}
+
+type AppDetailsProps = AppDetailsContextProps & AppDetailsRouteProps;
 
 const AppDetails = (props: AppDetailsProps) => {
   const classes = appDetailsStyles();
   const matches = useMediaQuery("(min-width:800px)");
+  const { id } = props.match.params;
 
   return (
     <Container>
       <Grid container alignItems="center" spacing={2}>
-        <AppDetailsHeader title={props.title} description={props.description} />
+        <AppDetailsHeader
+          title={mockAppCard.title}
+          description={mockAppCard.description}
+        />
         <Grid item container className={classes.body}>
           <Grid item xs={matches ? 3 : 12}>
-            <Typography variant="h6">Rate: {props.rate}/10</Typography>
-            <Typography variant="h6">Times used: {props.timesUsed}</Typography>
+            <Typography variant="h6">Rate: {mockAppCard.rate}/10</Typography>
+            <Typography variant="h6">
+              Times used: {mockAppCard.timesUsed}
+            </Typography>
             <Typography variant="subtitle2">
-              Last update: {props.updatedDate}
+              Last update: {mockAppCard.updatedDate}
             </Typography>
           </Grid>
           <Grid item xs={matches ? 9 : 12}>

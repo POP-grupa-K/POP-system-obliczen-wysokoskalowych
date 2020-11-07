@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Typography, Grid, useMediaQuery } from "@material-ui/core";
+import { Typography, Grid, Button, useMediaQuery } from "@material-ui/core";
 import { PanoramaOutlined, DeleteForever, Edit } from "@material-ui/icons";
 import appDetailsStyles from "../appDetailsStyles";
 
@@ -17,21 +17,34 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
       item
       container
       alignItems="center"
-      direction={matches ? "row" : "column"}
+      direction={"column"}
       className={classes.header}
     >
-      <Grid item xs={matches ? 3 : 12}>
+      <Grid item xs={12}>
         <Typography variant="h4">{props.title}</Typography>
+      </Grid>
+      <Grid item xs={12}>
         <PanoramaOutlined
           className={matches ? classes.icon : classes.iconSmall}
         />
       </Grid>
-      <Grid item xs={matches ? 8 : 10}>
+      <Grid item xs={10}>
         <Typography variant="body1">{props.description}</Typography>
       </Grid>
-      <Grid item container xs={3}>
-        <Edit className={classes.buttonEdit} />
-        <DeleteForever className={classes.buttonDelete} />
+      <Grid item container xs={12} justify="center">
+        <Button variant="contained" className={classes.editButton}>
+          <Edit className={classes.editIcon} />
+          Edit
+        </Button>
+        <Button variant="contained" className={classes.deleteButton}>
+          <DeleteForever className={classes.deleteIcon} />
+          Delete
+        </Button>
+      </Grid>
+      <Grid item container xs={12} justify="center">
+        <Button variant="contained" className={classes.addButton}>
+          Add to cockpit
+        </Button>
       </Grid>
     </Grid>
   );

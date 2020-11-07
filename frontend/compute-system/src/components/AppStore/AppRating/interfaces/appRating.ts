@@ -1,4 +1,4 @@
 export default interface AppRating {
-  description: string;
+  comment: string;
   rate: number;
 }

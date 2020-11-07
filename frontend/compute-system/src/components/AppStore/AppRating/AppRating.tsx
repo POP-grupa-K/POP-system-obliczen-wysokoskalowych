@@ -5,7 +5,7 @@ import Stars from "./components/Stars";
 
 interface AppRatingProps {
   rate: number;
-  description: string;
+  comment: string;
 }
 
 const AppRating = (props: AppRatingProps) => {
@@ -28,7 +28,7 @@ const AppRating = (props: AppRatingProps) => {
         <Stars rate={props.rate} />
       </Grid>
       <Grid item xs={12} className={classes.comment}>
-        <Typography variant="body1">{props.description}</Typography>
+        <Typography variant="body1">{props.comment}</Typography>
       </Grid>
     </Grid>
   );
