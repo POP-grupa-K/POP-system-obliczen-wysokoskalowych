@@ -16,6 +16,28 @@ const appDetailsStyles = makeStyles((theme: Theme) =>
     header: {
       backgroundColor: theme.palette.backgroundColor.dark,
     },
+    buttonEdit: {
+      paddingRight: theme.spacing(1),
+      paddingLeft: theme.spacing(1),
+      width: "25px",
+      height: "25px",
+      color: theme.palette.tertiary.main,
+      "&:hover": {
+        color: theme.palette.tertiary.dark,
+        cursor: "pointer",
+      },
+    },
+    buttonDelete: {
+      paddingRight: theme.spacing(1),
+      paddingLeft: theme.spacing(1),
+      width: "25px",
+      height: "25px",
+      color: theme.palette.secondary.main,
+      "&:hover": {
+        color: theme.palette.secondary.dark,
+        cursor: "pointer",
+      },
+    },
   })
 );
 

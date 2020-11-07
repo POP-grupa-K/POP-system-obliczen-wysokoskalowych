@@ -26,6 +26,9 @@ const AppDetails = (props: AppDetailsProps) => {
           <Grid item xs={matches ? 3 : 12}>
             <Typography variant="h6">Rate: {props.rate}/10</Typography>
             <Typography variant="h6">Times used: {props.timesUsed}</Typography>
+            <Typography variant="subtitle2">
+              Last update: {props.updatedDate}
+            </Typography>
           </Grid>
           <Grid item xs={matches ? 9 : 12}>
             <Typography variant="h6">Comments:</Typography>
