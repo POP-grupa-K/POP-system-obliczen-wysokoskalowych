@@ -4,6 +4,8 @@ import ratingStyles from "./appRatingStyles";
 import Stars from "./components/Stars";
 
 interface AppRatingProps {
+  id: number;
+  uid: number;
   rate: number;
   comment: string;
 }

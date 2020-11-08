@@ -9,12 +9,27 @@ interface CommentFormProps {
 
 const CommentForm = (props: CommentFormProps) => {
   const classes = commentFormStyles();
-
   const [rate, setRate] = React.useState(10);
+  const [comment, setComment] = React.useState("");
+  const [commentValid, setValid] = React.useState(true);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     var value = Number(event.target.value);
     if (value <= 10 && value >= 0) setRate(value);
+  };
+
+  const handleComment = (event: React.ChangeEvent<HTMLInputElement>) => {
+    var commentValue = event.target.value;
+    if (commentValue.length > 5000) {
+      setValid(false);
+    } else {
+      setValid(true);
+      setComment(commentValue);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!commentValid) return;
   };
 
   return (
@@ -42,15 +57,26 @@ const CommentForm = (props: CommentFormProps) => {
           </Grid>
           <Grid item xs={12}>
             <TextField
+              error={!commentValid}
               label="Comment"
+              helperText={
+                commentValid
+                  ? ""
+                  : "Your comment is too long, max length is 5000 characters."
+              }
               variant="outlined"
               multiline
               rowsMax={6}
               className={classes.comment}
+              onChange={handleComment}
             />
           </Grid>
           <Grid item container xs={12} className={classes.buttonContainer}>
-            <Button variant="contained" className={classes.commentButton}>
+            <Button
+              variant="contained"
+              className={classes.commentButton}
+              onClick={handleSubmit}
+            >
               Add comment
             </Button>
           </Grid>

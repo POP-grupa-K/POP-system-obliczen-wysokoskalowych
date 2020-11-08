@@ -6,7 +6,7 @@ import appDetailsStyles from "./appDetailsStyles";
 import AppDetailsHeader from "./components/AppDetailsHeader";
 import mockAppCard from "../../../mocks/AppStore/AppCard/mockAppCards";
 import { RouteComponentProps } from "react-router-dom";
-import CommentForm from "./components/CommentFom";
+import CommentForm from "./components/CommentForm";
 
 interface AppDetailsContextProps {
   absoluteUrl: string;
@@ -25,6 +25,12 @@ const AppDetails = (props: AppDetailsProps) => {
   const classes = appDetailsStyles();
   const matches = useMediaQuery("(min-width:800px)");
   const { id } = props.match.params;
+  const [userCommented, setCommented] = React.useState(false);
+
+  React.useEffect(() => {
+    const loggedUserId = 1;
+    if (loggedUserId == mockRatings[0].uid) setCommented(true);
+  }, []);
 
   return (
     <Container>
@@ -44,11 +50,19 @@ const AppDetails = (props: AppDetailsProps) => {
             </Typography>
           </Grid>
           <Grid item xs={matches ? 9 : 12}>
-            <CommentForm id={id} />
+            {userCommented ? (
+              <>
+                <Typography variant="h6">Your comment:</Typography>
+                <Container>
+                  <AppRating {...mockRatings[0]} />
+                </Container>
+              </>
+            ) : null}
             <Typography variant="h6">Comments:</Typography>
+            {userCommented ? null : <CommentForm id={id} />}
             <Container>
               {Array(10)
-                .fill(mockRatings)
+                .fill(mockRatings[1])
                 .map((ratings, index) => (
                   <AppRating key={index} {...ratings} />
                 ))}
