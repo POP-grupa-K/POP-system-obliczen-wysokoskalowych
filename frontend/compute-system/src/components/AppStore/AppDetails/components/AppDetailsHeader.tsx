@@ -17,7 +17,7 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
       item
       container
       alignItems="center"
-      direction={"column"}
+      direction="column"
       className={classes.header}
     >
       <Grid item xs={12}>

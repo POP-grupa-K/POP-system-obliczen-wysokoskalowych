@@ -6,6 +6,7 @@ import appDetailsStyles from "./appDetailsStyles";
 import AppDetailsHeader from "./components/AppDetailsHeader";
 import mockAppCard from "../../../mocks/AppStore/AppCard/mockAppCards";
 import { RouteComponentProps } from "react-router-dom";
+import CommentForm from "./components/CommentFom";
 
 interface AppDetailsContextProps {
   absoluteUrl: string;
@@ -43,6 +44,7 @@ const AppDetails = (props: AppDetailsProps) => {
             </Typography>
           </Grid>
           <Grid item xs={matches ? 9 : 12}>
+            <CommentForm id={id} />
             <Typography variant="h6">Comments:</Typography>
             <Container>
               {Array(10)
