@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Typography, Grid, Button, useMediaQuery } from "@material-ui/core";
 import { PanoramaOutlined, DeleteForever, Edit } from "@material-ui/icons";
-import appDetailsStyles from "../appDetailsStyles";
+import headerStyles from "./HeaderStyles";
 
 interface AppDetailsHeaderProps {
   title: string;
@@ -9,7 +9,7 @@ interface AppDetailsHeaderProps {
 }
 
 const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
-  const classes = appDetailsStyles();
+  const classes = headerStyles();
   const matches = useMediaQuery("(min-width:800px)");
 
   return (

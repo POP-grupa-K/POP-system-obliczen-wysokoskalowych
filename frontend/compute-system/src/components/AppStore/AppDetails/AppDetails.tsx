@@ -7,6 +7,7 @@ import AppDetailsHeader from "./components/AppDetailsHeader";
 import mockAppCard from "../../../mocks/AppStore/AppCard/mockAppCards";
 import { RouteComponentProps } from "react-router-dom";
 import CommentForm from "./components/CommentForm";
+import AppStats from "./components/AppStats";
 
 interface AppDetailsContextProps {
   absoluteUrl: string;
@@ -29,7 +30,7 @@ const AppDetails = (props: AppDetailsProps) => {
 
   React.useEffect(() => {
     const loggedUserId = 1;
-    if (loggedUserId == mockRatings[0].uid) setCommented(true);
+    if (loggedUserId === mockRatings[0].uid) setCommented(true);
   }, []);
 
   return (
@@ -40,15 +41,11 @@ const AppDetails = (props: AppDetailsProps) => {
           description={mockAppCard.description}
         />
         <Grid item container className={classes.body}>
-          <Grid item xs={matches ? 3 : 12}>
-            <Typography variant="h6">Rate: {mockAppCard.rate}/10</Typography>
-            <Typography variant="h6">
-              Times used: {mockAppCard.timesUsed}
-            </Typography>
-            <Typography variant="subtitle2">
-              Last update: {mockAppCard.updatedDate}
-            </Typography>
-          </Grid>
+          <AppStats
+            rate={mockAppCard.rate}
+            timesUsed={mockAppCard.timesUsed}
+            updatedDate={mockAppCard.updatedDate}
+          />
           <Grid item xs={matches ? 9 : 12}>
             {userCommented ? (
               <>
