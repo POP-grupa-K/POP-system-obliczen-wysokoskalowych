@@ -9,9 +9,10 @@ const apiCall = async <T>(
   const response = await fetch(url, {
     method: requestType,
   })
-    .then<IApiResponse<T>>((response) =>
-      handleResponse((response as unknown) as T)
-    )
+    .then((resp) => resp.json())
+    .then<IApiResponse<T>>((r) => {
+      return handleResponse((r as unknown) as T);
+    })
     .catch<IApiResponse<T>>(handleError);
   return response;
 };

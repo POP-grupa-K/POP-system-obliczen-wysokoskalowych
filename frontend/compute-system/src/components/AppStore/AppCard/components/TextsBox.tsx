@@ -26,7 +26,11 @@ const TextsBox = (props: TextsBoxProps) => {
         <Typography variant="body1">{`Updated on ${props.updatedDate}`}</Typography>
       </Grid>
       <Grid item>
-        <Typography variant="caption">{props.description}</Typography>
+        <Typography variant="caption">
+          {props.description && props.description.length > 135
+            ? `${props.description.substring(0, 132)}...`
+            : props.description}
+        </Typography>
       </Grid>
     </Grid>
   );

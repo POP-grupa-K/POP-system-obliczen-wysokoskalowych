@@ -4,13 +4,10 @@ import * as React from "react";
 import appCardStyles from "./appCardStyles";
 import TextsBox from "./components/TextsBox";
 import UsedRateRow from "./components/UsedRateRow";
+import AppCardData from "./interfaces/appCard";
 
 interface AppCardProps {
-  title: string;
-  updatedDate: string;
-  description: string;
-  timesUsed: number;
-  rate: number;
+  appCard: AppCardData;
 }
 
 const AppCard = (props: AppCardProps) => {
@@ -23,14 +20,14 @@ const AppCard = (props: AppCardProps) => {
           <PanoramaOutlined className={classes.icon} />
         </Grid>
         <TextsBox
-          title={props.title}
-          updatedDate={props.updatedDate}
-          description={props.description}
+          title={props.appCard.nameApp}
+          updatedDate={props.appCard.dateUpdate}
+          description={props.appCard.descriptionApp}
         />
         <Grid item container direction="column" alignItems="center">
           <Grid item container wrap="nowrap" className={classes.usedRateBox}>
-            <UsedRateRow isRate={false} timesUsed={props.timesUsed} />
-            <UsedRateRow isRate={true} rate={props.rate} />
+            <UsedRateRow isRate={false} timesUsed={props.appCard.timesUsed} />
+            <UsedRateRow isRate={true} rate={props.appCard.ranking} />
           </Grid>
           <Grid item>
             <Button className={classes.addButton}>Add to cockpit</Button>

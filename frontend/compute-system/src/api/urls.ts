@@ -1,4 +1,5 @@
-export const APPSTORE_URL = "http://localhost:8005/";
+const APPSTORE_BASE_URL = "http://localhost:8005";
+export const APPSTORE_URL = `${APPSTORE_BASE_URL}/appstore/`;
 
 // TODO
 export const DATASHELF_URL = "http://localhost:TODO";
