@@ -10,6 +10,9 @@ const appStatsStyles = makeStyles((theme: Theme) =>
       display: "inline",
       width: "180px",
     },
+    usageRateBox: {
+      minWidth: "125px",
+    },
   })
 );
 
