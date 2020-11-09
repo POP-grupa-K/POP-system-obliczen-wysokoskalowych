@@ -51,7 +51,11 @@ const AppDetails = (props: AppDetailsProps) => {
               <>
                 <Typography variant="h6">Your comment:</Typography>
                 <Container>
-                  <AppRating userCommented={true} {...mockRatings[0]} />
+                  <AppRating
+                    userCommented={true}
+                    setCommented={setCommented}
+                    {...mockRatings[0]}
+                  />
                 </Container>
               </>
             ) : null}
@@ -61,7 +65,12 @@ const AppDetails = (props: AppDetailsProps) => {
               {Array(10)
                 .fill(mockRatings[1])
                 .map((ratings, index) => (
-                  <AppRating key={index} userCommented={false} {...ratings} />
+                  <AppRating
+                    key={index}
+                    userCommented={false}
+                    setCommented={setCommented}
+                    {...ratings}
+                  />
                 ))}
             </Container>
           </Grid>

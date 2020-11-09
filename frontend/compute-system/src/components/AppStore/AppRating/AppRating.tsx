@@ -16,6 +16,7 @@ interface AppRatingProps {
   uid: number;
   rate: number;
   comment: string;
+  setCommented: (isComment: boolean) => void;
 }
 
 const AppRating = (props: AppRatingProps) => {
@@ -30,6 +31,10 @@ const AppRating = (props: AppRatingProps) => {
 
   const changeEditMode = () => {
     setEditMode(!isEditMode);
+  };
+
+  const deleteComment = () => {
+    props.setCommented(false);
   };
 
   const handleComment = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +96,10 @@ const AppRating = (props: AppRatingProps) => {
         {props.userCommented && !isEditMode ? (
           <Grid item>
             <Edit onClick={changeEditMode} className={classes.editComment} />
-            <DeleteForever className={classes.deleteComment} />
+            <DeleteForever
+              onClick={deleteComment}
+              className={classes.deleteComment}
+            />
           </Grid>
         ) : null}
       </Grid>
