@@ -3,7 +3,7 @@ import AppRating from "../../../components/AppStore/AppRating/interfaces/appRati
 const mockRatings: AppRating[] = [
   {
     id: 1,
-    uid: 1,
+    userId: 1,
     rate: 2,
     comment:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at rutrum justo. Praesent gravida quam eu nulla maximus varius." +
@@ -11,7 +11,7 @@ const mockRatings: AppRating[] = [
   },
   {
     id: 2,
-    uid: 2,
+    userId: 2,
     rate: 6.9,
     comment:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at rutrum justo. Praesent gravida quam eu nulla maximus varius." +

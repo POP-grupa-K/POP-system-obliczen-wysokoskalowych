@@ -9,28 +9,22 @@ import { RouteComponentProps } from "react-router-dom";
 import CommentForm from "./components/CommentForm";
 import AppStats from "./components/AppStats";
 
-interface AppDetailsContextProps {
-  absoluteUrl: string;
-}
-
 interface AppDetailsRouteParams {
-  id: string;
+  appId: string;
 }
 
 interface AppDetailsRouteProps
   extends RouteComponentProps<AppDetailsRouteParams> {}
 
-type AppDetailsProps = AppDetailsContextProps & AppDetailsRouteProps;
-
-const AppDetails = (props: AppDetailsProps) => {
+const AppDetails = (props: AppDetailsRouteProps) => {
   const classes = appDetailsStyles();
   const matches = useMediaQuery("(min-width:800px)");
-  const { id } = props.match.params;
+  const { appId } = props.match.params;
   const [userCommented, setCommented] = React.useState(false);
 
   React.useEffect(() => {
     const loggedUserId = 1;
-    if (loggedUserId === mockRatings[0].uid) setCommented(true);
+    if (loggedUserId === mockRatings[0].userId) setCommented(true);
   }, []);
 
   return (
@@ -60,7 +54,7 @@ const AppDetails = (props: AppDetailsProps) => {
               </>
             ) : null}
             <Typography variant="h6">Comments:</Typography>
-            {userCommented ? null : <CommentForm id={id} />}
+            {userCommented ? null : <CommentForm id={appId} />}
             <Container>
               {Array(10)
                 .fill(mockRatings[1])

@@ -1,6 +1,6 @@
 export default interface AppRating {
   id: number;
-  uid: number;
+  userId: number;
   comment: string;
   rate: number;
 }

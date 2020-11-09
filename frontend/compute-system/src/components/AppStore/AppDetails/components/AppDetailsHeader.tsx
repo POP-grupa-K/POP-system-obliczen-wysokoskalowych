@@ -32,12 +32,18 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
         <Typography variant="body1">{props.description}</Typography>
       </Grid>
       <Grid item container xs={12} justify="center">
-        <Button variant="contained" className={classes.editButton}>
-          <Edit className={classes.editIcon} />
+        <Button
+          variant="contained"
+          startIcon={<Edit />}
+          className={classes.editButton}
+        >
           Edit
         </Button>
-        <Button variant="contained" className={classes.deleteButton}>
-          <DeleteForever className={classes.deleteIcon} />
+        <Button
+          variant="contained"
+          startIcon={<DeleteForever />}
+          className={classes.deleteButton}
+        >
           Delete
         </Button>
       </Grid>

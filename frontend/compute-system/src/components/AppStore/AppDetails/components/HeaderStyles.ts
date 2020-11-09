@@ -22,10 +22,6 @@ const headerStyles = makeStyles((theme: Theme) =>
         backgroundColor: theme.palette.tertiary.dark,
       },
     },
-    editIcon: {
-      color: theme.palette.white.main,
-      paddingRight: theme.spacing(1),
-    },
     deleteButton: {
       margin: "5px",
       width: "100px",
@@ -34,10 +30,6 @@ const headerStyles = makeStyles((theme: Theme) =>
       "&:hover": {
         backgroundColor: theme.palette.secondary.dark,
       },
-    },
-    deleteIcon: {
-      color: theme.palette.white.main,
-      paddingRight: theme.spacing(1),
     },
     addButton: {
       margin: "5px",

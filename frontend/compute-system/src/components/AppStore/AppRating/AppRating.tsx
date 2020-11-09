@@ -13,7 +13,7 @@ import { DeleteForever, Edit } from "@material-ui/icons";
 interface AppRatingProps {
   id: number;
   userCommented: boolean;
-  uid: number;
+  userId: number;
   rate: number;
   comment: string;
   setCommented: (isComment: boolean) => void;
