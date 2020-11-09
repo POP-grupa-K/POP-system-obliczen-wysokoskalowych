@@ -51,7 +51,7 @@ const AppDetails = (props: AppDetailsProps) => {
               <>
                 <Typography variant="h6">Your comment:</Typography>
                 <Container>
-                  <AppRating {...mockRatings[0]} />
+                  <AppRating userCommented={true} {...mockRatings[0]} />
                 </Container>
               </>
             ) : null}
@@ -61,7 +61,7 @@ const AppDetails = (props: AppDetailsProps) => {
               {Array(10)
                 .fill(mockRatings[1])
                 .map((ratings, index) => (
-                  <AppRating key={index} {...ratings} />
+                  <AppRating key={index} userCommented={false} {...ratings} />
                 ))}
             </Container>
           </Grid>

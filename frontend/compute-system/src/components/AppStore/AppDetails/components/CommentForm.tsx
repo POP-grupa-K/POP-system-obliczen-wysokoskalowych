@@ -24,8 +24,8 @@ const CommentForm = (props: CommentFormProps) => {
       setValid(false);
     } else {
       setValid(true);
-      setComment(commentValue);
     }
+    setComment(commentValue);
   };
 
   const handleSubmit = () => {
@@ -69,6 +69,7 @@ const CommentForm = (props: CommentFormProps) => {
               rowsMax={6}
               className={classes.comment}
               onChange={handleComment}
+              value={comment}
             />
           </Grid>
           <Grid item container xs={12} className={classes.buttonContainer}>

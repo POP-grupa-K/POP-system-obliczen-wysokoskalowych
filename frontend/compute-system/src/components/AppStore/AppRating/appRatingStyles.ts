@@ -21,7 +21,7 @@ const ratingStyles = makeStyles((theme: Theme) =>
     },
     headerSmallWindow: {
       backgroundColor: theme.palette.backgroundColor.dark,
-      height: "80px",
+      height: "100px",
       borderTopLeftRadius: "10px",
       borderTopRightRadius: "10px",
       padding: theme.spacing(2),
@@ -36,8 +36,28 @@ const ratingStyles = makeStyles((theme: Theme) =>
       minHeight: "100px",
       padding: theme.spacing(2),
     },
-    rateValue: {
+    blueText: {
       color: theme.palette.primary.main,
+    },
+    editComment: {
+      color: theme.palette.tertiary.main,
+      "&:hover": {
+        cursor: "pointer",
+      },
+    },
+    deleteComment: {
+      color: theme.palette.secondary.main,
+      "&:hover": {
+        cursor: "pointer",
+      },
+    },
+    textField: {
+      width: "100%",
+      height: "100px",
+    },
+    number: {
+      width: "50px",
+      transform: "translateY(-15px)",
     },
   })
 );
