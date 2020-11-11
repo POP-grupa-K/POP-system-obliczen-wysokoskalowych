@@ -22,7 +22,11 @@ function App() {
             path={routes.computationCockpit.path}
             component={ComputationCockpit}
           />
-          <Route exact path={routes.appDetails.path} component={AppDetails} />
+          <Route
+            exact
+            path={routes.appDetails.path}
+            render={(props) => <AppDetails {...props} />}
+          />
         </Switch>
       </Navigation>
     </Router>
