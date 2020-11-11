@@ -8,6 +8,10 @@ const appCardStyles = makeStyles((theme: Theme) =>
       maxWidth: "578px",
       minHeight: "133px",
       padding: theme.spacing(2),
+      "&:hover": {
+        backgroundColor: theme.palette.backgroundColor.dark,
+        cursor: "pointer",
+      },
     },
     icon: {
       width: "100px",

@@ -10,7 +10,7 @@ import apiCall from "../../api/apiCall";
 import RequestType from "../../api/requestType";
 import { APPSTORE_URL } from "../../api/urls";
 import AppCard from "./AppCard/AppCard";
-import AppCardData from "./AppCard/interfaces/appCard";
+import AppCardData from "./AppCard/interfaces/appCardData";
 import { appStoreStyles } from "./styles";
 
 const AppStore = () => {

@@ -13,11 +13,11 @@ const Stars = (props: StarsProps) => {
 
   for (var i = 0; i < 10; i++) {
     if (i < Math.floor(props.rate)) {
-      stars[i] = <Star className={classes.stars} />;
+      stars[i] = <Star key={i} className={classes.stars} />;
     } else if (props.rate - Math.floor(props.rate) > 0 && i < props.rate) {
-      stars[i] = <StarHalf className={classes.stars} />;
+      stars[i] = <StarHalf key={i} className={classes.stars} />;
     } else {
-      stars[i] = <StarBorder className={classes.stars} />;
+      stars[i] = <StarBorder key={i} className={classes.stars} />;
     }
   }
 
