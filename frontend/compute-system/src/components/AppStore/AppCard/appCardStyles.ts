@@ -3,8 +3,10 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 const appCardStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
+      display: "flex",
       backgroundColor: theme.palette.backgroundColor.light,
       maxWidth: "578px",
+      minHeight: "133px",
       padding: theme.spacing(2),
       "&:hover": {
         backgroundColor: theme.palette.backgroundColor.dark,

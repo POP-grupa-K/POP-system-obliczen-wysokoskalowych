@@ -92,8 +92,7 @@ const AppRating = (props: AppRatingProps) => {
             <Stars rate={rateChanged} />
           </Grid>
         )}
-
-        {props.userCommented && !isEditMode ? (
+        {props.userCommented && !isEditMode && (
           <Grid item>
             <Edit onClick={changeEditMode} className={classes.editComment} />
             <DeleteForever
@@ -101,7 +100,7 @@ const AppRating = (props: AppRatingProps) => {
               className={classes.deleteComment}
             />
           </Grid>
-        ) : null}
+        )}
       </Grid>
       {!isEditMode ? (
         <Grid item xs={12} className={classes.comment}>

@@ -31,17 +31,17 @@ const AppDetails = (props: AppDetailsRouteProps) => {
     <Container>
       <Grid container alignItems="center" spacing={2}>
         <AppDetailsHeader
-          title={mockAppCard.title}
-          description={mockAppCard.description}
+          title={mockAppCard.nameApp}
+          description={mockAppCard.descriptionApp}
         />
         <Grid item container className={classes.body}>
           <AppStats
-            rate={mockAppCard.rate}
+            rate={mockAppCard.ranking}
             timesUsed={mockAppCard.timesUsed}
-            updatedDate={mockAppCard.updatedDate}
+            updatedDate={mockAppCard.dateUpdate}
           />
           <Grid item xs={matches ? 9 : 12}>
-            {userCommented ? (
+            {userCommented && (
               <>
                 <Typography variant="h6">Your comment:</Typography>
                 <Container>
@@ -52,9 +52,9 @@ const AppDetails = (props: AppDetailsRouteProps) => {
                   />
                 </Container>
               </>
-            ) : null}
+            )}
             <Typography variant="h6">Comments:</Typography>
-            {userCommented ? null : <CommentForm id={appId} />}
+            {!userCommented && <CommentForm id={appId} />}
             <Container>
               {Array(10)
                 .fill(mockRatings[1])
