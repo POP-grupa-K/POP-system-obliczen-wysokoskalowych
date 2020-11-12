@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Typography, Grid, Button, useMediaQuery } from "@material-ui/core";
-import { PanoramaOutlined, DeleteForever, Edit } from "@material-ui/icons";
+import { PanoramaOutlined, DeleteForever } from "@material-ui/icons";
 import headerStyles from "./HeaderStyles";
+import EditApp from "./EditApp";
 
 interface AppDetailsHeaderProps {
   title: string;
@@ -32,13 +33,7 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
         <Typography variant="body1">{props.description}</Typography>
       </Grid>
       <Grid item container xs={12} justify="center">
-        <Button
-          variant="contained"
-          startIcon={<Edit />}
-          className={classes.editButton}
-        >
-          Edit
-        </Button>
+        <EditApp />
         <Button
           variant="contained"
           startIcon={<DeleteForever />}
