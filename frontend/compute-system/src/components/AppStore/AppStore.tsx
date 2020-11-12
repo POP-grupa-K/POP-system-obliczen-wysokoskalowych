@@ -11,6 +11,7 @@ import RequestType from "../../api/requestType";
 import { APPSTORE_URL } from "../../api/urls";
 import AppCard from "./AppCard/AppCard";
 import AppCardData from "./AppCard/interfaces/appCardData";
+import AppForm from "./AppForm/AppForm";
 import { appStoreStyles } from "./styles";
 
 const AppStore = () => {
@@ -37,6 +38,7 @@ const AppStore = () => {
 
   return (
     <Container maxWidth="lg">
+      <AppForm isEdit={false} />
       <GridList cols={largeWidth ? 2 : 1}>
         {apps.map((appCard, index) => (
           <GridListTile key={index} cols={1} className={classes.root}>

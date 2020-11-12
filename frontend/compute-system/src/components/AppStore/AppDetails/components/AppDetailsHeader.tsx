@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Typography, Grid, Button, useMediaQuery } from "@material-ui/core";
-import { PanoramaOutlined, DeleteForever, Edit } from "@material-ui/icons";
+import { PanoramaOutlined, DeleteForever } from "@material-ui/icons";
 import headerStyles from "./HeaderStyles";
 import apiCall from "../../../../api/apiCall";
 import { APPSTORE_URL } from "../../../../api/urls";
 import RequestType from "../../../../api/requestType";
 import { useHistory } from "react-router-dom";
+import AppForm from "../../AppForm/AppForm";
 
 interface AppDetailsHeaderProps {
   id: number;
@@ -51,13 +52,12 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
         <Typography variant="body1">{props.description}</Typography>
       </Grid>
       <Grid item container xs={12} justify="center">
-        <Button
-          variant="contained"
-          startIcon={<Edit />}
-          className={classes.editButton}
-        >
-          Edit
-        </Button>
+        <AppForm
+          isEdit={true}
+          idApp={props.id}
+          nameApp={props.title}
+          descriptionApp={props.description}
+        />
         <Button
           variant="contained"
           startIcon={<DeleteForever />}
