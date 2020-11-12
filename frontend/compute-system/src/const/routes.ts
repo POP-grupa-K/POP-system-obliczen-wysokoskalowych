@@ -12,7 +12,7 @@ export const routes = {
     title: "Computation Cockpit",
   },
   appDetails: {
-    path: "/app/:id",
+    path: "/app/:appId",
     title: "App details",
   },
 };

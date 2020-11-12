@@ -2,8 +2,13 @@ import * as React from "react";
 import { Typography, Grid, Button, useMediaQuery } from "@material-ui/core";
 import { PanoramaOutlined, DeleteForever, Edit } from "@material-ui/icons";
 import headerStyles from "./HeaderStyles";
+import apiCall from "../../../../api/apiCall";
+import { APPSTORE_URL } from "../../../../api/urls";
+import RequestType from "../../../../api/requestType";
+import { useHistory } from "react-router-dom";
 
 interface AppDetailsHeaderProps {
+  id: number;
   title: string;
   description: string;
 }
@@ -11,6 +16,20 @@ interface AppDetailsHeaderProps {
 const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
   const classes = headerStyles();
   const matches = useMediaQuery("(min-width:800px)");
+  const history = useHistory();
+
+  const handleDeleteClick = async () => {
+    const response = await apiCall(
+      `${APPSTORE_URL}${props.id}`,
+      RequestType.DELETE
+    );
+
+    if (response.isError) {
+      return;
+    }
+
+    history.push("/");
+  };
 
   return (
     <Grid
@@ -43,6 +62,7 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
           variant="contained"
           startIcon={<DeleteForever />}
           className={classes.deleteButton}
+          onClick={handleDeleteClick}
         >
           Delete
         </Button>
