@@ -9,6 +9,13 @@ import {
 } from "@material-ui/core";
 import { Edit, AddCircle } from "@material-ui/icons";
 import AppFormStyles from "./AppFormStyles";
+import apiCall from "../../../api/apiCall";
+import AppCardData, {
+  initialAppCardData,
+} from "../AppCard/interfaces/appCardData";
+import { APPSTORE_URL } from "../../../api/urls";
+import RequestType from "../../../api/requestType";
+import { useHistory } from "react-router-dom";
 
 interface AppFormProps {
   isEdit: boolean;
@@ -19,36 +26,69 @@ interface AppFormProps {
 
 const AppForm = (props: AppFormProps) => {
   const classes = AppFormStyles();
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
-  const [descriptionValid, setValid] = React.useState(true);
-  const [nameApp, setNameApp] = React.useState(
-    props.nameApp ? props.nameApp : ""
-  );
-  const [description, setDescription] = React.useState(
-    props.descriptionApp ? props.descriptionApp : ""
-  );
+  const [descriptionValid, setValid] = React.useState<boolean>(true);
+  const [appName, setAppName] = React.useState<string>("");
+  const [description, setDescription] = React.useState<string>("");
+
+  const { nameApp, descriptionApp } = props;
+  React.useEffect(() => {
+    setAppName(nameApp ? nameApp : "");
+    setDescription(descriptionApp ? descriptionApp : "");
+  }, [nameApp, descriptionApp]);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
+    const editAppCard: AppCardData = initialAppCardData;
+    editAppCard.nameApp = appName;
+    editAppCard.descriptionApp = description;
+    editAppCard.dateUpdate = new Date().toISOString();
+
+    const response = await apiCall<AppCardData>(
+      `${APPSTORE_URL}${props.idApp}`,
+      RequestType.PUT,
+      editAppCard
+    );
+
+    if (response.isError) {
+      return;
+    }
+
     setOpen(false);
   };
 
-  const handleAdd = () => {
-    setOpen(false);
-
+  const handleAdd = async () => {
     if (!props.isEdit) {
-      setNameApp("");
+      setAppName("");
       setDescription("");
     }
+
+    const addAppCard: AppCardData = initialAppCardData;
+    addAppCard.nameApp = appName;
+    addAppCard.descriptionApp = description;
+    addAppCard.dateUpdate = new Date().toISOString();
+
+    const respose = await apiCall<AppCardData>(
+      APPSTORE_URL,
+      RequestType.POST,
+      addAppCard
+    );
+
+    if (respose.isError) {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const handleCancel = () => {
     setOpen(false);
     setDescription(props.descriptionApp ? props.descriptionApp : "");
-    setNameApp(props.nameApp ? props.nameApp : "");
+    setAppName(props.nameApp ? props.nameApp : "");
   };
 
   const handleDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +103,7 @@ const AppForm = (props: AppFormProps) => {
 
   const handleNameApp = (event: React.ChangeEvent<HTMLInputElement>) => {
     var nameAppValue = event.target.value;
-    setNameApp(nameAppValue);
+    setAppName(nameAppValue);
   };
 
   return (
@@ -103,7 +143,7 @@ const AppForm = (props: AppFormProps) => {
             id="name"
             label="App name"
             fullWidth
-            value={nameApp}
+            value={appName}
             onChange={handleNameApp}
           />
           <TextField
