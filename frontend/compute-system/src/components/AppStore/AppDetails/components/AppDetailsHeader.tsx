@@ -41,7 +41,7 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
       className={classes.header}
     >
       <Grid item xs={12}>
-        <Typography variant="h4">{props.id}</Typography>
+        <Typography variant="h4">{props.title}</Typography>
       </Grid>
       <Grid item xs={12}>
         <PanoramaOutlined
