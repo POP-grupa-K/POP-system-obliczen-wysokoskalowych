@@ -2,11 +2,12 @@ import * as React from "react";
 import { Typography, Grid, Button, useMediaQuery } from "@material-ui/core";
 import { PanoramaOutlined, DeleteForever } from "@material-ui/icons";
 import headerStyles from "./HeaderStyles";
-import EditApp from "./EditApp";
+import AppForm from "../../AppForm/AppForm";
 
 interface AppDetailsHeaderProps {
-  title: string;
-  description: string;
+  idApp: string;
+  nameApp: string;
+  descriptionApp: string;
 }
 
 const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
@@ -22,7 +23,7 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
       className={classes.header}
     >
       <Grid item xs={12}>
-        <Typography variant="h4">{props.title}</Typography>
+        <Typography variant="h4">{props.nameApp}</Typography>
       </Grid>
       <Grid item xs={12}>
         <PanoramaOutlined
@@ -30,10 +31,15 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
         />
       </Grid>
       <Grid item xs={10}>
-        <Typography variant="body1">{props.description}</Typography>
+        <Typography variant="body1">{props.descriptionApp}</Typography>
       </Grid>
       <Grid item container xs={12} justify="center">
-        <EditApp />
+        <AppForm
+          isEdit={true}
+          idApp={props.idApp}
+          nameApp={props.nameApp}
+          descriptionApp={props.descriptionApp}
+        />
         <Button
           variant="contained"
           startIcon={<DeleteForever />}

@@ -31,8 +31,9 @@ const AppDetails = (props: AppDetailsRouteProps) => {
     <Container>
       <Grid container alignItems="center" spacing={2}>
         <AppDetailsHeader
-          title={mockAppCard.nameApp}
-          description={mockAppCard.descriptionApp}
+          idApp={appId}
+          nameApp={mockAppCard.nameApp}
+          descriptionApp={mockAppCard.descriptionApp}
         />
         <Grid item container className={classes.body}>
           <AppStats
