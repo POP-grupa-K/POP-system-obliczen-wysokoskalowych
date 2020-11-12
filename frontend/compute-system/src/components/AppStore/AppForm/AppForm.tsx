@@ -12,7 +12,7 @@ import AppFormStyles from "./AppFormStyles";
 
 interface AppFormProps {
   isEdit: boolean;
-  idApp?: string;
+  idApp?: number;
   nameApp?: string;
   descriptionApp?: string;
 }
@@ -65,7 +65,7 @@ const AppForm = (props: AppFormProps) => {
     var nameAppValue = event.target.value;
     setNameApp(nameAppValue);
   };
-  //className={classes.addIcon}
+
   return (
     <>
       {props.isEdit ? (

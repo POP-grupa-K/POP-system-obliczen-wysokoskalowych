@@ -6,3 +6,12 @@ export default interface AppCardData {
   ranking: number;
   timesUsed: number;
 }
+
+export const initialAppCardData: AppCardData = {
+  idApp: 0,
+  nameApp: "",
+  dateUpdate: "",
+  descriptionApp: "",
+  ranking: 0,
+  timesUsed: 0,
+};
