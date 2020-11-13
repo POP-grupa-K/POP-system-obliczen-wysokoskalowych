@@ -6,7 +6,7 @@ const appCardStyles = makeStyles((theme: Theme) =>
       display: "flex",
       backgroundColor: theme.palette.backgroundColor.light,
       maxWidth: "578px",
-      minHeight: "133px",
+      height: "133px",
       padding: theme.spacing(2),
       "&:hover": {
         backgroundColor: theme.palette.backgroundColor.dark,

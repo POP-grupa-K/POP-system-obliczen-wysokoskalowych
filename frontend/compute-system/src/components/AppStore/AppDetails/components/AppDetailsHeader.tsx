@@ -12,6 +12,7 @@ interface AppDetailsHeaderProps {
   id: number;
   title: string;
   description: string;
+  makeReload: () => void;
 }
 
 const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
@@ -57,6 +58,7 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
           idApp={props.id}
           nameApp={props.title}
           descriptionApp={props.description}
+          makeReload={props.makeReload}
         />
         <Button
           variant="contained"

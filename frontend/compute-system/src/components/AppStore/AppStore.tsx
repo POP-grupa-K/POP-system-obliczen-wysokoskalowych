@@ -16,9 +16,14 @@ import { appStoreStyles } from "./styles";
 
 const AppStore = () => {
   const [apps, setApps] = React.useState<AppCardData[]>([]);
+  const [reload, setReload] = React.useState<boolean>(false);
   const classes = appStoreStyles();
   const theme = useTheme();
   const largeWidth = useMediaQuery(theme.breakpoints.up("lg"));
+
+  const makeReload = () => {
+    setReload(true);
+  };
 
   const fetchApps = React.useCallback(async () => {
     const response = await apiCall<AppCardData[]>(
@@ -29,16 +34,24 @@ const AppStore = () => {
       return;
     }
 
-    setApps(response.content);
+    var apiApps = response.content;
+    apiApps.forEach((apiApp) => {
+      if (apiApp.dateUpdate) {
+        apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
+      }
+    });
+
+    setApps(apiApps);
+    setReload(false);
   }, []);
 
   React.useEffect(() => {
     fetchApps();
-  }, [fetchApps]);
+  }, [fetchApps, reload]);
 
   return (
     <Container maxWidth="lg">
-      <AppForm isEdit={false} />
+      <AppForm isEdit={false} makeReload={makeReload} />
       <GridList cols={largeWidth ? 2 : 1}>
         {apps.map((appCard, index) => (
           <GridListTile key={index} cols={1} className={classes.root}>

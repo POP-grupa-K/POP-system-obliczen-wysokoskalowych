@@ -4,10 +4,16 @@ import RequestType from "./requestType";
 
 const apiCall = async <T>(
   url: string,
-  requestType: RequestType
+  requestType: RequestType,
+  itemToSend?: T
 ): Promise<IApiResponse<T>> => {
+  const body = JSON.stringify(itemToSend);
   const response = await fetch(url, {
     method: requestType,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: body,
   })
     .then((resp) => resp.json())
     .then<IApiResponse<T>>((r) => {
