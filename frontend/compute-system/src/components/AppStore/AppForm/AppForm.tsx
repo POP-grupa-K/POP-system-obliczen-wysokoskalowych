@@ -15,18 +15,17 @@ import AppCardData, {
 } from "../AppCard/interfaces/appCardData";
 import { APPSTORE_URL } from "../../../api/urls";
 import RequestType from "../../../api/requestType";
-import { useHistory } from "react-router-dom";
 
 interface AppFormProps {
   isEdit: boolean;
   idApp?: number;
   nameApp?: string;
   descriptionApp?: string;
+  makeReload: () => void;
 }
 
 const AppForm = (props: AppFormProps) => {
   const classes = AppFormStyles();
-  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const [descriptionValid, setValid] = React.useState<boolean>(true);
   const [appName, setAppName] = React.useState<string>("");
@@ -59,6 +58,7 @@ const AppForm = (props: AppFormProps) => {
     }
 
     setOpen(false);
+    props.makeReload();
   };
 
   const handleAdd = async () => {
@@ -83,6 +83,7 @@ const AppForm = (props: AppFormProps) => {
     }
 
     setOpen(false);
+    props.makeReload();
   };
 
   const handleCancel = () => {

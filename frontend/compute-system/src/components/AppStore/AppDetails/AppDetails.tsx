@@ -27,6 +27,11 @@ const AppDetails = (props: AppDetailsRouteProps) => {
   const { appId } = props.match.params;
   const [userCommented, setCommented] = React.useState(false);
   const [app, setApp] = React.useState<AppCardData>(initialAppCardData);
+  const [reload, setReload] = React.useState<boolean>(false);
+
+  const makeReload = () => {
+    setReload(true);
+  };
 
   const fetchDetails = React.useCallback(async () => {
     const response = await apiCall<AppCardData>(
@@ -37,13 +42,16 @@ const AppDetails = (props: AppDetailsRouteProps) => {
       return;
     }
 
-    setApp(response.content);
+    var apiApp = response.content;
+    apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
+    setApp(apiApp);
+    setReload(false);
   }, [appId]);
 
   React.useEffect(() => {
     fetchDetails();
     setCommented(true); // TODO
-  }, [fetchDetails]);
+  }, [fetchDetails, reload]);
 
   return (
     <Container>
@@ -52,6 +60,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
           id={app.idApp}
           title={app.nameApp}
           description={app.descriptionApp}
+          makeReload={makeReload}
         />
         <Grid item container className={classes.body}>
           <AppStats
