@@ -1,25 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { createBrowserHistory } from "history";
+import React from "react";
+import { Route, Router, Switch } from "react-router-dom";
+import AppStore from "./components/AppStore/AppStore";
+import Navigation from "./components/Navigation/Navigation";
+import { routes } from "./const/routes";
+import DataShelf from "./components/DataShelf/DataShelf";
+import ComputationCockpit from "./components/ComputationCockpit/ComputationCockpit";
+import AppDetails from "./components/AppStore/AppDetails/AppDetails";
+
+const browserHistory = createBrowserHistory();
 
 function App() {
   return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo"/>
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+    <Router history={browserHistory}>
+      <Navigation>
+        <Switch>
+          <Route exact path={routes.appStore.path} component={AppStore} />
+          <Route exact path={routes.dataShelf.path} component={DataShelf} />
+          <Route
+            exact
+            path={routes.computationCockpit.path}
+            component={ComputationCockpit}
+          />
+          <Route
+            exact
+            path={routes.appDetails.path}
+            render={(props) => <AppDetails {...props} />}
+          />
+        </Switch>
+      </Navigation>
+    </Router>
   );
 }
 
