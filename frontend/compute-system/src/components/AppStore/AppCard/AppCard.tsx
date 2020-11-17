@@ -31,7 +31,7 @@ const AppCard = (props: AppCardProps) => {
         </Grid>
         <TextsBox
           title={props.appCard.nameApp}
-          updatedDate={props.appCard.dateUpdate}
+          updatedDate={props.appCard.dateUpdate.substring(0, props.appCard.dateUpdate.length - 3)}
           description={props.appCard.descriptionApp}
         />
         <Grid item container direction="column" alignItems="center">

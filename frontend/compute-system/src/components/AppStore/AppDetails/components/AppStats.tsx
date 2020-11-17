@@ -34,7 +34,7 @@ const AppStats = (props: AppStatsProps) => {
           <Typography variant="subtitle2">Last update:</Typography>
         </Grid>
         <Grid item>
-          <Typography variant="subtitle2">{props.updatedDate}</Typography>
+          <Typography variant="subtitle2">{props.updatedDate.substring(0, props.updatedDate.length - 3)}</Typography>
         </Grid>
       </Grid>
     </Grid>

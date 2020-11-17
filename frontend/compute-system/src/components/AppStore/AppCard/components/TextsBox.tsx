@@ -20,7 +20,11 @@ const TextsBox = (props: TextsBoxProps) => {
       className={classes.textBox}
     >
       <Grid item>
-        <Typography variant="h5">{props.title}</Typography>
+        <Typography variant="h5">
+          {props.title && props.title.length > 24
+              ? `${props.title.substring(0, 21)}...`
+              : props.title}
+        </Typography>
       </Grid>
       <Grid item className={classes.updatedText}>
         <Typography variant="body1">{`Updated on ${props.updatedDate}`}</Typography>
