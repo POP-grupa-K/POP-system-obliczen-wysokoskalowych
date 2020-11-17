@@ -11,7 +11,7 @@ const Stars = (props: StarsProps) => {
   const classes = StarsStyles();
   var stars = new Array(10);
 
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 5; i++) {
     if (i < Math.floor(props.rate)) {
       stars[i] = <Star key={i} className={classes.stars} />;
     } else if (props.rate - Math.floor(props.rate) > 0 && i < props.rate) {
