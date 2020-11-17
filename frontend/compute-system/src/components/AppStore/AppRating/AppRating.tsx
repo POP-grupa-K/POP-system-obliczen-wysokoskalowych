@@ -49,7 +49,7 @@ const AppRating = (props: AppRatingProps) => {
 
   const changeRate = (event: React.ChangeEvent<HTMLInputElement>) => {
     var value = Number(event.target.value);
-    if (value <= 10 && value >= 0) editRate(value);
+    if (value <= 5 && value >= 0) editRate(value);
   };
 
   const cancelChange = () => {
@@ -78,6 +78,7 @@ const AppRating = (props: AppRatingProps) => {
             <TextField
               label="Rate"
               type="number"
+              inputProps={{step: "0.5"}}
               value={rate}
               className={classes.number}
               onChange={changeRate}
@@ -87,7 +88,7 @@ const AppRating = (props: AppRatingProps) => {
         ) : (
           <Grid item container xs={10}>
             <Typography variant="h6" className={classes.blueText}>
-              {rateChanged}/10
+              {rateChanged}/5
             </Typography>
             <Stars rate={rateChanged} />
           </Grid>

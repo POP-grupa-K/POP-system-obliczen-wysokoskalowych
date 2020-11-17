@@ -18,7 +18,7 @@ const AppStats = (props: AppStatsProps) => {
           <Typography variant="h6">Rate:</Typography>
         </Grid>
         <Grid item>
-          <Typography variant="h6"> {props.rate}/10</Typography>
+          <Typography variant="h6"> {props.rate}/5</Typography>
         </Grid>
       </Grid>
       <Grid item container>
