@@ -13,6 +13,7 @@ import appDetailsStyles from "./appDetailsStyles";
 import AppDetailsHeader from "./components/AppDetailsHeader";
 import AppStats from "./components/AppStats";
 import CommentForm from "./components/CommentForm";
+import { createAppImageUrl } from "../../../api/apiUtils";
 
 interface AppDetailsRouteParams {
   appId: string;
@@ -44,6 +45,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
 
     var apiApp = response.content;
     apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
+    apiApp.imageUrl = createAppImageUrl(appId);
     setApp(apiApp);
     setReload(false);
   }, [appId]);
@@ -60,6 +62,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
           id={app.idApp}
           title={app.nameApp}
           description={app.descriptionApp}
+          imageUrl={app.imageUrl}
           makeReload={makeReload}
         />
         <Grid item container className={classes.body}>

@@ -23,6 +23,9 @@ const appFormStyles = makeStyles((theme: Theme) =>
         cursor: "pointer",
       },
     },
+    card: {
+      marginBottom: "10px",
+    },
   })
 );
 

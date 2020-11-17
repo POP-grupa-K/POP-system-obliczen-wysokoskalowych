@@ -1,13 +1,13 @@
 import * as React from "react";
 import {
   Button,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  TextField,
 } from "@material-ui/core";
-import { Edit, AddCircle } from "@material-ui/icons";
+import { AddCircle, DeleteForever, Edit } from "@material-ui/icons";
 import AppFormStyles from "./AppFormStyles";
 import apiCall from "../../../api/apiCall";
 import AppCardData, {
@@ -15,6 +15,11 @@ import AppCardData, {
 } from "../AppCard/interfaces/appCardData";
 import { APPSTORE_URL } from "../../../api/urls";
 import RequestType from "../../../api/requestType";
+import Card from "@material-ui/core/Card";
+import Typography from "@material-ui/core/Typography";
+import CardContent from "@material-ui/core/CardContent";
+import { createAppImageUrl } from "../../../api/apiUtils";
+import Divider from "@material-ui/core/Divider";
 
 interface AppFormProps {
   isEdit: boolean;
@@ -30,6 +35,7 @@ const AppForm = (props: AppFormProps) => {
   const [descriptionValid, setValid] = React.useState<boolean>(true);
   const [appName, setAppName] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
+  const [appImage, setAppImage] = React.useState<File>();
 
   const { nameApp, descriptionApp } = props;
   React.useEffect(() => {
@@ -90,6 +96,7 @@ const AppForm = (props: AppFormProps) => {
     setOpen(false);
     setDescription(props.descriptionApp ? props.descriptionApp : "");
     setAppName(props.nameApp ? props.nameApp : "");
+    setAppImage(undefined);
   };
 
   const handleDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,6 +112,41 @@ const AppForm = (props: AppFormProps) => {
   const handleNameApp = (event: React.ChangeEvent<HTMLInputElement>) => {
     var nameAppValue = event.target.value;
     setAppName(nameAppValue);
+  };
+
+  const handleAppImageUpload = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (props.idApp == null) {
+      return;
+    }
+    const formData = new FormData();
+    // @ts-ignore
+    formData.append("image", appImage);
+    fetch(createAppImageUrl(props.idApp), {
+      method: "POST",
+      body: formData,
+    }).then((response) => {
+      if (props.idApp == null) {
+        return;
+      }
+      if (response.status === 409) {
+        fetch(createAppImageUrl(props.idApp), {
+          method: "PUT",
+          body: formData,
+        });
+      }
+    });
+    props.makeReload();
+    setOpen(false);
+  };
+
+  const handleAppImageDelete = () => {
+    if (props.idApp == null) {
+      return;
+    }
+    apiCall(createAppImageUrl(props.idApp), RequestType.DELETE);
+    props.makeReload();
+    setOpen(false);
   };
 
   return (
@@ -138,8 +180,44 @@ const AppForm = (props: AppFormProps) => {
           {props.isEdit ? "Edit app" : "Add app"}
         </DialogTitle>
         <DialogContent>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography gutterBottom variant="h6" component="h2">
+                Upload app avatar
+              </Typography>
+              <form onSubmit={handleAppImageUpload}>
+                <input
+                  type="file"
+                  name="image"
+                  onChange={(e) => {
+                    if (e.target.files != null) {
+                      setAppImage(e.target.files[0]);
+                    }
+                  }}
+                />
+                <Button type="submit">Upload</Button>
+              </form>
+            </CardContent>
+          </Card>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography gutterBottom variant="h6" component="h2">
+                Delete app avatar
+              </Typography>
+              <Button
+                variant="contained"
+                startIcon={<DeleteForever />}
+                color="secondary"
+                onClick={handleAppImageDelete}
+              >
+                Delete
+              </Button>
+            </CardContent>
+          </Card>
+          <Divider />
           <TextField
             autoFocus
+            variant="outlined"
             margin="dense"
             id="name"
             label="App name"
