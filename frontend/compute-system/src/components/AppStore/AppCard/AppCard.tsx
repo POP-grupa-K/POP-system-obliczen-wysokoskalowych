@@ -1,5 +1,4 @@
-import { Button, Grid, Paper } from "@material-ui/core";
-import { PanoramaOutlined } from "@material-ui/icons";
+import { Avatar, Button, Grid, Paper } from "@material-ui/core";
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import appCardStyles from "./appCardStyles";
@@ -27,11 +26,21 @@ const AppCard = (props: AppCardProps) => {
     <Paper className={classes.paper} onClick={showDetails}>
       <Grid container alignItems="center" wrap="nowrap">
         <Grid item>
-          <PanoramaOutlined className={classes.icon} />
+          {
+            <Avatar
+              alt={props.appCard.nameApp}
+              variant="square"
+              src={props.appCard.imageUrl}
+              className={classes.icon}
+            />
+          }
         </Grid>
         <TextsBox
           title={props.appCard.nameApp}
-          updatedDate={props.appCard.dateUpdate.substring(0, props.appCard.dateUpdate.length - 3)}
+          updatedDate={props.appCard.dateUpdate.substring(
+            0,
+            props.appCard.dateUpdate.length - 3
+          )}
           description={props.appCard.descriptionApp}
         />
         <Grid item container direction="column" alignItems="center">
