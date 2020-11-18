@@ -35,7 +35,7 @@ const AppStore = () => {
       return;
     }
 
-    var apiApps = response.content;
+    var apiApps = response.content as AppCardData[];
     apiApps.forEach((apiApp) => {
       if (apiApp.dateUpdate) {
         apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();

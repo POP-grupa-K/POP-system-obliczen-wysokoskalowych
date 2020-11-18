@@ -43,7 +43,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
       return;
     }
 
-    var apiApp = response.content;
+    var apiApp = response.content as AppCardData;
     apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
     apiApp.imageUrl = createAppImageUrl(appId);
     setApp(apiApp);
