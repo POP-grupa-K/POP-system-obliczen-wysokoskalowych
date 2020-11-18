@@ -1,6 +1,12 @@
 import * as React from "react";
-import { Typography, Grid, Button, useMediaQuery } from "@material-ui/core";
-import { PanoramaOutlined, DeleteForever } from "@material-ui/icons";
+import {
+  Avatar,
+  Button,
+  Grid,
+  Typography,
+  useMediaQuery,
+} from "@material-ui/core";
+import { DeleteForever } from "@material-ui/icons";
 import headerStyles from "./HeaderStyles";
 import apiCall from "../../../../api/apiCall";
 import { APPSTORE_URL } from "../../../../api/urls";
@@ -12,6 +18,7 @@ interface AppDetailsHeaderProps {
   id: number;
   title: string;
   description: string;
+  imageUrl?: string;
   makeReload: () => void;
 }
 
@@ -45,7 +52,10 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
         <Typography variant="h4">{props.title}</Typography>
       </Grid>
       <Grid item xs={12}>
-        <PanoramaOutlined
+        <Avatar
+          alt={props.title}
+          variant="square"
+          src={props.imageUrl}
           className={matches ? classes.icon : classes.iconSmall}
         />
       </Grid>

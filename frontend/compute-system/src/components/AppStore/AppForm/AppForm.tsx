@@ -1,13 +1,14 @@
 import * as React from "react";
 import {
   Button,
-  TextField,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  TextField,
+  Snackbar,
 } from "@material-ui/core";
-import { Edit, AddCircle } from "@material-ui/icons";
+import { AddCircle, DeleteForever, Edit } from "@material-ui/icons";
 import AppFormStyles from "./AppFormStyles";
 import apiCall from "../../../api/apiCall";
 import AppCardData, {
@@ -15,6 +16,11 @@ import AppCardData, {
 } from "../AppCard/interfaces/appCardData";
 import { APPSTORE_URL } from "../../../api/urls";
 import RequestType from "../../../api/requestType";
+import Card from "@material-ui/core/Card";
+import Typography from "@material-ui/core/Typography";
+import CardContent from "@material-ui/core/CardContent";
+import { createAppImageUrl } from "../../../api/apiUtils";
+import Divider from "@material-ui/core/Divider";
 
 interface AppFormProps {
   isEdit: boolean;
@@ -27,9 +33,14 @@ interface AppFormProps {
 const AppForm = (props: AppFormProps) => {
   const classes = AppFormStyles();
   const [open, setOpen] = React.useState(false);
-  const [descriptionValid, setValid] = React.useState<boolean>(true);
+  const [descriptionValid, setDescritpionValid] = React.useState<boolean>(true);
+  const [nameGivenValid, setNameGivenValid] = React.useState<boolean>(true);
+  const [nameLenghtValid, setNameLenghtValid] = React.useState<boolean>(true);
   const [appName, setAppName] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
+  const [appImage, setAppImage] = React.useState<File>();
+  const [openSnack, setSnackOpen] = React.useState<boolean>(false);
+  const [snackAppName, setSnackAppName] = React.useState<string>("");
 
   const { nameApp, descriptionApp } = props;
   React.useEffect(() => {
@@ -47,6 +58,11 @@ const AppForm = (props: AppFormProps) => {
     editAppCard.descriptionApp = description;
     editAppCard.dateUpdate = new Date().toISOString();
 
+    if (appName === "") {
+      setNameGivenValid(false);
+      return;
+    }
+
     const response = await apiCall<AppCardData>(
       `${APPSTORE_URL}${props.idApp}`,
       RequestType.PUT,
@@ -63,8 +79,14 @@ const AppForm = (props: AppFormProps) => {
 
   const handleAdd = async () => {
     if (!props.isEdit) {
+      setSnackAppName(appName);
       setAppName("");
       setDescription("");
+    }
+
+    if (appName === "") {
+      setNameGivenValid(false);
+      return;
     }
 
     const addAppCard: AppCardData = initialAppCardData;
@@ -83,28 +105,77 @@ const AppForm = (props: AppFormProps) => {
     }
 
     setOpen(false);
+    setSnackOpen(true);
     props.makeReload();
+  };
+
+  const handleSnackClose = () => {
+    setSnackOpen(false);
   };
 
   const handleCancel = () => {
     setOpen(false);
     setDescription(props.descriptionApp ? props.descriptionApp : "");
     setAppName(props.nameApp ? props.nameApp : "");
+    setAppImage(undefined);
   };
 
   const handleDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
     var descriptionValue = event.target.value;
     if (descriptionValue.length > 5000) {
-      setValid(false);
+      setDescritpionValid(false);
     } else {
-      setValid(true);
+      setDescritpionValid(true);
     }
     setDescription(descriptionValue);
   };
 
   const handleNameApp = (event: React.ChangeEvent<HTMLInputElement>) => {
     var nameAppValue = event.target.value;
+    if (!nameAppValue) {
+      setNameGivenValid(false);
+    } else if (nameAppValue.length > 50) {
+      setNameLenghtValid(false);
+    } else {
+      setNameGivenValid(true);
+      setNameLenghtValid(true);
+    }
     setAppName(nameAppValue);
+  };
+
+  const handleAppImageUpload = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (props.idApp == null) {
+      return;
+    }
+    const formData = new FormData();
+    // @ts-ignore
+    formData.append("image", appImage);
+    fetch(createAppImageUrl(props.idApp), {
+      method: "POST",
+      body: formData,
+    }).then((response) => {
+      if (props.idApp == null) {
+        return;
+      }
+      if (response.status === 409) {
+        fetch(createAppImageUrl(props.idApp), {
+          method: "PUT",
+          body: formData,
+        });
+      }
+    });
+    props.makeReload();
+    setOpen(false);
+  };
+
+  const handleAppImageDelete = () => {
+    if (props.idApp == null) {
+      return;
+    }
+    apiCall(createAppImageUrl(props.idApp), RequestType.DELETE);
+    props.makeReload();
+    setOpen(false);
   };
 
   return (
@@ -138,13 +209,58 @@ const AppForm = (props: AppFormProps) => {
           {props.isEdit ? "Edit app" : "Add app"}
         </DialogTitle>
         <DialogContent>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography gutterBottom variant="h6" component="h2">
+                Upload app avatar
+              </Typography>
+              <form onSubmit={handleAppImageUpload}>
+                <input
+                  type="file"
+                  name="image"
+                  onChange={(e) => {
+                    if (e.target.files != null) {
+                      setAppImage(e.target.files[0]);
+                    }
+                  }}
+                />
+                <Button type="submit">Upload</Button>
+              </form>
+            </CardContent>
+          </Card>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography gutterBottom variant="h6" component="h2">
+                Delete app avatar
+              </Typography>
+              <Button
+                variant="contained"
+                startIcon={<DeleteForever />}
+                color="secondary"
+                onClick={handleAppImageDelete}
+              >
+                Delete
+              </Button>
+            </CardContent>
+          </Card>
+          <Divider />
           <TextField
             autoFocus
+            error={!nameGivenValid || !nameLenghtValid}
+            helperText={
+              nameGivenValid && nameLenghtValid
+                ? ""
+                : nameGivenValid
+                ? "Name is too long!"
+                : "Name is not given!"
+            }
+            variant="outlined"
             margin="dense"
             id="name"
             label="App name"
             fullWidth
             value={appName}
+            required={true}
             onChange={handleNameApp}
           />
           <TextField
@@ -173,6 +289,13 @@ const AppForm = (props: AppFormProps) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={openSnack}
+        message={`App added ${snackAppName}`}
+        onClose={handleSnackClose}
+        autoHideDuration={5000}
+      />
     </>
   );
 };

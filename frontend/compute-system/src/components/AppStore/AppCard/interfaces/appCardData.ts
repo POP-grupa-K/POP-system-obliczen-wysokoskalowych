@@ -5,6 +5,7 @@ export default interface AppCardData {
   descriptionApp: string;
   ranking: number;
   timesUsed: number;
+  imageUrl?: string;
 }
 
 export const initialAppCardData: AppCardData = {

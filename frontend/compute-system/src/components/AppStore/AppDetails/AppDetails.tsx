@@ -9,13 +9,14 @@ import AppCardData, {
   initialAppCardData,
 } from "../AppCard/interfaces/appCardData";
 import IAppRating, {
-  initialAppRatings
+  initialAppRatings,
 } from "../AppRating/interfaces/appRating";
 import AppRating from "../AppRating/AppRating";
 import appDetailsStyles from "./appDetailsStyles";
 import AppDetailsHeader from "./components/AppDetailsHeader";
 import AppStats from "./components/AppStats";
 import CommentForm from "./components/CommentForm";
+import { createAppImageUrl } from "../../../api/apiUtils";
 
 interface AppDetailsRouteParams {
   appId: string;
@@ -51,8 +52,8 @@ const AppDetails = (props: AppDetailsRouteProps) => {
     apiApp.imageUrl = createAppImageUrl(appId);
 
     const responseRatings = await apiCall<IAppRating[]>(
-        `${APPSTORE_URL}rating/app/${appId}`,
-        RequestType.GET
+      `${APPSTORE_URL}rating/app/${appId}`,
+      RequestType.GET
     );
     if (responseRatings.isError) {
       return;
@@ -80,6 +81,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
           id={app.idApp}
           title={app.nameApp}
           description={app.descriptionApp}
+          imageUrl={app.imageUrl}
           makeReload={makeReload}
         />
         <Grid item container className={classes.body}>

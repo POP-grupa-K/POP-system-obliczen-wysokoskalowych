@@ -13,6 +13,7 @@ import AppCard from "./AppCard/AppCard";
 import AppCardData from "./AppCard/interfaces/appCardData";
 import AppForm from "./AppForm/AppForm";
 import { appStoreStyles } from "./styles";
+import { createAppImageUrl } from "../../api/apiUtils";
 
 const AppStore = () => {
   const [apps, setApps] = React.useState<AppCardData[]>([]);
@@ -39,6 +40,7 @@ const AppStore = () => {
       if (apiApp.dateUpdate) {
         apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
       }
+      apiApp.imageUrl = createAppImageUrl(apiApp.idApp);
     });
 
     setApps(apiApps);
