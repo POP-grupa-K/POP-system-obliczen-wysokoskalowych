@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Snackbar,
 } from "@material-ui/core";
 import { AddCircle, DeleteForever, Edit } from "@material-ui/icons";
 import AppFormStyles from "./AppFormStyles";
@@ -36,6 +37,8 @@ const AppForm = (props: AppFormProps) => {
   const [appName, setAppName] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
   const [appImage, setAppImage] = React.useState<File>();
+  const [openSnack, setSnackOpen] = React.useState<boolean>(false);
+  const [snackAppName, setSnackAppName] = React.useState<string>("");
 
   const { nameApp, descriptionApp } = props;
   React.useEffect(() => {
@@ -69,6 +72,7 @@ const AppForm = (props: AppFormProps) => {
 
   const handleAdd = async () => {
     if (!props.isEdit) {
+      setSnackAppName(appName);
       setAppName("");
       setDescription("");
     }
@@ -89,7 +93,12 @@ const AppForm = (props: AppFormProps) => {
     }
 
     setOpen(false);
+    setSnackOpen(true);
     props.makeReload();
+  };
+
+  const handleSnackClose = () => {
+    setSnackOpen(false);
   };
 
   const handleCancel = () => {
@@ -251,6 +260,13 @@ const AppForm = (props: AppFormProps) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={openSnack}
+        message={`App added ${snackAppName}`}
+        onClose={handleSnackClose}
+        autoHideDuration={5000}
+      />
     </>
   );
 };
