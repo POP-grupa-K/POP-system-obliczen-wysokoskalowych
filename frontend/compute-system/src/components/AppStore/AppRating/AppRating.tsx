@@ -1,23 +1,28 @@
-import * as React from "react";
 import {
-  Typography,
-  Grid,
-  useMediaQuery,
   Button,
+  Grid,
   TextField,
+  Typography,
+  useMediaQuery,
 } from "@material-ui/core";
+import { DeleteForever, Edit } from "@material-ui/icons";
+import * as React from "react";
+import apiCall from "../../../api/apiCall";
+import RequestType from "../../../api/requestType";
+import { APPSTORE_URL } from "../../../api/urls";
 import ratingStyles from "./appRatingStyles";
 import Stars from "./components/Stars";
-import { DeleteForever, Edit } from "@material-ui/icons";
+import IAppRating from "./interfaces/appRating";
 
 interface AppRatingProps {
-  idApp: number;
-  idRating: number;
+  idApp?: number;
+  idRating?: number;
   userCommented: boolean;
-  userId: number;
+  idUser: number;
   value: number;
   comm: string;
-  setCommented: (isComment: boolean) => void;
+  setCommented: (isComment: IAppRating | undefined) => void;
+  makeReload: () => void;
 }
 
 const AppRating = (props: AppRatingProps) => {
@@ -30,13 +35,21 @@ const AppRating = (props: AppRatingProps) => {
   const [comment, editComment] = React.useState(props.comm);
   const [commentChanged, setChangedComment] = React.useState(comment);
 
-  // console.log(props);
   const changeEditMode = () => {
     setEditMode(!isEditMode);
   };
 
-  const deleteComment = () => {
-    props.setCommented(false);
+  const deleteComment = async () => {
+    const response = await apiCall(
+      `${APPSTORE_URL}rating/${props.idRating}`,
+      RequestType.DELETE
+    );
+    if (response.isError) {
+      return;
+    }
+
+    props.setCommented(undefined);
+    props.makeReload();
   };
 
   const handleComment = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,10 +73,24 @@ const AppRating = (props: AppRatingProps) => {
     editRate(rateChanged);
   };
 
-  const submitChange = () => {
+  const submitChange = async () => {
     setEditMode(false);
+    const editComment: IAppRating = {
+      comm: comment,
+      value: rate,
+      idUser: 2137,
+    };
+    const response = await apiCall(
+      `${APPSTORE_URL}rating/${props.idRating}`,
+      RequestType.PUT,
+      editComment
+    );
+    if (response.isError) {
+      return;
+    }
     setChangedComment(comment);
     setChangedRate(rate);
+    props.makeReload();
   };
   const { comm, value } = props;
 

@@ -4,7 +4,6 @@ import { RouteComponentProps } from "react-router-dom";
 import apiCall from "../../../api/apiCall";
 import RequestType from "../../../api/requestType";
 import { APPSTORE_URL } from "../../../api/urls";
-import mockRatings from "../../../mocks/AppStore/Rating/mockRatings";
 import AppCardData, {
   initialAppCardData,
 } from "../AppCard/interfaces/appCardData";
@@ -29,7 +28,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
   const classes = appDetailsStyles();
   const matches = useMediaQuery("(min-width:800px)");
   const { appId } = props.match.params;
-  const [userCommented, setCommented] = React.useState(false);
+  const [ownComment, setOwnComment] = React.useState<IAppRating>();
   const [app, setApp] = React.useState<AppCardData>(initialAppCardData);
   const [reload, setReload] = React.useState<boolean>(false);
   const [ratings, setRatings] = React.useState<IAppRating[]>(initialAppRatings);
@@ -47,8 +46,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
       return;
     }
 
-    var apiApp = responseDetails.content as AppCardData;
-
+    const apiApp = responseDetails.content as AppCardData;
     apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
     apiApp.imageUrl = createAppImageUrl(appId);
 
@@ -60,10 +58,13 @@ const AppDetails = (props: AppDetailsRouteProps) => {
       return;
     }
 
-    console.log(`${APPSTORE_URL}/rating/app/${appId}`);
-    console.log(responseRatings.content);
-
-    var appRatings = responseRatings.content as IAppRating[];
+    const appRatings = responseRatings.content as IAppRating[];
+    const ownRating = appRatings.find((x) => x.idUser === 2137);
+    if (ownRating != null) {
+      const index = appRatings.indexOf(ownRating);
+      appRatings.splice(index, 1);
+      setOwnComment(ownRating);
+    }
 
     setApp(apiApp);
     setRatings(appRatings);
@@ -72,7 +73,6 @@ const AppDetails = (props: AppDetailsRouteProps) => {
 
   React.useEffect(() => {
     fetchDetails();
-    setCommented(true); // TODO
   }, [fetchDetails, reload]);
 
   return (
@@ -92,28 +92,34 @@ const AppDetails = (props: AppDetailsRouteProps) => {
             updatedDate={app.dateUpdate}
           />
           <Grid item xs={matches ? 9 : 12}>
-            {userCommented && (
+            {ownComment && (
               <>
                 <Typography variant="h6">Your comment:</Typography>
                 <Container>
                   <AppRating
                     userCommented={true}
-                    setCommented={setCommented}
-                    {...mockRatings[0]}
+                    setCommented={setOwnComment}
+                    makeReload={makeReload}
+                    {...ownComment}
                   />
                 </Container>
               </>
             )}
             <Typography variant="h6">Comments:</Typography>
-            {!userCommented && (
-              <CommentForm id={appId} setCommented={setCommented} />
+            {!ownComment && (
+              <CommentForm
+                appId={appId}
+                setCommented={setOwnComment}
+                makeReload={makeReload}
+              />
             )}
             <Container>
               {ratings.map((rating, index) => (
                 <AppRating
                   key={index}
                   userCommented={false}
-                  setCommented={setCommented}
+                  setCommented={setOwnComment}
+                  makeReload={makeReload}
                   {...rating}
                 />
               ))}
