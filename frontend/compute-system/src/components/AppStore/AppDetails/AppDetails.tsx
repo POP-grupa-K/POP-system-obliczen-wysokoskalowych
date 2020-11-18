@@ -8,6 +8,9 @@ import mockRatings from "../../../mocks/AppStore/Rating/mockRatings";
 import AppCardData, {
   initialAppCardData,
 } from "../AppCard/interfaces/appCardData";
+import IAppRating, {
+  initialAppRatings,
+} from "../AppRating/interfaces/appRating";
 import AppRating from "../AppRating/AppRating";
 import appDetailsStyles from "./appDetailsStyles";
 import AppDetailsHeader from "./components/AppDetailsHeader";
@@ -29,24 +32,41 @@ const AppDetails = (props: AppDetailsRouteProps) => {
   const [userCommented, setCommented] = React.useState(false);
   const [app, setApp] = React.useState<AppCardData>(initialAppCardData);
   const [reload, setReload] = React.useState<boolean>(false);
+  const [ratings, setRatings] = React.useState<IAppRating[]>(initialAppRatings);
 
   const makeReload = () => {
     setReload(true);
   };
 
   const fetchDetails = React.useCallback(async () => {
-    const response = await apiCall<AppCardData>(
+    const responseDetails = await apiCall<AppCardData>(
       `${APPSTORE_URL}${appId}`,
       RequestType.GET
     );
-    if (response.isError) {
+    if (responseDetails.isError) {
       return;
     }
 
-    var apiApp = response.content as AppCardData;
+    var apiApp = responseDetails.content as AppCardData;
+
     apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
     apiApp.imageUrl = createAppImageUrl(appId);
+
+    const responseRatings = await apiCall<IAppRating[]>(
+      `${APPSTORE_URL}rating/app/${appId}`,
+      RequestType.GET
+    );
+    if (responseRatings.isError) {
+      return;
+    }
+
+    console.log(`${APPSTORE_URL}/rating/app/${appId}`);
+    console.log(responseRatings.content);
+
+    var appRatings = responseRatings.content as IAppRating[];
+
     setApp(apiApp);
+    setRatings(appRatings);
     setReload(false);
   }, [appId]);
 
@@ -85,18 +105,18 @@ const AppDetails = (props: AppDetailsRouteProps) => {
               </>
             )}
             <Typography variant="h6">Comments:</Typography>
-            {!userCommented && <CommentForm id={appId} />}
+            {!userCommented && (
+              <CommentForm id={appId} setCommented={setCommented} />
+            )}
             <Container>
-              {Array(10)
-                .fill(mockRatings[1])
-                .map((ratings, index) => (
-                  <AppRating
-                    key={index}
-                    userCommented={false}
-                    setCommented={setCommented}
-                    {...ratings}
-                  />
-                ))}
+              {ratings.map((rating, index) => (
+                <AppRating
+                  key={index}
+                  userCommented={false}
+                  setCommented={setCommented}
+                  {...rating}
+                />
+              ))}
             </Container>
           </Grid>
         </Grid>

@@ -11,11 +11,12 @@ import Stars from "./components/Stars";
 import { DeleteForever, Edit } from "@material-ui/icons";
 
 interface AppRatingProps {
-  id: number;
+  idApp: number;
+  idRating: number;
   userCommented: boolean;
   userId: number;
-  rate: number;
-  comment: string;
+  value: number;
+  comm: string;
   setCommented: (isComment: boolean) => void;
 }
 
@@ -24,11 +25,12 @@ const AppRating = (props: AppRatingProps) => {
   const matches = useMediaQuery("(min-width:525px)");
   const [isEditMode, setEditMode] = React.useState(false);
   const [commentValid, setValid] = React.useState(true);
-  const [rate, editRate] = React.useState(props.rate);
+  const [rate, editRate] = React.useState(props.value);
   const [rateChanged, setChangedRate] = React.useState(rate);
-  const [comment, editComment] = React.useState(props.comment);
+  const [comment, editComment] = React.useState(props.comm);
   const [commentChanged, setChangedComment] = React.useState(comment);
 
+  // console.log(props);
   const changeEditMode = () => {
     setEditMode(!isEditMode);
   };
@@ -63,6 +65,12 @@ const AppRating = (props: AppRatingProps) => {
     setChangedComment(comment);
     setChangedRate(rate);
   };
+  const { comm, value } = props;
+
+  React.useEffect(() => {
+    setChangedComment(comm);
+    setChangedRate(value);
+  }, [comm, value]);
 
   return (
     <Grid container alignItems="center" className={classes.grid}>
@@ -78,7 +86,7 @@ const AppRating = (props: AppRatingProps) => {
             <TextField
               label="Rate"
               type="number"
-              inputProps={{step: "0.5"}}
+              inputProps={{ step: "0.5" }}
               value={rate}
               className={classes.number}
               onChange={changeRate}
