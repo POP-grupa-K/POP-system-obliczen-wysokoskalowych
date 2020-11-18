@@ -32,10 +32,13 @@ interface AppFormProps {
 const AppForm = (props: AppFormProps) => {
   const classes = AppFormStyles();
   const [open, setOpen] = React.useState(false);
-  const [descriptionValid, setValid] = React.useState<boolean>(true);
+  const [descriptionValid, setDescritpionValid] = React.useState<boolean>(true);
+  const [nameGivenValid, setNameGivenValid] = React.useState<boolean>(true);
+  const [nameLenghtValid, setNameLenghtValid] = React.useState<boolean>(true);
   const [appName, setAppName] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
   const [appImage, setAppImage] = React.useState<File>();
+  const [successState, setSuccessState] = React.useState(false);
 
   const { nameApp, descriptionApp } = props;
   React.useEffect(() => {
@@ -53,6 +56,11 @@ const AppForm = (props: AppFormProps) => {
     editAppCard.descriptionApp = description;
     editAppCard.dateUpdate = new Date().toISOString();
 
+    if (appName === "") {
+      setNameGivenValid(false);
+      return;
+    }
+
     const response = await apiCall<AppCardData>(
       `${APPSTORE_URL}${props.idApp}`,
       RequestType.PUT,
@@ -64,6 +72,7 @@ const AppForm = (props: AppFormProps) => {
     }
 
     setOpen(false);
+    setSuccessState(true);
     props.makeReload();
   };
 
@@ -71,6 +80,11 @@ const AppForm = (props: AppFormProps) => {
     if (!props.isEdit) {
       setAppName("");
       setDescription("");
+    }
+
+    if (appName === "") {
+      setNameGivenValid(false);
+      return;
     }
 
     const addAppCard: AppCardData = initialAppCardData;
@@ -89,6 +103,8 @@ const AppForm = (props: AppFormProps) => {
     }
 
     setOpen(false);
+    setSuccessState(true);
+
     props.makeReload();
   };
 
@@ -102,15 +118,23 @@ const AppForm = (props: AppFormProps) => {
   const handleDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
     var descriptionValue = event.target.value;
     if (descriptionValue.length > 5000) {
-      setValid(false);
+      setDescritpionValid(false);
     } else {
-      setValid(true);
+      setDescritpionValid(true);
     }
     setDescription(descriptionValue);
   };
 
   const handleNameApp = (event: React.ChangeEvent<HTMLInputElement>) => {
     var nameAppValue = event.target.value;
+    if (!nameAppValue) {
+      setNameGivenValid(false);
+    } else if (nameAppValue.length > 50) {
+      setNameLenghtValid(false);
+    } else {
+      setNameGivenValid(true);
+      setNameLenghtValid(true);
+    }
     setAppName(nameAppValue);
   };
 
@@ -217,12 +241,16 @@ const AppForm = (props: AppFormProps) => {
           <Divider />
           <TextField
             autoFocus
+            error={!nameGivenValid || !nameLenghtValid}
+            helperText={nameGivenValid && nameLenghtValid ? "" :
+                (nameGivenValid ? "Name is too long!" : "Name is not given!")}
             variant="outlined"
             margin="dense"
             id="name"
             label="App name"
             fullWidth
             value={appName}
+            required={true}
             onChange={handleNameApp}
           />
           <TextField
