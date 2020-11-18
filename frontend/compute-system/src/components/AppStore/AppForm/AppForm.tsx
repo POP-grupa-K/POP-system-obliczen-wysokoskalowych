@@ -73,8 +73,7 @@ const AppForm = (props: AppFormProps) => {
       return;
     }
 
-    setOpen(false);
-    props.makeReload();
+    handleAppImageUpload();
   };
 
   const handleAdd = async () => {
@@ -104,9 +103,8 @@ const AppForm = (props: AppFormProps) => {
       return;
     }
 
-    setOpen(false);
     setSnackOpen(true);
-    props.makeReload();
+    handleAppImageUpload();
   };
 
   const handleSnackClose = () => {
@@ -143,8 +141,7 @@ const AppForm = (props: AppFormProps) => {
     setAppName(nameAppValue);
   };
 
-  const handleAppImageUpload = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleAppImageUpload = () => {
     if (props.idApp == null) {
       return;
     }
@@ -165,8 +162,8 @@ const AppForm = (props: AppFormProps) => {
         });
       }
     });
-    props.makeReload();
     setOpen(false);
+    props.makeReload();
   };
 
   const handleAppImageDelete = () => {
@@ -224,7 +221,6 @@ const AppForm = (props: AppFormProps) => {
                     }
                   }}
                 />
-                <Button type="submit">Upload</Button>
               </form>
             </CardContent>
           </Card>
