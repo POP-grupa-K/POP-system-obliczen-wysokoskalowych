@@ -60,7 +60,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
     }
 
     console.log(`${APPSTORE_URL}/rating/app/${appId}`);
-    console.log(responseRatings);
+    console.log(responseRatings.content);
 
     var appRatings = responseRatings.content;
 
@@ -106,15 +106,14 @@ const AppDetails = (props: AppDetailsRouteProps) => {
             <Typography variant="h6">Comments:</Typography>
             {!userCommented && <CommentForm id={appId} />}
             <Container>
-              {Array(ratings.length)
-                .fill(mockRatings[0])
-                .map((rating, index) => (
-                  <AppRating
-                    userCommented={false}
-                    setCommented={setCommented}
-                    {...ratings[index]}
-                  />
-                ))}
+              {ratings.map((rating, index) => (
+                <AppRating
+                  key={index}
+                  userCommented={false}
+                  setCommented={setCommented}
+                  {...rating}
+                />
+              ))}
             </Container>
           </Grid>
         </Grid>
