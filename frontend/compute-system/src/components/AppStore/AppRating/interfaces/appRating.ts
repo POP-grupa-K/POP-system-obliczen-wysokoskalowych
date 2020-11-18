@@ -1,19 +1,19 @@
 export default interface IAppRating {
-  idRating: number;
-  idApp: number;
-  userId: number;
+  idRating?: number;
+  idApp?: number;
+  idUser: number;
   comm: string;
   value: number;
-  dateUpdate: string;
+  dateUpdate?: string;
 }
 
 const initialAppRating: IAppRating = {
   idRating: 0,
   idApp: 0,
-  userId: 0,
+  idUser: 0,
   comm: "",
   value: 0,
-  dateUpdate: ""
+  dateUpdate: "",
 };
 
 export const initialAppRatings: IAppRating[] = [initialAppRating];

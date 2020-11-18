@@ -1,11 +1,16 @@
 import { TextField, Container, Button, Grid } from "@material-ui/core";
 import * as React from "react";
+import apiCall from "../../../../api/apiCall";
+import RequestType from "../../../../api/requestType";
+import { APPSTORE_URL } from "../../../../api/urls";
 import Stars from "../../AppRating/components/Stars";
+import IAppRating from "../../AppRating/interfaces/appRating";
 import commentFormStyles from "./CommentFormStyles";
 
 interface CommentFormProps {
-  id: string;
-  setCommented: (isComment: boolean) => void;
+  appId: string;
+  setCommented: (isComment: IAppRating) => void;
+  makeReload: () => void;
 }
 
 const CommentForm = (props: CommentFormProps) => {
@@ -29,9 +34,28 @@ const CommentForm = (props: CommentFormProps) => {
     setComment(commentValue);
   };
 
-  const handleSubmit = () => {
-    if (!commentValid) return;
-    props.setCommented(true);
+  const handleSubmit = async () => {
+    if (!commentValid) {
+      return;
+    }
+
+    const newRating: IAppRating = {
+      comm: comment,
+      value: rate,
+      idUser: 2137,
+    };
+
+    const response = await apiCall(
+      `${APPSTORE_URL}${props.appId}/rate`,
+      RequestType.POST,
+      newRating
+    );
+    if (response.isError) {
+      return;
+    }
+
+    props.setCommented(newRating);
+    props.makeReload();
   };
 
   return (
