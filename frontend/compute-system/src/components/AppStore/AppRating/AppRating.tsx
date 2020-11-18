@@ -68,10 +68,8 @@ const AppRating = (props: AppRatingProps) => {
   const { comm, value } = props;
 
   React.useEffect(() => {
-    console.log(comm);
-    console.log(value);
-    editComment(comm);
-    editRate(value);
+    setChangedComment(comm);
+    setChangedRate(value);
   }, [comm, value]);
 
   return (
