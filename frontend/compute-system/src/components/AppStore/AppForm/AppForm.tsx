@@ -21,6 +21,7 @@ import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
 import { createAppImageUrl } from "../../../api/apiUtils";
 import Divider from "@material-ui/core/Divider";
+import { IMessageResponse } from "../../../api/iApiResponse";
 
 interface AppFormProps {
   isEdit: boolean;
@@ -76,7 +77,7 @@ const AppForm = (props: AppFormProps) => {
       return;
     }
 
-    handleAppImageUpload();
+    handleAppImageUpload(props.idApp!!);
   };
 
   const handleAdd = async () => {
@@ -90,7 +91,7 @@ const AppForm = (props: AppFormProps) => {
     addAppCard.descriptionApp = description;
     addAppCard.dateUpdate = new Date().toISOString();
 
-    const response = await apiCall<AppCardData>(
+    const response = await apiCall<AppCardData | IMessageResponse>(
       APPSTORE_URL,
       RequestType.POST,
       addAppCard
@@ -111,7 +112,8 @@ const AppForm = (props: AppFormProps) => {
     }
 
     setSnackOpen(true);
-    handleAppImageUpload();
+    var resp = response.content as IMessageResponse;
+    handleAppImageUpload(resp.message as number);
   };
 
   const handleSnackClose = () => {
@@ -147,8 +149,8 @@ const AppForm = (props: AppFormProps) => {
     setAppName(nameAppValue);
   };
 
-  const handleAppImageUpload = () => {
-    if (props.idApp == null) {
+  const handleAppImageUpload = (id: number) => {
+    if (id == null) {
       setOpen(false);
       props.makeReload();
       return;
@@ -157,15 +159,15 @@ const AppForm = (props: AppFormProps) => {
     const formData = new FormData();
     // @ts-ignore
     formData.append("image", appImage);
-    fetch(createAppImageUrl(props.idApp), {
+    fetch(createAppImageUrl(id), {
       method: "POST",
       body: formData,
     }).then((response) => {
-      if (props.idApp == null) {
+      if (id == null) {
         return;
       }
       if (response.status === 409) {
-        fetch(createAppImageUrl(props.idApp), {
+        fetch(createAppImageUrl(id), {
           method: "PUT",
           body: formData,
         });
@@ -220,7 +222,7 @@ const AppForm = (props: AppFormProps) => {
               <Typography gutterBottom variant="h6" component="h2">
                 Upload app avatar
               </Typography>
-              <form onSubmit={handleAppImageUpload}>
+              <form>
                 <input
                   type="file"
                   name="image"
