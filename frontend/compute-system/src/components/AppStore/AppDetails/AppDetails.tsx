@@ -104,7 +104,9 @@ const AppDetails = (props: AppDetailsRouteProps) => {
               </>
             )}
             <Typography variant="h6">Comments:</Typography>
-            {!userCommented && <CommentForm id={appId} />}
+            {!userCommented && (
+              <CommentForm id={appId} setCommented={setCommented} />
+            )}
             <Container>
               {ratings.map((rating, index) => (
                 <AppRating

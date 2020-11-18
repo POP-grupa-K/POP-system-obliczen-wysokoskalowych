@@ -5,17 +5,18 @@ import commentFormStyles from "./CommentFormStyles";
 
 interface CommentFormProps {
   id: string;
+  setCommented: (isComment: boolean) => void;
 }
 
 const CommentForm = (props: CommentFormProps) => {
   const classes = commentFormStyles();
-  const [rate, setRate] = React.useState(10);
+  const [rate, setRate] = React.useState(5);
   const [comment, setComment] = React.useState("");
   const [commentValid, setValid] = React.useState(true);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     var value = Number(event.target.value);
-    if (value <= 10 && value >= 0) setRate(value);
+    if (value <= 5 && value >= 0) setRate(value);
   };
 
   const handleComment = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +31,7 @@ const CommentForm = (props: CommentFormProps) => {
 
   const handleSubmit = () => {
     if (!commentValid) return;
+    props.setCommented(true);
   };
 
   return (
