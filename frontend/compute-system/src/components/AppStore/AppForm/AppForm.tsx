@@ -34,8 +34,7 @@ const AppForm = (props: AppFormProps) => {
   const classes = AppFormStyles();
   const [open, setOpen] = React.useState(false);
   const [descriptionValid, setDescritpionValid] = React.useState<boolean>(true);
-  const [nameGivenValid, setNameGivenValid] = React.useState<boolean>(true);
-  const [nameLenghtValid, setNameLenghtValid] = React.useState<boolean>(true);
+  const [helperText, setHelperText] = React.useState<string>("");
   const [appName, setAppName] = React.useState<string>("");
   const [description, setDescription] = React.useState<string>("");
   const [appImage, setAppImage] = React.useState<File>();
@@ -59,7 +58,7 @@ const AppForm = (props: AppFormProps) => {
     editAppCard.dateUpdate = new Date().toISOString();
 
     if (appName === "") {
-      setNameGivenValid(false);
+      setHelperText("Name is not given");
       return;
     }
 
@@ -70,6 +69,10 @@ const AppForm = (props: AppFormProps) => {
     );
 
     if (response.isError) {
+      const error = response.content as Error;
+      if (error.message === "409") {
+        setHelperText("Name is already taken");
+      }
       return;
     }
 
@@ -77,14 +80,8 @@ const AppForm = (props: AppFormProps) => {
   };
 
   const handleAdd = async () => {
-    if (!props.isEdit) {
-      setSnackAppName(appName);
-      setAppName("");
-      setDescription("");
-    }
-
     if (appName === "") {
-      setNameGivenValid(false);
+      setHelperText("Name is not given");
       return;
     }
 
@@ -93,14 +90,24 @@ const AppForm = (props: AppFormProps) => {
     addAppCard.descriptionApp = description;
     addAppCard.dateUpdate = new Date().toISOString();
 
-    const respose = await apiCall<AppCardData>(
+    const response = await apiCall<AppCardData>(
       APPSTORE_URL,
       RequestType.POST,
       addAppCard
     );
 
-    if (respose.isError) {
+    if (response.isError) {
+      const error = response.content as Error;
+      if (error.message === "409") {
+        setHelperText("Name is already taken");
+      }
       return;
+    }
+
+    if (!props.isEdit) {
+      setSnackAppName(appName);
+      setAppName("");
+      setDescription("");
     }
 
     setSnackOpen(true);
@@ -131,20 +138,22 @@ const AppForm = (props: AppFormProps) => {
   const handleNameApp = (event: React.ChangeEvent<HTMLInputElement>) => {
     var nameAppValue = event.target.value;
     if (!nameAppValue) {
-      setNameGivenValid(false);
+      setHelperText("Name is not given");
     } else if (nameAppValue.length > 50) {
-      setNameLenghtValid(false);
+      setHelperText("Name is too long");
     } else {
-      setNameGivenValid(true);
-      setNameLenghtValid(true);
+      setHelperText("");
     }
     setAppName(nameAppValue);
   };
 
   const handleAppImageUpload = () => {
     if (props.idApp == null) {
+      setOpen(false);
+      props.makeReload();
       return;
     }
+
     const formData = new FormData();
     // @ts-ignore
     formData.append("image", appImage);
@@ -242,14 +251,8 @@ const AppForm = (props: AppFormProps) => {
           <Divider />
           <TextField
             autoFocus
-            error={!nameGivenValid || !nameLenghtValid}
-            helperText={
-              nameGivenValid && nameLenghtValid
-                ? ""
-                : nameGivenValid
-                ? "Name is too long!"
-                : "Name is not given!"
-            }
+            error={helperText.length > 0}
+            helperText={helperText}
             variant="outlined"
             margin="dense"
             id="name"

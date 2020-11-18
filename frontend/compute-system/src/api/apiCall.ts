@@ -6,7 +6,7 @@ const apiCall = async <T>(
   url: string,
   requestType: RequestType,
   itemToSend?: T
-): Promise<IApiResponse<T>> => {
+): Promise<IApiResponse<T | Error>> => {
   const body = JSON.stringify(itemToSend);
   const response = await fetch(url, {
     method: requestType,
@@ -15,11 +15,17 @@ const apiCall = async <T>(
     },
     body: body,
   })
-    .then((resp) => resp.json())
+    .then((resp) => {
+      if (resp.ok) {
+        return resp.json();
+      } else if (resp.status === 409) {
+        throw new Error("409");
+      }
+    })
     .then<IApiResponse<T>>((r) => {
       return handleResponse((r as unknown) as T);
     })
-    .catch<IApiResponse<T>>(handleError);
+    .catch<IApiResponse<Error>>(handleError);
   return response;
 };
 
