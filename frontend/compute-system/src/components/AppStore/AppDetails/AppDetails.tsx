@@ -47,7 +47,8 @@ const AppDetails = (props: AppDetailsRouteProps) => {
       return;
     }
 
-    var apiApp = response.content as AppCardData;
+    var apiApp = responseDetails.content as AppCardData;
+
     apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
     apiApp.imageUrl = createAppImageUrl(appId);
 
@@ -62,7 +63,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
     console.log(`${APPSTORE_URL}/rating/app/${appId}`);
     console.log(responseRatings.content);
 
-    var appRatings = responseRatings.content;
+    var appRatings = responseRatings.content as IAppRating[];
 
     setApp(apiApp);
     setRatings(appRatings);
