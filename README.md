@@ -7,6 +7,9 @@
 ## Endpointy AppStore
 ![](diagrams/endpointy_appstore.png)
 
+## Endpointy Kokpitu obliczeń
+![](diagrams/endpointy_kokpit.png)
+
 ## Diagramy sekwencji
 
 ### AppStore
