@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import appCardStyles from "./appCardStyles";
 import TextsBox from "./components/TextsBox";
 import UsedRateRow from "./components/UsedRateRow";
-import AppCardData from "./interfaces/appCardData";
+import {AppCardData} from "./interfaces/appCardData";
 
 interface AppCardProps {
   appCard: AppCardData;

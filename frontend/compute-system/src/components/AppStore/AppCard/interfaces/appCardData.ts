@@ -1,4 +1,4 @@
-export default interface AppCardData {
+export interface AppCardData {
   idApp: number;
   nameApp: string;
   dateUpdate: string;

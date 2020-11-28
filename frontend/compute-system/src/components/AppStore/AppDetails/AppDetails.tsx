@@ -4,7 +4,8 @@ import { RouteComponentProps } from "react-router-dom";
 import apiCall from "../../../api/apiCall";
 import RequestType from "../../../api/requestType";
 import { APPSTORE_URL } from "../../../api/urls";
-import AppCardData, {
+import {
+  AppCardData,
   initialAppCardData,
 } from "../AppCard/interfaces/appCardData";
 import IAppRating, {

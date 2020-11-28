@@ -24,7 +24,7 @@ interface LinkProps {
 
 const AppStoreLink: React.FC<LinkProps> = ({ className, onClick }) => (
   <NavLink
-    to={routes.appStore.path}
+    to={routes.appStore}
     className={className}
     onClick={onClick}
     exact
@@ -37,7 +37,7 @@ const AppStoreLink: React.FC<LinkProps> = ({ className, onClick }) => (
 
 const DataShelfLink: React.FC<LinkProps> = ({ className, onClick }) => (
   <NavLink
-    to={routes.dataShelf.path}
+    to={routes.dataShelf}
     className={className}
     onClick={onClick}
     exact
@@ -53,7 +53,7 @@ const ComputationCockpitLink: React.FC<LinkProps> = ({
   onClick,
 }) => (
   <NavLink
-    to={routes.computationCockpit.path}
+    to={routes.computationCockpit}
     className={className}
     onClick={onClick}
     exact

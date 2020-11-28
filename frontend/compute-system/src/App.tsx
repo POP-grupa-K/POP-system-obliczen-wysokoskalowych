@@ -1,12 +1,13 @@
-import { createBrowserHistory } from "history";
+import {createBrowserHistory} from "history";
 import React from "react";
-import { Route, Router, Switch } from "react-router-dom";
+import {Route, Router, Switch} from "react-router-dom";
 import AppStore from "./components/AppStore/AppStore";
 import Navigation from "./components/Navigation/Navigation";
-import { routes } from "./const/routes";
+import {routes} from "./const/routes";
 import DataShelf from "./components/DataShelf/DataShelf";
 import ComputationCockpit from "./components/ComputationCockpit/ComputationCockpit";
 import AppDetails from "./components/AppStore/AppDetails/AppDetails";
+import {TaskDetails} from "./components/ComputationCockpit/TaskDetails/TaskDetails";
 
 const browserHistory = createBrowserHistory();
 
@@ -15,17 +16,22 @@ function App() {
     <Router history={browserHistory}>
       <Navigation>
         <Switch>
-          <Route exact path={routes.appStore.path} component={AppStore} />
-          <Route exact path={routes.dataShelf.path} component={DataShelf} />
+          <Route exact path={routes.appStore} component={AppStore}/>
+          <Route exact path={routes.dataShelf} component={DataShelf}/>
           <Route
             exact
-            path={routes.computationCockpit.path}
+            path={routes.computationCockpit}
             component={ComputationCockpit}
           />
           <Route
             exact
-            path={routes.appDetails.path}
+            path={routes.appDetails}
             render={(props) => <AppDetails {...props} />}
+          />
+          <Route
+            exact
+            path={routes.taskDetails}
+            render={(props) => <TaskDetails {...props} />}
           />
         </Switch>
       </Navigation>
