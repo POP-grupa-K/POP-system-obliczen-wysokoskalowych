@@ -12,5 +12,5 @@ export const taskDetailsStyles = makeStyles({
     display: "flex",
     alignContent: "center",
     alignItems: "center",
-  }
+  },
 });

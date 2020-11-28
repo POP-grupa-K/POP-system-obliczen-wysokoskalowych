@@ -10,5 +10,9 @@ export const StartTask: FC<TaskActionProps> = ({ taskId }) => {
     await apiCall(`${COCKPIT_URL}/${taskId}/run`, RequestType.POST);
   };
 
-  return <Button color="primary" onClick={handleStartTask}>Start</Button>;
+  return (
+    <Button color="primary" onClick={handleStartTask}>
+      Start
+    </Button>
+  );
 };

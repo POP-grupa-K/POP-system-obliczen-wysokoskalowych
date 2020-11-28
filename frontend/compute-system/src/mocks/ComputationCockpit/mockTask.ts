@@ -1,4 +1,4 @@
-import {TaskData} from "../../components/ComputationCockpit/taskData";
+import { TaskData } from "../../components/ComputationCockpit/taskData";
 
 export const mockTask: TaskData = {
   id: 123,
@@ -10,5 +10,5 @@ export const mockTask: TaskData = {
   reservedCredits: 26,
   status: "RUNNING",
   priority: "HIGH",
-  clusterAllocation: 0.22
+  clusterAllocation: 0.22,
 };

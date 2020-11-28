@@ -10,5 +10,9 @@ export const TerminateTask: FC<TaskActionProps> = ({ taskId }) => {
     await apiCall(`${COCKPIT_URL}/${taskId}/terminate`, RequestType.POST);
   };
 
-  return <Button color="secondary" onClick={handleTerminateTask}>Terminate</Button>;
+  return (
+    <Button color="secondary" onClick={handleTerminateTask}>
+      Terminate
+    </Button>
+  );
 };
