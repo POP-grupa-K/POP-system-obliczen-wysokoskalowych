@@ -16,6 +16,9 @@ import AppDetailsHeader from "./components/AppDetailsHeader";
 import AppStats from "./components/AppStats";
 import CommentForm from "./components/CommentForm";
 import { createAppImageUrl } from "../../../api/apiUtils";
+import { User } from "../../../mocks/common/mockUsers";
+import { useSelector } from "react-redux";
+import RootState from "../../../redux/rootState";
 
 interface AppDetailsRouteParams {
   appId: string;
@@ -32,6 +35,9 @@ const AppDetails = (props: AppDetailsRouteProps) => {
   const [app, setApp] = React.useState<AppCardData>(initialAppCardData);
   const [reload, setReload] = React.useState<boolean>(false);
   const [ratings, setRatings] = React.useState<IAppRating[]>(initialAppRatings);
+  const currentUser: User = useSelector(
+    (state: RootState) => state.userReducer.user
+  );
 
   const makeReload = () => {
     setReload(true);
@@ -59,17 +65,17 @@ const AppDetails = (props: AppDetailsRouteProps) => {
     }
 
     const appRatings = responseRatings.content as IAppRating[];
-    const ownRating = appRatings.find((x) => x.idUser === 2137);
+    const ownRating = appRatings.find((x) => x.idUser === currentUser.id);
     if (ownRating != null) {
       const index = appRatings.indexOf(ownRating);
       appRatings.splice(index, 1);
-      setOwnComment(ownRating);
     }
+    setOwnComment(ownRating);
 
     setApp(apiApp);
     setRatings(appRatings);
     setReload(false);
-  }, [appId]);
+  }, [appId, currentUser]);
 
   React.useEffect(() => {
     fetchDetails();
@@ -92,7 +98,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
             updatedDate={app.dateUpdate}
           />
           <Grid item xs={matches ? 9 : 12}>
-            {ownComment && (
+            {ownComment != null ? (
               <>
                 <Typography variant="h6">Your comment:</Typography>
                 <Container>
@@ -104,14 +110,15 @@ const AppDetails = (props: AppDetailsRouteProps) => {
                   />
                 </Container>
               </>
-            )}
-            <Typography variant="h6">Comments:</Typography>
-            {!ownComment && (
-              <CommentForm
-                appId={appId}
-                setCommented={setOwnComment}
-                makeReload={makeReload}
-              />
+            ) : (
+              <>
+                <Typography variant="h6">Comments:</Typography>
+                <CommentForm
+                  appId={appId}
+                  setCommented={setOwnComment}
+                  makeReload={makeReload}
+                />
+              </>
             )}
             <Container>
               {ratings.map((rating, index) => (

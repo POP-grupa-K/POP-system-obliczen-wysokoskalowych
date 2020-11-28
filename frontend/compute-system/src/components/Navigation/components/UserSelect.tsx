@@ -1,15 +1,28 @@
+import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import * as React from "react";
-import { FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import mockUsers, { User } from "../../../mocks/common/mockUsers";
+import store from "../../../redux/configureStore";
+import RootState from "../../../redux/rootState";
+import { setUser } from "../../../redux/slices/userSlice";
 import { topBarStyles } from "../styles";
 
 const UserSelect = () => {
-  const [userID, setUser] = React.useState<number>(69);
+  const [userID, setUserID] = React.useState<number>(69);
+  const currentUser: User = useSelector(
+    (state: RootState) => state.userReducer.user
+  );
   const classes = topBarStyles();
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     var value: number = event.target.value as number;
-    setUser(value);
+    setUserID(value);
+    store.dispatch(setUser(value));
   };
+
+  React.useEffect(() => {
+    setUserID(currentUser.id);
+  }, [currentUser]);
 
   return (
     <FormControl className={classes.userID}>
@@ -28,11 +41,11 @@ const UserSelect = () => {
         value={userID}
         onChange={handleChange}
       >
-        <MenuItem value={69}>User1</MenuItem>
-        <MenuItem value={96}>User2</MenuItem>
-        <MenuItem value={2137}>Admin</MenuItem>
-        <MenuItem value={420}>Developer1</MenuItem>
-        <MenuItem value={997}>Developer2</MenuItem>
+        {mockUsers.map((user) => (
+          <MenuItem key={user.id} value={user.id}>
+            {user.fullname}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
