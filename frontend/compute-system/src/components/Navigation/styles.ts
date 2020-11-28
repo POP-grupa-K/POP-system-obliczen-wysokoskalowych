@@ -36,6 +36,22 @@ export const topBarStyles = makeStyles((theme: Theme) =>
     menuButton: {
       marginRight: 36,
     },
+    userID: {
+      marginLeft: "auto",
+      width: "110px",
+    },
+    select: {
+      color: theme.palette.white.main,
+      "&:before": {
+        borderColor: theme.palette.white.main,
+      },
+      "&:after": {
+        borderColor: theme.palette.white.main,
+      },
+    },
+    icon: {
+      fill: theme.palette.white.main,
+    },
   })
 );
 
