@@ -10,10 +10,10 @@ import apiCall from "../../api/apiCall";
 import RequestType from "../../api/requestType";
 import { APPSTORE_URL } from "../../api/urls";
 import AppCard from "./AppCard/AppCard";
+import AppCardData from "./AppCard/interfaces/appCardData";
 import AppForm from "./AppForm/AppForm";
 import { appStoreStyles } from "./styles";
 import { createAppImageUrl } from "../../api/apiUtils";
-import { AppCardData } from "./AppCard/interfaces/appCardData";
 
 const AppStore = () => {
   const [apps, setApps] = React.useState<AppCardData[]>([]);

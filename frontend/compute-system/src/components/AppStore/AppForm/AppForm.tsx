@@ -11,8 +11,7 @@ import {
 import { AddCircle, DeleteForever, Edit } from "@material-ui/icons";
 import AppFormStyles from "./AppFormStyles";
 import apiCall from "../../../api/apiCall";
-import {
-  AppCardData,
+import AppCardData, {
   initialAppCardData,
 } from "../AppCard/interfaces/appCardData";
 import { APPSTORE_URL } from "../../../api/urls";
