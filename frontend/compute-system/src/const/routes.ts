@@ -1,18 +1,7 @@
 export const routes = {
-  appStore: {
-    path: "/",
-    title: "App Store",
-  },
-  dataShelf: {
-    path: "/data-shelf",
-    title: "Data Shelf",
-  },
-  computationCockpit: {
-    path: "/cockpit",
-    title: "Computation Cockpit",
-  },
-  appDetails: {
-    path: "/app/:appId",
-    title: "App details",
-  },
+  appStore: "/",
+  dataShelf: "/data-shelf",
+  computationCockpit: "/cockpit",
+  appDetails: "/app/:appId",
+  taskDetails: "/cockpit/task/:taskId",
 };
