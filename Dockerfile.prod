@@ -1,16 +1,15 @@
-FROM node:13.12.0-alpine as build
+FROM node:14.4.0 as build
 
 WORKDIR /app
 
-COPY frontend/compute-system/package.json ./
-COPY frontend/compute-system/package-lock.json ./
+#COPY frontend/compute-system/package.json /app
+#COPY frontend/compute-system/package-lock.json /app
 
-RUN npm ci
+COPY frontend/compute-system /app/
 
-COPY frontend/compute-system ./
+RUN rm -rf node_modules package-lock.json && npm install
 
 RUN npm run build
-
 
 
 FROM nginx:stable-alpine
