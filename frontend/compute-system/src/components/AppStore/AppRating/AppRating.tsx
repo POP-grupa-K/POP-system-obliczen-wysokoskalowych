@@ -7,9 +7,12 @@ import {
 } from "@material-ui/core";
 import { DeleteForever, Edit } from "@material-ui/icons";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import apiCall from "../../../api/apiCall";
 import RequestType from "../../../api/requestType";
 import { APPSTORE_URL } from "../../../api/urls";
+import { User } from "../../../mocks/common/mockUsers";
+import RootState from "../../../redux/rootState";
 import ratingStyles from "./appRatingStyles";
 import Stars from "./components/Stars";
 import IAppRating from "./interfaces/appRating";
@@ -34,6 +37,9 @@ const AppRating = (props: AppRatingProps) => {
   const [rateChanged, setChangedRate] = React.useState(rate);
   const [comment, editComment] = React.useState(props.comm);
   const [commentChanged, setChangedComment] = React.useState(comment);
+  const currentUser: User = useSelector(
+    (state: RootState) => state.userReducer.user
+  );
 
   const changeEditMode = () => {
     setEditMode(!isEditMode);
@@ -78,7 +84,7 @@ const AppRating = (props: AppRatingProps) => {
     const editComment: IAppRating = {
       comm: comment,
       value: rate,
-      idUser: 2137,
+      idUser: currentUser.id,
     };
     const response = await apiCall(
       `${APPSTORE_URL}rating/${props.idRating}`,
