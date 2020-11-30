@@ -28,8 +28,7 @@ jobs:
         with:
           push: true
           tags: popbalticlsc/front:latest
-          context: .
-          file: ./Dockerfile.prod
+          file: Dockerfile.prod
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
