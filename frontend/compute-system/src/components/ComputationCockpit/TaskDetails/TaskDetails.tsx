@@ -18,7 +18,7 @@ import { TaskData } from "../taskData";
 import apiCall from "../../../api/apiCall";
 import { COCKPIT_URL } from "../../../api/urls";
 import RequestType from "../../../api/requestType";
-import { mockTask } from "../../../mocks/ComputationCockpit/mockTask";
+import { mockTasks } from "../../../mocks/ComputationCockpit/mockTasks";
 import { MockWarning } from "../../common/MockWarning";
 import { taskDetailsStyles } from "./styles";
 import {
@@ -55,13 +55,16 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
     try {
       //TODO: remove this closure when backend no longer returns invalid trash
       let task = response.content as TaskData;
-      task.startTime &&
-        (task.startTime = new Date(task.startTime).toLocaleString());
-      task.endTime && (task.endTime = new Date(task.endTime).toLocaleString());
+      task.dateStart &&
+        (task.dateStart = new Date(task.dateStart).toLocaleString());
+      task.dateEnd && (task.dateEnd = new Date(task.dateEnd).toLocaleString());
       setTask(task);
       setDownloaded(true);
     } catch (e) {
-      setTask(mockTask);
+      const task = mockTasks.filter(
+        (task) => task.idTask.toString() === taskId
+      )[0];
+      setTask(task);
     }
   }, [taskId]);
 
@@ -98,7 +101,7 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
             </TableHead>
             {task != null && (
               <TableBody>
-                <TableRow key={task.id}>
+                <TableRow key={task.idTask}>
                   <TableCell>{formatTaskRuntime(task)}</TableCell>
                   <TableCell>{formatTaskCredits(task)}</TableCell>
                   <TableCell>

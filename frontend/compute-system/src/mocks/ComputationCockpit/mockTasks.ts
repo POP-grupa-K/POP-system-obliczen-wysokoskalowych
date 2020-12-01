@@ -1,0 +1,43 @@
+import { TaskData } from "../../components/ComputationCockpit/taskData";
+
+export const mockTasks: TaskData[] = [
+  {
+    idTask: 123,
+    name: "Name 1",
+    version: "v1.2",
+    dateStart: "April 2nd 2005, 9:37PM",
+    dateEnd: "April 2nd 2005, 9:55PM",
+    consumedCredits: 12,
+    reservedCredits: 26,
+    status: "RUNNING",
+    priority: "HIGH",
+    clusterAllocation: 0.22,
+    idApp: 1,
+  },
+  {
+    idTask: 124,
+    name: "Name 2",
+    version: "v1.2",
+    dateStart: "April 2nd 2005, 9:37PM",
+    dateEnd: "April 2nd 2005, 9:55PM",
+    consumedCredits: 12,
+    reservedCredits: 26,
+    status: "RUNNING",
+    priority: "HIGH",
+    clusterAllocation: 0.22,
+    idApp: 1,
+  },
+  {
+    idTask: 125,
+    name: "Name 3",
+    version: "v1.2",
+    dateStart: "April 2nd 2005, 9:37PM",
+    dateEnd: "April 2nd 2005, 9:55PM",
+    consumedCredits: 12,
+    reservedCredits: 26,
+    status: "RUNNING",
+    priority: "HIGH",
+    clusterAllocation: 0.22,
+    idApp: 2,
+  },
+];
