@@ -6,6 +6,9 @@ import { APPSTORE_URL } from "../../../../api/urls";
 import Stars from "../../AppRating/components/Stars";
 import IAppRating from "../../AppRating/interfaces/appRating";
 import commentFormStyles from "./CommentFormStyles";
+import { User } from "../../../../mocks/common/mockUsers";
+import { useSelector } from "react-redux";
+import RootState from "../../../../redux/rootState";
 
 interface CommentFormProps {
   appId: string;
@@ -18,6 +21,9 @@ const CommentForm = (props: CommentFormProps) => {
   const [rate, setRate] = React.useState(5);
   const [comment, setComment] = React.useState("");
   const [commentValid, setValid] = React.useState(true);
+  const currentUser: User = useSelector(
+    (state: RootState) => state.userReducer.user
+  );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     var value = Number(event.target.value);
@@ -42,7 +48,7 @@ const CommentForm = (props: CommentFormProps) => {
     const newRating: IAppRating = {
       comm: comment,
       value: rate,
-      idUser: 2137,
+      idUser: currentUser.id,
     };
 
     const response = await apiCall(
