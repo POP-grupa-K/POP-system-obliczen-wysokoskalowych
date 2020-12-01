@@ -13,6 +13,9 @@ import { APPSTORE_URL } from "../../../../api/urls";
 import RequestType from "../../../../api/requestType";
 import { useHistory } from "react-router-dom";
 import AppForm from "../../AppForm/AppForm";
+import { User, UserType } from "../../../../mocks/common/mockUsers";
+import { useSelector } from "react-redux";
+import RootState from "../../../../redux/rootState";
 
 interface AppDetailsHeaderProps {
   id: number;
@@ -23,6 +26,10 @@ interface AppDetailsHeaderProps {
 }
 
 const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
+  const [isOwner, setOwner] = React.useState<boolean>(false);
+  const currentUser: User = useSelector(
+    (state: RootState) => state.userReducer.user
+  );
   const classes = headerStyles();
   const matches = useMediaQuery("(min-width:800px)");
   const history = useHistory();
@@ -39,6 +46,14 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
 
     history.push("/");
   };
+
+  React.useEffect(() => {
+    if (currentUser.role === UserType.User) {
+      setOwner(false);
+    } else {
+      setOwner(true);
+    }
+  }, [currentUser]);
 
   return (
     <Grid
@@ -63,21 +78,25 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
         <Typography variant="body1">{props.description}</Typography>
       </Grid>
       <Grid item container xs={12} justify="center">
-        <AppForm
-          isEdit={true}
-          idApp={props.id}
-          nameApp={props.title}
-          descriptionApp={props.description}
-          makeReload={props.makeReload}
-        />
-        <Button
-          variant="contained"
-          startIcon={<DeleteForever />}
-          className={classes.deleteButton}
-          onClick={handleDeleteClick}
-        >
-          Delete
-        </Button>
+        {isOwner ? (
+          <>
+            <AppForm
+              isEdit={true}
+              idApp={props.id}
+              nameApp={props.title}
+              descriptionApp={props.description}
+              makeReload={props.makeReload}
+            />
+            <Button
+              variant="contained"
+              startIcon={<DeleteForever />}
+              className={classes.deleteButton}
+              onClick={handleDeleteClick}
+            >
+              Delete
+            </Button>
+          </>
+        ) : null}
       </Grid>
       <Grid item container xs={12} justify="center">
         <Button variant="contained" className={classes.addButton}>

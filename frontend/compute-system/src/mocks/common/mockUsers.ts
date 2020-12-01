@@ -4,7 +4,7 @@ export interface User {
   fullname?: string;
 }
 
-enum UserType {
+export enum UserType {
   User = "User",
   Developer = "Developer",
   Admin = "Admin",
