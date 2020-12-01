@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useHistory } from "react-router-dom";
 import {
   Badge,
+  Button,
   Container,
   Divider,
   Grid,
@@ -16,9 +17,9 @@ import {
 } from "@material-ui/core";
 import { TaskData } from "../taskData";
 import apiCall from "../../../api/apiCall";
-import { COCKPIT_URL } from "../../../api/urls";
+import { APPSTORE_URL, COCKPIT_URL } from "../../../api/urls";
 import RequestType from "../../../api/requestType";
-import { mockTask } from "../../../mocks/ComputationCockpit/mockTask";
+import { mockTasks } from "../../../mocks/ComputationCockpit/mockTasks";
 import { MockWarning } from "../../common/MockWarning";
 import { taskDetailsStyles } from "./styles";
 import {
@@ -29,6 +30,10 @@ import {
 import { StartTask } from "../TaskActions/StartTask";
 import { TerminateTask } from "../TaskActions/TerminateTask";
 import { ArchiveTask } from "../TaskActions/ArchiveTask";
+import AppCardData, {
+  initialAppCardData,
+} from "../../AppStore/AppCard/interfaces/appCardData";
+import { createAppImageUrl } from "../../../api/apiUtils";
 
 interface TaskDetailsRouteParams {
   taskId: string;
@@ -38,11 +43,31 @@ interface TaskDetailsRouteProps
   extends RouteComponentProps<TaskDetailsRouteParams> {}
 
 export const TaskDetails = (props: TaskDetailsRouteProps) => {
+  const history = useHistory();
   const classes = taskDetailsStyles();
   const { taskId } = props.match.params;
 
+  const [app, setApp] = React.useState<AppCardData>(initialAppCardData);
   const [task, setTask] = useState<TaskData>();
   const [downloaded, setDownloaded] = useState<boolean>(false);
+
+  const fetchApp = React.useCallback(async () => {
+    const responseDetails = await apiCall<AppCardData>(
+      `${APPSTORE_URL}${task?.idApp}`,
+      RequestType.GET
+    );
+    if (responseDetails.isError) {
+      return;
+    }
+
+    try {
+      // in case of problems with server - "apiApp" is undefined
+      const apiApp = responseDetails.content as AppCardData;
+      apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
+      apiApp.imageUrl = createAppImageUrl(task?.idApp || "");
+      setApp(apiApp);
+    } catch (e) {}
+  }, [task?.idApp]);
 
   const fetchTask = useCallback(async () => {
     const response = await apiCall<TaskData>(
@@ -55,19 +80,27 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
     try {
       //TODO: remove this closure when backend no longer returns invalid trash
       let task = response.content as TaskData;
-      task.startTime &&
-        (task.startTime = new Date(task.startTime).toLocaleString());
-      task.endTime && (task.endTime = new Date(task.endTime).toLocaleString());
+      task.dateStart &&
+        (task.dateStart = new Date(task.dateStart).toLocaleString());
+      task.dateEnd && (task.dateEnd = new Date(task.dateEnd).toLocaleString());
       setTask(task);
       setDownloaded(true);
     } catch (e) {
-      setTask(mockTask);
+      const task = mockTasks.filter(
+        (task) => task.idTask.toString() === taskId
+      )[0];
+      setTask(task);
     }
   }, [taskId]);
 
   useEffect(() => {
     fetchTask();
-  }, [fetchTask]);
+    fetchApp();
+  }, [fetchApp, fetchTask]);
+
+  const goToApp = () => {
+    history.push(`/app/${task?.idApp}`);
+  };
 
   return (
     <Container>
@@ -98,7 +131,7 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
             </TableHead>
             {task != null && (
               <TableBody>
-                <TableRow key={task.id}>
+                <TableRow key={task.idTask}>
                   <TableCell>{formatTaskRuntime(task)}</TableCell>
                   <TableCell>{formatTaskCredits(task)}</TableCell>
                   <TableCell>
@@ -113,6 +146,8 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
             )}
           </Table>
         </TableContainer>
+        <Divider className={classes.divider} />
+        <Button onClick={goToApp}>{`Go to App ${app.nameApp}`}</Button>
       </Paper>
     </Container>
   );

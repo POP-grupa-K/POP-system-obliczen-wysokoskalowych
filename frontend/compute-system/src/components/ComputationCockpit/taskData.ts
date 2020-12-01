@@ -1,12 +1,13 @@
 export interface TaskData {
-  id: number;
+  idTask: number;
   name: string;
   version: string;
-  startTime: string;
-  endTime: string;
+  dateStart: string;
+  dateEnd: string;
   consumedCredits: number;
   reservedCredits: number;
   status: string;
   priority: string;
   clusterAllocation: number;
+  idApp: number;
 }

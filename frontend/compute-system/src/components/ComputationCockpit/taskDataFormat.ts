@@ -1,7 +1,7 @@
 import { TaskData } from "./taskData";
 
 export function formatTaskRuntime(task: TaskData): string {
-  return task.startTime + " - " + task.endTime;
+  return task.dateStart + " - " + task.dateEnd;
 }
 
 export function formatTaskCredits(task: TaskData): string {
@@ -11,4 +11,3 @@ export function formatTaskCredits(task: TaskData): string {
 export function formatTaskClusterAllocation(task: TaskData): string {
   return task.clusterAllocation + "%";
 }
-
