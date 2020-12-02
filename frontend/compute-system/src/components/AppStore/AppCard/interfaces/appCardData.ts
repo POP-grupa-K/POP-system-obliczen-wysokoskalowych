@@ -1,5 +1,6 @@
 export default interface AppCardData {
   idApp: number;
+  idUser: number;
   nameApp: string;
   dateUpdate: string;
   descriptionApp: string;
@@ -10,6 +11,7 @@ export default interface AppCardData {
 
 export const initialAppCardData: AppCardData = {
   idApp: 0,
+  idUser: 0,
   nameApp: "",
   dateUpdate: "",
   descriptionApp: "",

@@ -19,6 +19,7 @@ import RootState from "../../../../redux/rootState";
 
 interface AppDetailsHeaderProps {
   id: number;
+  idUser: number;
   title: string;
   description: string;
   imageUrl?: string;
@@ -48,12 +49,16 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
   };
 
   React.useEffect(() => {
-    if (currentUser.role === UserType.User) {
-      setOwner(false);
-    } else {
+    if (
+      currentUser.role === UserType.Admin ||
+      (currentUser.role === UserType.Developer &&
+        currentUser.id === props.idUser)
+    ) {
       setOwner(true);
+    } else {
+      setOwner(false);
     }
-  }, [currentUser]);
+  }, [currentUser, props.idUser, props.id]);
 
   return (
     <Grid

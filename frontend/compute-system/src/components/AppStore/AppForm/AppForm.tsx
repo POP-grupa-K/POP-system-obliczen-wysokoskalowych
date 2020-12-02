@@ -22,6 +22,9 @@ import CardContent from "@material-ui/core/CardContent";
 import { createAppImageUrl } from "../../../api/apiUtils";
 import Divider from "@material-ui/core/Divider";
 import { IMessageResponse } from "../../../api/iApiResponse";
+import { User } from "../../../mocks/common/mockUsers";
+import { useSelector } from "react-redux";
+import RootState from "../../../redux/rootState";
 
 interface AppFormProps {
   isEdit: boolean;
@@ -41,6 +44,9 @@ const AppForm = (props: AppFormProps) => {
   const [appImage, setAppImage] = React.useState<File>();
   const [openSnack, setSnackOpen] = React.useState<boolean>(false);
   const [snackAppName, setSnackAppName] = React.useState<string>("");
+  const currentUser: User = useSelector(
+    (state: RootState) => state.userReducer.user
+  );
 
   const { nameApp, descriptionApp } = props;
   React.useEffect(() => {
@@ -89,6 +95,7 @@ const AppForm = (props: AppFormProps) => {
     const addAppCard: AppCardData = initialAppCardData;
     addAppCard.nameApp = appName;
     addAppCard.descriptionApp = description;
+    addAppCard.idUser = currentUser.id;
     addAppCard.dateUpdate = new Date().toISOString();
 
     const response = await apiCall<AppCardData | IMessageResponse>(

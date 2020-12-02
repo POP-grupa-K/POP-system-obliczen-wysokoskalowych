@@ -2,6 +2,7 @@ import AppCardData from "../../../components/AppStore/AppCard/interfaces/appCard
 
 const mockAppCard: AppCardData = {
   idApp: 1,
+  idUser: 420,
   nameApp: "App title",
   dateUpdate: "April 2nd 2005, 9:37PM",
   descriptionApp:

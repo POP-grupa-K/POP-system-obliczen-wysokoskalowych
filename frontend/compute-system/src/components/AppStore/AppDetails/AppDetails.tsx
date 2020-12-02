@@ -86,6 +86,7 @@ const AppDetails = (props: AppDetailsRouteProps) => {
       <Grid container alignItems="center" spacing={2}>
         <AppDetailsHeader
           id={app.idApp}
+          idUser={app.idUser}
           title={app.nameApp}
           description={app.descriptionApp}
           imageUrl={app.imageUrl}
