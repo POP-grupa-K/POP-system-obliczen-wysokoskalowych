@@ -13,6 +13,9 @@
 ## Diagram klas kokpitu obliczeń
 ![](diagrams/diagram_klas.png)
 
+## Endpointy Task Manager
+![](diagrams/endpointy_tasks.png)
+
 ## Diagramy sekwencji
 
 ### AppStore
