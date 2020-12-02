@@ -14,6 +14,9 @@ import AppCardData from "./AppCard/interfaces/appCardData";
 import AppForm from "./AppForm/AppForm";
 import { appStoreStyles } from "./styles";
 import { createAppImageUrl } from "../../api/apiUtils";
+import { User, UserType } from "../../mocks/common/mockUsers";
+import { useSelector } from "react-redux";
+import RootState from "../../redux/rootState";
 
 const AppStore = () => {
   const [apps, setApps] = React.useState<AppCardData[]>([]);
@@ -21,6 +24,9 @@ const AppStore = () => {
   const classes = appStoreStyles();
   const theme = useTheme();
   const largeWidth = useMediaQuery(theme.breakpoints.up("lg"));
+  const currentUser: User = useSelector(
+    (state: RootState) => state.userReducer.user
+  );
 
   const makeReload = () => {
     setReload(true);
@@ -53,7 +59,9 @@ const AppStore = () => {
 
   return (
     <Container maxWidth="lg">
-      <AppForm isEdit={false} makeReload={makeReload} />
+      {currentUser.role === UserType.User ? null : (
+        <AppForm isEdit={false} makeReload={makeReload} />
+      )}
       <GridList cols={largeWidth ? 2 : 1}>
         {apps.map((appCard, index) => (
           <GridListTile key={index} cols={1} className={classes.root}>
