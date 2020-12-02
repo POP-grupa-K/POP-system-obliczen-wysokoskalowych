@@ -83,7 +83,7 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
         <Typography variant="body1">{props.description}</Typography>
       </Grid>
       <Grid item container xs={12} justify="center">
-        {isOwner ? (
+        {isOwner && (
           <>
             <AppForm
               isEdit={true}
@@ -101,7 +101,7 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
               Delete
             </Button>
           </>
-        ) : null}
+        )}
       </Grid>
       <Grid item container xs={12} justify="center">
         <Button variant="contained" className={classes.addButton}>
