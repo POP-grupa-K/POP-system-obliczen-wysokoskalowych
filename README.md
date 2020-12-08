@@ -5,7 +5,7 @@
 ![](diagrams/diagram_komponentow_2.png)
 
 ## Endpointy AppStore
-![](diagrams/endpointy_appstore.png)
+![](diagrams/endpointy_appstore_2.png)
 
 ## Endpointy Kokpitu obliczeń
 ![](diagrams/endpointy_kokpit_io_2.png)
