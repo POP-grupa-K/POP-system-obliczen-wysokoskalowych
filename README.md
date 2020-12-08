@@ -8,7 +8,7 @@
 ![](diagrams/endpointy_appstore.png)
 
 ## Endpointy Kokpitu obliczeń
-![](diagrams/endpointy_kokpit_io.png)
+![](diagrams/endpointy_kokpit_io_2.png)
 
 ## Diagram klas kokpitu obliczeń
 ![](diagrams/diagram_klas.png)
