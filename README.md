@@ -14,4 +14,4 @@
 ![](diagrams/diagram_klas.png)
 
 ## Endpointy Task Manager
-![](diagrams/endpointy_tasks.png)
+![](diagrams/endpointy_tasks_2.png)
