@@ -17,19 +17,14 @@ import {
 } from "@material-ui/core";
 import { TaskData } from "../taskData";
 import apiCall from "../../../api/apiCall";
-import { APPSTORE_URL, COCKPIT_URL } from "../../../api/urls";
+import { COCKPIT_URL } from "../../../api/urls";
 import RequestType from "../../../api/requestType";
-import { mockTasks } from "../../../mocks/ComputationCockpit/mockTasks";
-import { MockWarning } from "../../common/MockWarning";
 import { taskDetailsStyles } from "./styles";
 import { formatTaskCredits, formatTaskRuntime } from "../taskDataFormat";
 import { StartTask } from "../TaskActions/StartTask";
 import { TerminateTask } from "../TaskActions/TerminateTask";
 import { ArchiveTask } from "../TaskActions/ArchiveTask";
-import AppCardData, {
-  initialAppCardData,
-} from "../../AppStore/AppCard/interfaces/appCardData";
-import { createAppImageUrl } from "../../../api/apiUtils";
+import { UserTasksByApp } from "../taskData";
 
 interface TaskDetailsRouteParams {
   taskId: string;
@@ -43,56 +38,33 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
   const classes = taskDetailsStyles();
   const { taskId } = props.match.params;
 
-  const [app, setApp] = React.useState<AppCardData>(initialAppCardData);
+  const [appName, setAppName] = React.useState<string>("");
   const [task, setTask] = useState<TaskData>();
-  const [downloaded, setDownloaded] = useState<boolean>(false);
-
-  const fetchApp = React.useCallback(async () => {
-    const responseDetails = await apiCall<AppCardData>(
-      `${APPSTORE_URL}${task?.idApp}`,
-      RequestType.GET
-    );
-    if (responseDetails.isError) {
-      return;
-    }
-
-    try {
-      // in case of problems with server - "apiApp" is undefined
-      const apiApp = responseDetails.content as AppCardData;
-      apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
-      apiApp.imageUrl = createAppImageUrl(task?.idApp || "");
-      setApp(apiApp);
-    } catch (e) {}
-  }, [task?.idApp]);
 
   const fetchTask = useCallback(async () => {
-    const response = await apiCall<TaskData>(
+    const response = await apiCall<UserTasksByApp>(
       `${COCKPIT_URL}/${taskId}`,
       RequestType.GET
     );
     if (response.isError) {
       return;
     }
-    try {
-      //TODO: remove this closure when backend no longer returns invalid trash
-      let task = response.content as TaskData;
-      task.dateStart &&
-        (task.dateStart = new Date(task.dateStart).toLocaleString());
-      task.dateEnd && (task.dateEnd = new Date(task.dateEnd).toLocaleString());
-      setTask(task);
-      setDownloaded(true);
-    } catch (e) {
-      const task = mockTasks.filter(
-        (task) => task.idTask.toString() === taskId
-      )[0];
-      setTask(task);
-    }
+
+    var responseData = response.content as UserTasksByApp;
+    var taskData = responseData.tasks[0] as TaskData;
+
+    taskData.dateStart &&
+      (taskData.dateStart = new Date(taskData.dateStart).toLocaleString());
+    taskData.dateEnd &&
+      (taskData.dateEnd = new Date(taskData.dateEnd).toLocaleString());
+
+    setAppName(responseData.appName);
+    setTask(taskData);
   }, [taskId]);
 
   useEffect(() => {
     fetchTask();
-    fetchApp();
-  }, [fetchApp, fetchTask]);
+  }, [fetchTask]);
 
   const goToApp = () => {
     history.push(`/app/${task?.idApp}`);
@@ -100,7 +72,6 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
 
   return (
     <Container>
-      {!downloaded && <MockWarning />}
       <Paper className={classes.root}>
         <Grid container>
           <Grid item xs={12} sm={6}>
@@ -124,7 +95,7 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
                 <TableCell>Priority</TableCell>
               </TableRow>
             </TableHead>
-            {task != null && (
+            {task && (
               <TableBody>
                 <TableRow key={task.idTask}>
                   <TableCell>{formatTaskRuntime(task)}</TableCell>
@@ -141,7 +112,7 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
           </Table>
         </TableContainer>
         <Divider className={classes.divider} />
-        <Button onClick={goToApp}>{`Go to App ${app.nameApp}`}</Button>
+        <Button onClick={goToApp}>{`Go to App ${appName}`}</Button>
       </Paper>
     </Container>
   );
