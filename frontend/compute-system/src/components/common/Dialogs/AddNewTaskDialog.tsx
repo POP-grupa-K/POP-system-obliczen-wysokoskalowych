@@ -73,7 +73,7 @@ const AddNewTaskDialog = (props: AddNewTaskDialogProps) => {
     taskData.idUser = currentUser.id;
 
     const response = await apiCall<PostTaskData | IMessageResponse>(
-      `${COCKPIT_URL}`,
+      `${COCKPIT_URL}/`,
       RequestType.POST,
       taskData
     );

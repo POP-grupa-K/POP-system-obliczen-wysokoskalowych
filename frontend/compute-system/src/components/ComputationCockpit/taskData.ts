@@ -13,5 +13,6 @@ export interface TaskData {
 }
 
 export interface UserTasksByApp {
-  appName: Array<TaskData>;
+  appName: string;
+  tasks: TaskData[];
 }

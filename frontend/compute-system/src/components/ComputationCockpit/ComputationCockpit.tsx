@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -17,23 +17,19 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import apiCall from "../../api/apiCall";
-import { APPSTORE_URL, COCKPIT_URL } from "../../api/urls";
+import { COCKPIT_URL } from "../../api/urls";
 import RequestType from "../../api/requestType";
-import { TaskData, UserTasksByApp } from "./taskData";
-import { mockTasks } from "../../mocks/ComputationCockpit/mockTasks";
+import { UserTasksByApp } from "./taskData";
 import { StartTask } from "./TaskActions/StartTask";
 import { TerminateTask } from "./TaskActions/TerminateTask";
 import { ArchiveTask } from "./TaskActions/ArchiveTask";
 import { useHistory } from "react-router-dom";
 import { routes } from "../../const/routes";
-import { MockWarning } from "../common/MockWarning";
 import {
   formatTaskClusterAllocation,
   formatTaskCredits,
   formatTaskRuntime,
 } from "./taskDataFormat";
-import AppCardData from "../AppStore/AppCard/interfaces/appCardData";
-import { createAppImageUrl } from "../../api/apiUtils";
 import { User } from "../../mocks/common/mockUsers";
 import { useSelector } from "react-redux";
 import RootState from "../../redux/rootState";
@@ -41,61 +37,12 @@ import RootState from "../../redux/rootState";
 const ComputationCockpit: React.FC = () => {
   const history = useHistory();
   const matches = useMediaQuery("(min-width:800px)");
-
-  const [apps, setApps] = React.useState<AppCardData[]>([]);
-  const [appNames, setAppNames] = React.useState<string[]>([]);
   const [userTasks, setUserTasks] = React.useState<UserTasksByApp[]>([]);
-  const [tasks, setTasks] = useState<TaskData[]>();
-  const [downloaded, setDownloaded] = useState<boolean>(false);
   const currentUser: User = useSelector(
     (state: RootState) => state.userReducer.user
   );
 
-  const fetchApps = React.useCallback(async () => {
-    const response = await apiCall<AppCardData[]>(
-      APPSTORE_URL,
-      RequestType.GET
-    );
-    if (response.isError) {
-      return;
-    }
-
-    var apiApps = response.content as AppCardData[];
-    apiApps.forEach((apiApp) => {
-      if (apiApp.dateUpdate) {
-        apiApp.dateUpdate = new Date(apiApp.dateUpdate).toLocaleString();
-      }
-      apiApp.imageUrl = createAppImageUrl(apiApp.idApp);
-    });
-
-    setApps(apiApps);
-  }, []);
-
   const fetchTasks = useCallback(async () => {
-    const response = await apiCall<TaskData[]>(
-      `${COCKPIT_URL}`,
-      RequestType.GET
-    );
-    if (response.isError) {
-      return;
-    }
-    try {
-      //TODO: remove this closure when backend no longer returns invalid trash
-      let tasks = response.content as TaskData[];
-      tasks.forEach((task) => {
-        task.dateStart &&
-          (task.dateStart = new Date(task.dateStart).toLocaleString());
-        task.dateEnd &&
-          (task.dateEnd = new Date(task.dateEnd).toLocaleString());
-      });
-      setTasks(tasks);
-      setDownloaded(true);
-    } catch (e) {
-      setTasks(mockTasks);
-    }
-  }, []);
-
-  const fetchAll = useCallback(async () => {
     const response = await apiCall<UserTasksByApp[]>(
       `${COCKPIT_URL}/user/tasks/${currentUser.id}`,
       RequestType.GET
@@ -105,30 +52,23 @@ const ComputationCockpit: React.FC = () => {
       return;
     }
     var resUserTasks = response.content as UserTasksByApp[];
-    var apps = Object.keys(resUserTasks);
-
     setUserTasks(resUserTasks);
-    setAppNames(apps);
-    console.log(userTasks);
   }, [currentUser.id]);
 
   useEffect(() => {
-    fetchApps();
     fetchTasks();
-    fetchAll();
-  }, [fetchApps, fetchTasks, fetchAll]);
+  }, [fetchTasks]);
 
   const handleTaskClick = (taskId: number) =>
     history.push(`${routes.computationCockpit}/task/${taskId}`);
 
   return (
     <>
-      {!downloaded && <MockWarning />}
-      {tasks != null &&
-        appNames.map((app) => (
+      {userTasks != null &&
+        userTasks.map((userTask) => (
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>{app}</Typography>
+              <Typography>{userTask.appName}</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <TableContainer component={Paper}>
@@ -150,52 +90,48 @@ const ComputationCockpit: React.FC = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {/* {tasks
-                      .filter((task) => task.idApp === app.idApp)
-                      .map((task) => (
-                        <TableRow key={task.idTask}>
-                          <TableCell
-                            onClick={() => handleTaskClick(task.idTask)}
-                            component="th"
-                            scope="row"
-                          >
-                            <Button>{task.name}</Button>
-                          </TableCell>
-                          {matches && (
-                            <>
-                              <TableCell align="right">
-                                {task.version}
-                              </TableCell>
-                              <TableCell align="right">
-                                {formatTaskRuntime(task)}
-                              </TableCell>
-                              <TableCell align="right">
-                                {formatTaskCredits(task)}
-                              </TableCell>
-                              <TableCell align="right">
-                                <Badge
-                                  badgeContent={task.status}
-                                  color="primary"
-                                />
-                              </TableCell>
-                              <TableCell align="right">
-                                <Badge
-                                  badgeContent={task.priority}
-                                  color="secondary"
-                                />
-                              </TableCell>
-                              <TableCell align="right">
-                                {formatTaskClusterAllocation(task)}
-                              </TableCell>
-                            </>
-                          )}
-                          <TableCell align="right">
-                            <StartTask taskId={task.idTask} />
-                            <TerminateTask taskId={task.idTask} />
-                            <ArchiveTask taskId={task.idTask} />
-                          </TableCell>
-                        </TableRow>
-                      ))} */}
+                    {userTask.tasks.map((task) => (
+                      <TableRow key={task.idTask}>
+                        <TableCell
+                          onClick={() => handleTaskClick(task.idTask)}
+                          component="th"
+                          scope="row"
+                        >
+                          <Button>{task.name}</Button>
+                        </TableCell>
+                        {matches && (
+                          <>
+                            <TableCell align="right">{task.version}</TableCell>
+                            <TableCell align="right">
+                              {formatTaskRuntime(task)}
+                            </TableCell>
+                            <TableCell align="right">
+                              {formatTaskCredits(task)}
+                            </TableCell>
+                            <TableCell align="right">
+                              <Badge
+                                badgeContent={task.status}
+                                color="primary"
+                              />
+                            </TableCell>
+                            <TableCell align="right">
+                              <Badge
+                                badgeContent={task.priority}
+                                color="secondary"
+                              />
+                            </TableCell>
+                            <TableCell align="right">
+                              {formatTaskClusterAllocation(task)}
+                            </TableCell>
+                          </>
+                        )}
+                        <TableCell align="right">
+                          <StartTask taskId={task.idTask} />
+                          <TerminateTask taskId={task.idTask} />
+                          <ArchiveTask taskId={task.idTask} />
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>
