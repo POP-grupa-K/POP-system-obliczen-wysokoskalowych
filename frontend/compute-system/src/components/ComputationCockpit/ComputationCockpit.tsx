@@ -25,11 +25,7 @@ import { TerminateTask } from "./TaskActions/TerminateTask";
 import { ArchiveTask } from "./TaskActions/ArchiveTask";
 import { useHistory } from "react-router-dom";
 import { routes } from "../../const/routes";
-import {
-  formatTaskClusterAllocation,
-  formatTaskCredits,
-  formatTaskRuntime,
-} from "./taskDataFormat";
+import { formatTaskCredits, formatTaskRuntime } from "./taskDataFormat";
 import { User } from "../../mocks/common/mockUsers";
 import { useSelector } from "react-redux";
 import RootState from "../../redux/rootState";
@@ -78,12 +74,10 @@ const ComputationCockpit: React.FC = () => {
                       <TableCell>Name</TableCell>
                       {matches && (
                         <>
-                          <TableCell align="right">Version</TableCell>
                           <TableCell align="right">Run time</TableCell>
                           <TableCell align="right">Credits</TableCell>
                           <TableCell align="right">Status</TableCell>
                           <TableCell align="right">Priority</TableCell>
-                          <TableCell align="right">Cluster alloc.</TableCell>
                         </>
                       )}
                       <TableCell align="right">Actions</TableCell>
@@ -101,7 +95,6 @@ const ComputationCockpit: React.FC = () => {
                         </TableCell>
                         {matches && (
                           <>
-                            <TableCell align="right">{task.version}</TableCell>
                             <TableCell align="right">
                               {formatTaskRuntime(task)}
                             </TableCell>
@@ -119,9 +112,6 @@ const ComputationCockpit: React.FC = () => {
                                 badgeContent={task.priority}
                                 color="secondary"
                               />
-                            </TableCell>
-                            <TableCell align="right">
-                              {formatTaskClusterAllocation(task)}
                             </TableCell>
                           </>
                         )}

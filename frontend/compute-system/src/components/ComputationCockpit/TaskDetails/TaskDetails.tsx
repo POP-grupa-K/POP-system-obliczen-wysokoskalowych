@@ -22,11 +22,7 @@ import RequestType from "../../../api/requestType";
 import { mockTasks } from "../../../mocks/ComputationCockpit/mockTasks";
 import { MockWarning } from "../../common/MockWarning";
 import { taskDetailsStyles } from "./styles";
-import {
-  formatTaskClusterAllocation,
-  formatTaskCredits,
-  formatTaskRuntime,
-} from "../taskDataFormat";
+import { formatTaskCredits, formatTaskRuntime } from "../taskDataFormat";
 import { StartTask } from "../TaskActions/StartTask";
 import { TerminateTask } from "../TaskActions/TerminateTask";
 import { ArchiveTask } from "../TaskActions/ArchiveTask";
@@ -126,7 +122,6 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
                 <TableCell>Credits</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Priority</TableCell>
-                <TableCell>Cluster alloc.</TableCell>
               </TableRow>
             </TableHead>
             {task != null && (
@@ -140,7 +135,6 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
                   <TableCell>
                     <Badge badgeContent={task.priority} color="secondary" />
                   </TableCell>
-                  <TableCell>{formatTaskClusterAllocation(task)}</TableCell>
                 </TableRow>
               </TableBody>
             )}
