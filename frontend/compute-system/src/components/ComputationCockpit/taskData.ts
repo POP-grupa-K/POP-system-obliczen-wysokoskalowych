@@ -11,3 +11,7 @@ export interface TaskData {
   clusterAllocation: number;
   idApp: number;
 }
+
+export interface UserTasksByApp {
+  appName: Array<TaskData>;
+}

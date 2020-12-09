@@ -19,7 +19,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import apiCall from "../../api/apiCall";
 import { APPSTORE_URL, COCKPIT_URL } from "../../api/urls";
 import RequestType from "../../api/requestType";
-import { TaskData } from "./taskData";
+import { TaskData, UserTasksByApp } from "./taskData";
 import { mockTasks } from "../../mocks/ComputationCockpit/mockTasks";
 import { StartTask } from "./TaskActions/StartTask";
 import { TerminateTask } from "./TaskActions/TerminateTask";
@@ -34,14 +34,22 @@ import {
 } from "./taskDataFormat";
 import AppCardData from "../AppStore/AppCard/interfaces/appCardData";
 import { createAppImageUrl } from "../../api/apiUtils";
+import { User } from "../../mocks/common/mockUsers";
+import { useSelector } from "react-redux";
+import RootState from "../../redux/rootState";
 
 const ComputationCockpit: React.FC = () => {
   const history = useHistory();
   const matches = useMediaQuery("(min-width:800px)");
 
   const [apps, setApps] = React.useState<AppCardData[]>([]);
+  const [appNames, setAppNames] = React.useState<string[]>([]);
+  const [userTasks, setUserTasks] = React.useState<UserTasksByApp[]>([]);
   const [tasks, setTasks] = useState<TaskData[]>();
   const [downloaded, setDownloaded] = useState<boolean>(false);
+  const currentUser: User = useSelector(
+    (state: RootState) => state.userReducer.user
+  );
 
   const fetchApps = React.useCallback(async () => {
     const response = await apiCall<AppCardData[]>(
@@ -64,7 +72,10 @@ const ComputationCockpit: React.FC = () => {
   }, []);
 
   const fetchTasks = useCallback(async () => {
-    const response = await apiCall<TaskData[]>(COCKPIT_URL, RequestType.GET);
+    const response = await apiCall<TaskData[]>(
+      `${COCKPIT_URL}`,
+      RequestType.GET
+    );
     if (response.isError) {
       return;
     }
@@ -84,10 +95,28 @@ const ComputationCockpit: React.FC = () => {
     }
   }, []);
 
+  const fetchAll = useCallback(async () => {
+    const response = await apiCall<UserTasksByApp[]>(
+      `${COCKPIT_URL}/user/tasks/${currentUser.id}`,
+      RequestType.GET
+    );
+
+    if (response.isError) {
+      return;
+    }
+    var resUserTasks = response.content as UserTasksByApp[];
+    var apps = Object.keys(resUserTasks);
+
+    setUserTasks(resUserTasks);
+    setAppNames(apps);
+    console.log(userTasks);
+  }, [currentUser.id]);
+
   useEffect(() => {
     fetchApps();
     fetchTasks();
-  }, [fetchApps, fetchTasks]);
+    fetchAll();
+  }, [fetchApps, fetchTasks, fetchAll]);
 
   const handleTaskClick = (taskId: number) =>
     history.push(`${routes.computationCockpit}/task/${taskId}`);
@@ -96,88 +125,83 @@ const ComputationCockpit: React.FC = () => {
     <>
       {!downloaded && <MockWarning />}
       {tasks != null &&
-        apps
-          .filter(
-            (app) =>
-              tasks?.filter((task) => task.idApp === app.idApp).length > 0
-          )
-          .map((app) => (
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>{app.nameApp}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <TableContainer component={Paper}>
-                  <Table aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Name</TableCell>
-                        {matches && (
-                          <>
-                            <TableCell align="right">Version</TableCell>
-                            <TableCell align="right">Run time</TableCell>
-                            <TableCell align="right">Credits</TableCell>
-                            <TableCell align="right">Status</TableCell>
-                            <TableCell align="right">Priority</TableCell>
-                            <TableCell align="right">Cluster alloc.</TableCell>
-                          </>
-                        )}
-                        <TableCell align="right">Actions</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {tasks
-                        .filter((task) => task.idApp === app.idApp)
-                        .map((task) => (
-                          <TableRow key={task.idTask}>
-                            <TableCell
-                              onClick={() => handleTaskClick(task.idTask)}
-                              component="th"
-                              scope="row"
-                            >
-                              <Button>{task.name}</Button>
-                            </TableCell>
-                            {matches && (
-                              <>
-                                <TableCell align="right">
-                                  {task.version}
-                                </TableCell>
-                                <TableCell align="right">
-                                  {formatTaskRuntime(task)}
-                                </TableCell>
-                                <TableCell align="right">
-                                  {formatTaskCredits(task)}
-                                </TableCell>
-                                <TableCell align="right">
-                                  <Badge
-                                    badgeContent={task.status}
-                                    color="primary"
-                                  />
-                                </TableCell>
-                                <TableCell align="right">
-                                  <Badge
-                                    badgeContent={task.priority}
-                                    color="secondary"
-                                  />
-                                </TableCell>
-                                <TableCell align="right">
-                                  {formatTaskClusterAllocation(task)}
-                                </TableCell>
-                              </>
-                            )}
-                            <TableCell align="right">
-                              <StartTask taskId={task.idTask} />
-                              <TerminateTask taskId={task.idTask} />
-                              <ArchiveTask taskId={task.idTask} />
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </AccordionDetails>
-            </Accordion>
-          ))}
+        appNames.map((app) => (
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>{app}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      {matches && (
+                        <>
+                          <TableCell align="right">Version</TableCell>
+                          <TableCell align="right">Run time</TableCell>
+                          <TableCell align="right">Credits</TableCell>
+                          <TableCell align="right">Status</TableCell>
+                          <TableCell align="right">Priority</TableCell>
+                          <TableCell align="right">Cluster alloc.</TableCell>
+                        </>
+                      )}
+                      <TableCell align="right">Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {/* {tasks
+                      .filter((task) => task.idApp === app.idApp)
+                      .map((task) => (
+                        <TableRow key={task.idTask}>
+                          <TableCell
+                            onClick={() => handleTaskClick(task.idTask)}
+                            component="th"
+                            scope="row"
+                          >
+                            <Button>{task.name}</Button>
+                          </TableCell>
+                          {matches && (
+                            <>
+                              <TableCell align="right">
+                                {task.version}
+                              </TableCell>
+                              <TableCell align="right">
+                                {formatTaskRuntime(task)}
+                              </TableCell>
+                              <TableCell align="right">
+                                {formatTaskCredits(task)}
+                              </TableCell>
+                              <TableCell align="right">
+                                <Badge
+                                  badgeContent={task.status}
+                                  color="primary"
+                                />
+                              </TableCell>
+                              <TableCell align="right">
+                                <Badge
+                                  badgeContent={task.priority}
+                                  color="secondary"
+                                />
+                              </TableCell>
+                              <TableCell align="right">
+                                {formatTaskClusterAllocation(task)}
+                              </TableCell>
+                            </>
+                          )}
+                          <TableCell align="right">
+                            <StartTask taskId={task.idTask} />
+                            <TerminateTask taskId={task.idTask} />
+                            <ArchiveTask taskId={task.idTask} />
+                          </TableCell>
+                        </TableRow>
+                      ))} */}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </AccordionDetails>
+          </Accordion>
+        ))}
     </>
   );
 };
