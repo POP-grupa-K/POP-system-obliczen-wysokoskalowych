@@ -70,14 +70,13 @@ const AddNewTaskDialog = (props: AddNewTaskDialogProps) => {
     taskData.name = taskName;
     taskData.reservedCredits = creditsNumber;
     taskData.idApp = props.idApp;
-    taskData.userId = currentUser.id;
+    taskData.idUser = currentUser.id;
 
     const response = await apiCall<PostTaskData | IMessageResponse>(
-      `${COCKPIT_URL}/add`,
+      `${COCKPIT_URL}/`,
       RequestType.POST,
       taskData
     );
-
     if (response.isError) {
       return;
     }
