@@ -4,6 +4,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Badge,
+  IconButton,
   Button,
   Paper,
   Table,
@@ -14,6 +15,7 @@ import {
   TableRow,
   Typography,
   useMediaQuery,
+  Snackbar,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import apiCall from "../../api/apiCall";
@@ -29,11 +31,19 @@ import { formatTaskCredits, formatTaskRuntime } from "./taskDataFormat";
 import { User } from "../../mocks/common/mockUsers";
 import { useSelector } from "react-redux";
 import RootState from "../../redux/rootState";
+import { AddCircle } from "@material-ui/icons";
+import cockpitStyles from "./styles";
+import AddNewTaskDialog from "../common/Dialogs/AddNewTaskDialog";
 
 const ComputationCockpit: React.FC = () => {
   const history = useHistory();
+  const classes = cockpitStyles();
   const matches = useMediaQuery("(min-width:800px)");
   const [userTasks, setUserTasks] = React.useState<UserTasksByApp[]>([]);
+  const [openAddToCockpitDialog, setOpenAddToCockpitDialog] = React.useState<
+    boolean
+  >(false);
+  const [openSnack, setOpenSnack] = React.useState<boolean>(false);
   const currentUser: User = useSelector(
     (state: RootState) => state.userReducer.user
   );
@@ -58,6 +68,22 @@ const ComputationCockpit: React.FC = () => {
   const handleTaskClick = (taskId: number) =>
     history.push(`${routes.computationCockpit}/task/${taskId}`);
 
+  const addToCockpit = () => {
+    setOpenAddToCockpitDialog(true);
+  };
+
+  const onAddToCockpitClose = () => {
+    setOpenAddToCockpitDialog(false);
+  };
+
+  const handleSnackClose = () => {
+    setOpenSnack(false);
+  };
+
+  const handleSnackbarShow = () => {
+    setOpenSnack(true);
+  };
+
   return (
     <>
       {userTasks != null &&
@@ -68,6 +94,22 @@ const ComputationCockpit: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <TableContainer component={Paper}>
+                <AddNewTaskDialog
+                  open={openAddToCockpitDialog}
+                  handleCloseDialog={onAddToCockpitClose}
+                  idApp={1}
+                  showSnackbar={handleSnackbarShow}
+                />
+                <IconButton onClick={addToCockpit}>
+                  <AddCircle className={classes.icon} />
+                </IconButton>
+                <Snackbar
+                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                  open={openSnack}
+                  message={`Added task to ${userTask.appName}`}
+                  onClose={handleSnackClose}
+                  autoHideDuration={5000}
+                />
                 <Table aria-label="simple table">
                   <TableHead>
                     <TableRow>
