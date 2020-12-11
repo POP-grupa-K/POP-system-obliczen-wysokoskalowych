@@ -89,8 +89,14 @@ const ComputationCockpit: React.FC = () => {
       {userTasks != null &&
         userTasks.map((userTask) => (
           <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <AccordionSummary
+              classes={{ content: classes.summary }}
+              expandIcon={<ExpandMoreIcon />}
+            >
               <Typography>{userTask.appName}</Typography>
+              <IconButton onClick={addToCockpit} className={classes.button}>
+                <AddCircle className={classes.icon} />
+              </IconButton>
             </AccordionSummary>
             <AccordionDetails>
               <TableContainer component={Paper}>
@@ -100,9 +106,6 @@ const ComputationCockpit: React.FC = () => {
                   idApp={1}
                   showSnackbar={handleSnackbarShow}
                 />
-                <IconButton onClick={addToCockpit}>
-                  <AddCircle className={classes.icon} />
-                </IconButton>
                 <Snackbar
                   anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                   open={openSnack}
