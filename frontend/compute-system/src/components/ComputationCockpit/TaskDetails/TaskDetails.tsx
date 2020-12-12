@@ -40,6 +40,7 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
 
   const [appName, setAppName] = React.useState<string>("");
   const [task, setTask] = useState<TaskData>();
+  const [makeReload, setReload] = React.useState<boolean>(false);
 
   const fetchTask = useCallback(async () => {
     const response = await apiCall<UserTasksByApp>(
@@ -64,10 +65,14 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
 
   useEffect(() => {
     fetchTask();
-  }, [fetchTask]);
+  }, [fetchTask, makeReload]);
 
   const goToApp = () => {
     history.push(`/app/${task?.idApp}`);
+  };
+
+  const handleReload = () => {
+    setReload(true);
   };
 
   return (
@@ -79,9 +84,17 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
             <Typography>{task?.version}</Typography>
           </Grid>
           <Grid item xs={12} md={6} className={classes.actions}>
-            <StartTask taskId={taskId} />
-            <TerminateTask taskId={taskId} />
-            <ArchiveTask taskId={taskId} />
+            <StartTask
+              taskId={taskId}
+              makeReload={handleReload}
+              allowReload={true}
+            />
+            <TerminateTask
+              taskId={taskId}
+              makeReload={handleReload}
+              allowReload={true}
+            />
+            <ArchiveTask taskId={taskId} makeReload={handleReload} />
           </Grid>
         </Grid>
         <Divider className={classes.divider} />

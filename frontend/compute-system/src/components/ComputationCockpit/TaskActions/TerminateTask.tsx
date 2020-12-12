@@ -5,9 +5,14 @@ import apiCall from "../../../api/apiCall";
 import { COCKPIT_URL } from "../../../api/urls";
 import RequestType from "../../../api/requestType";
 
-export const TerminateTask: FC<TaskActionProps> = ({ taskId }) => {
+export const TerminateTask: FC<TaskActionProps> = ({
+  taskId,
+  makeReload,
+  allowReload,
+}) => {
   const handleTerminateTask = async () => {
-    await apiCall(`${COCKPIT_URL}/${taskId}/terminate`, RequestType.POST);
+    await apiCall(`${COCKPIT_URL}/${taskId}/stop`, RequestType.POST);
+    if (allowReload) makeReload();
   };
 
   return (

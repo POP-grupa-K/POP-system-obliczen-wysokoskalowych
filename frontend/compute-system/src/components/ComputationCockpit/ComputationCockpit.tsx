@@ -43,6 +43,7 @@ const ComputationCockpit: React.FC = () => {
   const [openAddToCockpitDialog, setOpenAddToCockpitDialog] = React.useState<
     boolean
   >(false);
+  const [makeReload, setReload] = React.useState<boolean>(false);
   const [openSnack, setOpenSnack] = React.useState<boolean>(false);
   const currentUser: User = useSelector(
     (state: RootState) => state.userReducer.user
@@ -59,16 +60,18 @@ const ComputationCockpit: React.FC = () => {
     }
     var resUserTasks = response.content as UserTasksByApp[];
     setUserTasks(resUserTasks);
+    setReload(false);
   }, [currentUser.id]);
 
   useEffect(() => {
     fetchTasks();
-  }, [fetchTasks]);
+  }, [fetchTasks, openAddToCockpitDialog, makeReload]);
 
   const handleTaskClick = (taskId: number) =>
     history.push(`${routes.computationCockpit}/task/${taskId}`);
 
-  const addToCockpit = () => {
+  const addToCockpit = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setOpenAddToCockpitDialog(true);
   };
 
@@ -82,6 +85,10 @@ const ComputationCockpit: React.FC = () => {
 
   const handleSnackbarShow = () => {
     setOpenSnack(true);
+  };
+
+  const handleReload = () => {
+    setReload(true);
   };
 
   return (
@@ -161,9 +168,21 @@ const ComputationCockpit: React.FC = () => {
                           </>
                         )}
                         <TableCell align="right">
-                          <StartTask taskId={task.idTask} />
-                          <TerminateTask taskId={task.idTask} />
-                          <ArchiveTask taskId={task.idTask} />
+                          <StartTask
+                            taskId={task.idTask}
+                            makeReload={handleReload}
+                            allowReload={true}
+                          />
+                          <TerminateTask
+                            taskId={task.idTask}
+                            makeReload={handleReload}
+                            allowReload={true}
+                          />
+                          <ArchiveTask
+                            taskId={task.idTask}
+                            makeReload={handleReload}
+                            allowReload={true}
+                          />
                         </TableCell>
                       </TableRow>
                     ))}
