@@ -23,7 +23,7 @@ import { taskDetailsStyles } from "./styles";
 import { formatTaskCredits, formatTaskRuntime } from "../taskDataFormat";
 import { StartTask } from "../TaskActions/StartTask";
 import { TerminateTask } from "../TaskActions/TerminateTask";
-import { ArchiveTask } from "../TaskActions/ArchiveTask";
+import { DeleteTask } from "../TaskActions/DeleteTask";
 import { UserTasksByApp } from "../taskData";
 
 interface TaskDetailsRouteParams {
@@ -61,6 +61,7 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
 
     setAppName(responseData.appName);
     setTask(taskData);
+    setReload(false);
   }, [taskId]);
 
   useEffect(() => {
@@ -86,15 +87,21 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
           <Grid item xs={12} md={6} className={classes.actions}>
             <StartTask
               taskId={taskId}
+              taskStatus={task?.status}
               makeReload={handleReload}
               allowReload={true}
             />
             <TerminateTask
               taskId={taskId}
+              taskStatus={task?.status}
               makeReload={handleReload}
               allowReload={true}
             />
-            <ArchiveTask taskId={taskId} makeReload={handleReload} />
+            <DeleteTask
+              taskId={taskId}
+              taskStatus={task?.status}
+              makeReload={handleReload}
+            />
           </Grid>
         </Grid>
         <Divider className={classes.divider} />

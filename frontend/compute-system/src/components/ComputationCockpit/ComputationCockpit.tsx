@@ -24,7 +24,7 @@ import RequestType from "../../api/requestType";
 import { UserTasksByApp } from "./taskData";
 import { StartTask } from "./TaskActions/StartTask";
 import { TerminateTask } from "./TaskActions/TerminateTask";
-import { ArchiveTask } from "./TaskActions/ArchiveTask";
+import { DeleteTask } from "./TaskActions/DeleteTask";
 import { useHistory } from "react-router-dom";
 import { routes } from "../../const/routes";
 import { formatTaskCredits, formatTaskRuntime } from "./taskDataFormat";
@@ -136,56 +136,64 @@ const ComputationCockpit: React.FC = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {userTask.tasks.map((task) => (
-                      <TableRow key={task.idTask}>
-                        <TableCell
-                          onClick={() => handleTaskClick(task.idTask)}
-                          component="th"
-                          scope="row"
-                        >
-                          <Button>{task.name}</Button>
-                        </TableCell>
-                        {matches && (
-                          <>
-                            <TableCell align="right">
-                              {formatTaskRuntime(task)}
-                            </TableCell>
-                            <TableCell align="right">
-                              {formatTaskCredits(task)}
-                            </TableCell>
-                            <TableCell align="right">
-                              <Badge
-                                badgeContent={task.status}
-                                color="primary"
-                              />
-                            </TableCell>
-                            <TableCell align="right">
-                              <Badge
-                                badgeContent={task.priority}
-                                color="secondary"
-                              />
-                            </TableCell>
-                          </>
-                        )}
-                        <TableCell align="right">
-                          <StartTask
-                            taskId={task.idTask}
-                            makeReload={handleReload}
-                            allowReload={true}
-                          />
-                          <TerminateTask
-                            taskId={task.idTask}
-                            makeReload={handleReload}
-                            allowReload={true}
-                          />
-                          <ArchiveTask
-                            taskId={task.idTask}
-                            makeReload={handleReload}
-                            allowReload={true}
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {userTask.tasks
+                      .filter((task) => {
+                        if (task.priority !== "-1") return task;
+                        return null;
+                      })
+                      .map((task) => (
+                        <TableRow key={task.idTask}>
+                          <TableCell
+                            onClick={() => handleTaskClick(task.idTask)}
+                            component="th"
+                            scope="row"
+                          >
+                            <Button>{task.name}</Button>
+                          </TableCell>
+                          {matches && (
+                            <>
+                              <TableCell align="right">
+                                {formatTaskRuntime(task)}
+                              </TableCell>
+                              <TableCell align="right">
+                                {formatTaskCredits(task)}
+                              </TableCell>
+                              <TableCell align="right">
+                                <Badge
+                                  badgeContent={task.status}
+                                  color="primary"
+                                />
+                              </TableCell>
+                              <TableCell align="right">
+                                <Badge
+                                  badgeContent={task.priority}
+                                  color="secondary"
+                                />
+                              </TableCell>
+                            </>
+                          )}
+                          <TableCell align="right">
+                            <StartTask
+                              taskId={task.idTask}
+                              taskStatus={task.status}
+                              makeReload={handleReload}
+                              allowReload={true}
+                            />
+                            <TerminateTask
+                              taskId={task.idTask}
+                              taskStatus={task.status}
+                              makeReload={handleReload}
+                              allowReload={true}
+                            />
+                            <DeleteTask
+                              taskId={task.idTask}
+                              taskStatus={task.status}
+                              makeReload={handleReload}
+                              allowReload={true}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               </TableContainer>

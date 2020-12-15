@@ -1,7 +1,10 @@
 import { Avatar, Button, Grid, Paper, Snackbar } from "@material-ui/core";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import AddNewTaskDialog from "../../common/Dialogs/AddNewTaskDialog";
+import { COCKPIT_URL } from "../../../api/urls";
+import { User } from "../../../mocks/common/mockUsers";
+import RootState from "../../../redux/rootState";
 import appCardStyles from "./appCardStyles";
 import TextsBox from "./components/TextsBox";
 import UsedRateRow from "./components/UsedRateRow";
@@ -14,22 +17,29 @@ interface AppCardProps {
 const AppCard = (props: AppCardProps) => {
   const classes = appCardStyles();
   const history = useHistory();
-  const [openAddToCockpitDialog, setOpenAddToCockpitDialog] = React.useState<
-    boolean
-  >(false);
   const [openSnack, setOpenSnack] = React.useState<boolean>(false);
+  const currentUser: User = useSelector(
+    (state: RootState) => state.userReducer.user
+  );
 
   const showDetails = () => {
     history.push(`/app/${props.appCard.idApp}`);
   };
 
+  const addAppToCockpit = React.useCallback(async () => {
+    const data = { idApp: props.appCard.idApp, idUser: currentUser.id };
+    const response = await fetch(`${COCKPIT_URL}/apps`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    if (response.ok) {
+      handleSnackbarShow();
+    }
+  }, [props.appCard.idApp, currentUser.id]);
+
   const addToCockpit = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    setOpenAddToCockpitDialog(true);
-  };
-
-  const onAddToCockpitClose = () => {
-    setOpenAddToCockpitDialog(false);
+    addAppToCockpit();
   };
 
   const handleSnackClose = () => {
@@ -42,12 +52,6 @@ const AppCard = (props: AppCardProps) => {
 
   return (
     <>
-      <AddNewTaskDialog
-        open={openAddToCockpitDialog}
-        handleCloseDialog={onAddToCockpitClose}
-        idApp={props.appCard.idApp}
-        showSnackbar={handleSnackbarShow}
-      />
       <Paper className={classes.paper} onClick={showDetails}>
         <Grid container alignItems="center" wrap="nowrap">
           <Grid item>
@@ -88,7 +92,7 @@ const AppCard = (props: AppCardProps) => {
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={openSnack}
-        message={`Added task to ${props.appCard.nameApp}`}
+        message={`Added app ${props.appCard.nameApp} to cockpit`}
         onClose={handleSnackClose}
         autoHideDuration={5000}
       />

@@ -10,14 +10,13 @@ import {
 import { DeleteForever } from "@material-ui/icons";
 import headerStyles from "./HeaderStyles";
 import apiCall from "../../../../api/apiCall";
-import { APPSTORE_URL } from "../../../../api/urls";
+import { APPSTORE_URL, COCKPIT_URL } from "../../../../api/urls";
 import RequestType from "../../../../api/requestType";
 import { useHistory } from "react-router-dom";
 import AppForm from "../../AppForm/AppForm";
 import { User, UserType } from "../../../../mocks/common/mockUsers";
 import { useSelector } from "react-redux";
 import RootState from "../../../../redux/rootState";
-import AddNewTaskDialog from "../../../common/Dialogs/AddNewTaskDialog";
 
 interface AppDetailsHeaderProps {
   id: number;
@@ -31,9 +30,6 @@ interface AppDetailsHeaderProps {
 const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
   const [isOwner, setOwner] = React.useState<boolean>(false);
   const [openSnack, setOpenSnack] = React.useState<boolean>(false);
-  const [openAddToCockpitDialog, setOpenAddToCockpitDialog] = React.useState<
-    boolean
-  >(false);
   const currentUser: User = useSelector(
     (state: RootState) => state.userReducer.user
   );
@@ -55,12 +51,19 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
   };
 
   const addToCockpit = () => {
-    setOpenAddToCockpitDialog(true);
+    addAppToCockpit();
   };
 
-  const onAddToCockpitClose = () => {
-    setOpenAddToCockpitDialog(false);
-  };
+  const addAppToCockpit = React.useCallback(async () => {
+    const data = { idApp: props.id, idUser: currentUser.id };
+    const response = await fetch(`${COCKPIT_URL}/apps`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    if (response.ok) {
+      handleSnackbarShow();
+    }
+  }, [props.id, currentUser.id]);
 
   const handleSnackClose = () => {
     setOpenSnack(false);
@@ -84,12 +87,6 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
 
   return (
     <>
-      <AddNewTaskDialog
-        open={openAddToCockpitDialog}
-        handleCloseDialog={onAddToCockpitClose}
-        idApp={props.id}
-        showSnackbar={handleSnackbarShow}
-      />
       <Grid
         item
         container
@@ -145,7 +142,7 @@ const AppDetailsHeader = (props: AppDetailsHeaderProps) => {
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={openSnack}
-        message={`Added task to ${props.title}`}
+        message={`Added app ${props.title} to cockpit`}
         onClose={handleSnackClose}
         autoHideDuration={5000}
       />
