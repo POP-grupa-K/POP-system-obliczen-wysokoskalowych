@@ -9,6 +9,7 @@ export const StartTask: FC<TaskActionProps> = ({
   taskId,
   makeReload,
   allowReload,
+  taskStatus,
 }) => {
   const handleStartTask = async () => {
     await apiCall(`${COCKPIT_URL}/${taskId}/run`, RequestType.POST);
@@ -16,7 +17,14 @@ export const StartTask: FC<TaskActionProps> = ({
   };
 
   return (
-    <Button color="primary" onClick={handleStartTask}>
+    <Button
+      color="primary"
+      onClick={
+        taskStatus === "created" || taskStatus === "stopped"
+          ? handleStartTask
+          : undefined
+      }
+    >
       Start
     </Button>
   );

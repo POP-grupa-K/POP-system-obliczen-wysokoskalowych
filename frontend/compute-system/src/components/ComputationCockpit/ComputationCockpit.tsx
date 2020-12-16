@@ -27,7 +27,7 @@ import { TerminateTask } from "./TaskActions/TerminateTask";
 import { DeleteTask } from "./TaskActions/DeleteTask";
 import { useHistory } from "react-router-dom";
 import { routes } from "../../const/routes";
-import { formatTaskCredits, formatTaskRuntime } from "./taskDataFormat";
+import { formatTaskCredits } from "./taskDataFormat";
 import { User } from "../../mocks/common/mockUsers";
 import { useSelector } from "react-redux";
 import RootState from "../../redux/rootState";
@@ -48,6 +48,10 @@ const ComputationCockpit: React.FC = () => {
   const currentUser: User = useSelector(
     (state: RootState) => state.userReducer.user
   );
+  const statusTaskMap = new Map<string, string>();
+  statusTaskMap.set("1", "Highest");
+  statusTaskMap.set("2", "Middle");
+  statusTaskMap.set("3", "Low");
 
   const fetchTasks = useCallback(async () => {
     const response = await apiCall<UserTasksByApp[]>(
@@ -95,7 +99,7 @@ const ComputationCockpit: React.FC = () => {
     <>
       {userTasks != null &&
         userTasks.map((userTask) => (
-          <Accordion>
+          <Accordion key={userTask.appName}>
             <AccordionSummary
               classes={{ content: classes.summary }}
               expandIcon={<ExpandMoreIcon />}
@@ -126,7 +130,6 @@ const ComputationCockpit: React.FC = () => {
                       <TableCell>Name</TableCell>
                       {matches && (
                         <>
-                          <TableCell align="right">Run time</TableCell>
                           <TableCell align="right">Credits</TableCell>
                           <TableCell align="right">Status</TableCell>
                           <TableCell align="right">Priority</TableCell>
@@ -153,9 +156,6 @@ const ComputationCockpit: React.FC = () => {
                           {matches && (
                             <>
                               <TableCell align="right">
-                                {formatTaskRuntime(task)}
-                              </TableCell>
-                              <TableCell align="right">
                                 {formatTaskCredits(task)}
                               </TableCell>
                               <TableCell align="right">
@@ -166,7 +166,9 @@ const ComputationCockpit: React.FC = () => {
                               </TableCell>
                               <TableCell align="right">
                                 <Badge
-                                  badgeContent={task.priority}
+                                  badgeContent={statusTaskMap.get(
+                                    task.priority
+                                  )}
                                   color="secondary"
                                 />
                               </TableCell>

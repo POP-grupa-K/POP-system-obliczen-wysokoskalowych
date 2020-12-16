@@ -9,6 +9,7 @@ export const TerminateTask: FC<TaskActionProps> = ({
   taskId,
   makeReload,
   allowReload,
+  taskStatus,
 }) => {
   const handleTerminateTask = async () => {
     await apiCall(`${COCKPIT_URL}/${taskId}/stop`, RequestType.POST);
@@ -16,7 +17,14 @@ export const TerminateTask: FC<TaskActionProps> = ({
   };
 
   return (
-    <Button color="secondary" onClick={handleTerminateTask}>
+    <Button
+      color="secondary"
+      onClick={
+        taskStatus === "created" || taskStatus === "stopped"
+          ? undefined
+          : handleTerminateTask
+      }
+    >
       Terminate
     </Button>
   );
