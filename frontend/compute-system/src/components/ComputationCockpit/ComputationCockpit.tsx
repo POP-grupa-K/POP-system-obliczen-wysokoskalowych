@@ -114,7 +114,7 @@ const ComputationCockpit: React.FC = () => {
                 <AddNewTaskDialog
                   open={openAddToCockpitDialog}
                   handleCloseDialog={onAddToCockpitClose}
-                  idApp={1}
+                  idApp={userTask.appId}
                   showSnackbar={handleSnackbarShow}
                 />
                 <Snackbar
