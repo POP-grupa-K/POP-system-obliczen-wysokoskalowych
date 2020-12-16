@@ -5,13 +5,26 @@ import apiCall from "../../../api/apiCall";
 import { COCKPIT_URL } from "../../../api/urls";
 import RequestType from "../../../api/requestType";
 
-export const StartTask: FC<TaskActionProps> = ({ taskId }) => {
+export const StartTask: FC<TaskActionProps> = ({
+  taskId,
+  makeReload,
+  allowReload,
+  taskStatus,
+}) => {
   const handleStartTask = async () => {
     await apiCall(`${COCKPIT_URL}/${taskId}/run`, RequestType.POST);
+    if (allowReload) makeReload();
   };
 
   return (
-    <Button color="primary" onClick={handleStartTask}>
+    <Button
+      color="primary"
+      onClick={
+        taskStatus === "created" || taskStatus === "stopped"
+          ? handleStartTask
+          : undefined
+      }
+    >
       Start
     </Button>
   );

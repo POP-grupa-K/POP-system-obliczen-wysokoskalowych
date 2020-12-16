@@ -4,6 +4,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  Select,
   TextField,
 } from "@material-ui/core";
 import React from "react";
@@ -27,6 +30,7 @@ const AddNewTaskDialog = (props: AddNewTaskDialogProps) => {
   const [taskName, setTaskName] = React.useState<string>("");
   const [taskNameErrorText, setTaskNameErrorText] = React.useState<string>("");
   const [creditsNumber, setCreditsNumber] = React.useState<number>(0);
+  const [taskPriority, setTaskPriority] = React.useState<string>("1");
   const [creditsErrorText, setCreditsErrorText] = React.useState<string>("");
   const currentUser: User = useSelector(
     (state: RootState) => state.userReducer.user
@@ -71,6 +75,7 @@ const AddNewTaskDialog = (props: AddNewTaskDialogProps) => {
     taskData.reservedCredits = creditsNumber;
     taskData.idApp = props.idApp;
     taskData.idUser = currentUser.id;
+    taskData.priority = taskPriority;
 
     const response = await apiCall<PostTaskData | IMessageResponse>(
       `${COCKPIT_URL}/`,
@@ -84,6 +89,12 @@ const AddNewTaskDialog = (props: AddNewTaskDialogProps) => {
     cleanData();
     props.showSnackbar();
     props.handleCloseDialog();
+  };
+
+  const handleSelectChange = (
+    event: React.ChangeEvent<{ name?: string; value: unknown }>
+  ) => {
+    setTaskPriority(event.target.value as string);
   };
 
   const handleCancel = () => {
@@ -118,14 +129,33 @@ const AddNewTaskDialog = (props: AddNewTaskDialogProps) => {
           value={taskName}
           required={true}
           onChange={handleTaskNameChange}
+          style={{ marginBottom: "15px" }}
         />
+        <FormControl
+          fullWidth
+          variant="outlined"
+          style={{ marginBottom: "15px" }}
+        >
+          <InputLabel htmlFor="prioritySelect">Set task's priority:</InputLabel>
+          <Select
+            native
+            label="Set task's priority:"
+            id="prioritySelect"
+            value={taskPriority}
+            onChange={handleSelectChange}
+          >
+            <option value={"1"}>Highest</option>
+            <option value={"2"}>Middle</option>
+            <option value={"3"}>Low</option>
+          </Select>
+        </FormControl>
         <TextField
           autoFocus
           error={creditsErrorText.length > 0}
           helperText={creditsErrorText}
           variant="outlined"
           margin="dense"
-          id="name"
+          id="credits"
           label="Credits"
           fullWidth
           value={creditsNumber}

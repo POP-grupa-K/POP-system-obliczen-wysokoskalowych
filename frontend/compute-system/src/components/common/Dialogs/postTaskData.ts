@@ -3,6 +3,7 @@ export default interface PostTaskData {
   reservedCredits: number;
   idApp: number;
   idUser: number;
+  priority: string;
 }
 
 export const initialTaskData: PostTaskData = {
@@ -10,4 +11,5 @@ export const initialTaskData: PostTaskData = {
   reservedCredits: 0,
   idApp: 0,
   idUser: 0,
+  priority: "1",
 };

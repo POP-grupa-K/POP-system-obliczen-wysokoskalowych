@@ -20,10 +20,10 @@ import apiCall from "../../../api/apiCall";
 import { COCKPIT_URL } from "../../../api/urls";
 import RequestType from "../../../api/requestType";
 import { taskDetailsStyles } from "./styles";
-import { formatTaskCredits, formatTaskRuntime } from "../taskDataFormat";
+import { formatTaskCredits } from "../taskDataFormat";
 import { StartTask } from "../TaskActions/StartTask";
 import { TerminateTask } from "../TaskActions/TerminateTask";
-import { ArchiveTask } from "../TaskActions/ArchiveTask";
+import { DeleteTask } from "../TaskActions/DeleteTask";
 import { UserTasksByApp } from "../taskData";
 
 interface TaskDetailsRouteParams {
@@ -40,6 +40,11 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
 
   const [appName, setAppName] = React.useState<string>("");
   const [task, setTask] = useState<TaskData>();
+  const [makeReload, setReload] = React.useState<boolean>(false);
+  const statusTaskMap = new Map<string, string>();
+  statusTaskMap.set("1", "Highest");
+  statusTaskMap.set("2", "Middle");
+  statusTaskMap.set("3", "Low");
 
   const fetchTask = useCallback(async () => {
     const response = await apiCall<UserTasksByApp>(
@@ -60,14 +65,19 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
 
     setAppName(responseData.appName);
     setTask(taskData);
+    setReload(false);
   }, [taskId]);
 
   useEffect(() => {
     fetchTask();
-  }, [fetchTask]);
+  }, [fetchTask, makeReload]);
 
   const goToApp = () => {
     history.push(`/app/${task?.idApp}`);
+  };
+
+  const handleReload = () => {
+    setReload(true);
   };
 
   return (
@@ -79,9 +89,23 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
             <Typography>{task?.version}</Typography>
           </Grid>
           <Grid item xs={12} md={6} className={classes.actions}>
-            <StartTask taskId={taskId} />
-            <TerminateTask taskId={taskId} />
-            <ArchiveTask taskId={taskId} />
+            <StartTask
+              taskId={taskId}
+              taskStatus={task?.status}
+              makeReload={handleReload}
+              allowReload={true}
+            />
+            <TerminateTask
+              taskId={taskId}
+              taskStatus={task?.status}
+              makeReload={handleReload}
+              allowReload={true}
+            />
+            <DeleteTask
+              taskId={taskId}
+              taskStatus={task?.status}
+              makeReload={handleReload}
+            />
           </Grid>
         </Grid>
         <Divider className={classes.divider} />
@@ -89,7 +113,6 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Run time</TableCell>
                 <TableCell>Credits</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Priority</TableCell>
@@ -98,13 +121,15 @@ export const TaskDetails = (props: TaskDetailsRouteProps) => {
             {task && (
               <TableBody>
                 <TableRow key={task.idTask}>
-                  <TableCell>{formatTaskRuntime(task)}</TableCell>
                   <TableCell>{formatTaskCredits(task)}</TableCell>
                   <TableCell>
                     <Badge badgeContent={task.status} color="primary" />
                   </TableCell>
                   <TableCell>
-                    <Badge badgeContent={task.priority} color="secondary" />
+                    <Badge
+                      badgeContent={statusTaskMap.get(task.priority)}
+                      color="secondary"
+                    />
                   </TableCell>
                 </TableRow>
               </TableBody>
