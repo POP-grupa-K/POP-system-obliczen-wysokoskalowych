@@ -2,7 +2,7 @@
 
 ## Diagram komponentów
 
-![](diagrams/diagram_komponentow_2.png)
+![](diagrams/DIAGRAM_KOMPONENTOW.png)
 
 ## Endpointy AppStore
 ![](diagrams/endpointy_appstore_3.png)
