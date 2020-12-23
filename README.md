@@ -11,5 +11,8 @@
 ## Endpointy Kokpitu obliczeń
 ![](diagrams/endpointy_cockpit_3.png)
 
+## Endpointy App Builder
+![](diagrams/endpointy_builder.PNG)
+
 ## Diagram klas kokpitu obliczeń
 ![](diagrams/diagram_klas.png)
