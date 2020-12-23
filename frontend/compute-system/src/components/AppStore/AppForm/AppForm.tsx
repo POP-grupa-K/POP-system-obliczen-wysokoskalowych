@@ -211,7 +211,7 @@ const AppForm = (props: AppFormProps) => {
           className={classes.editButton}
           onClick={handleClickOpen}
         >
-          Add
+          Add an app
         </Button>
       )}
 

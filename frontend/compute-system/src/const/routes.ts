@@ -4,4 +4,5 @@ export const routes = {
   computationCockpit: "/cockpit",
   appDetails: "/app/:appId",
   taskDetails: "/cockpit/task/:taskId",
+  appDesigner: "/appDesigner",
 };

@@ -1,28 +1,36 @@
 import {
+  Button,
   Container,
+  Grid,
   GridList,
   GridListTile,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
+import ControlPointDuplicateIcon from "@material-ui/icons/ControlPointDuplicate";
 import * as React from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import apiCall from "../../api/apiCall";
+import { createAppImageUrl } from "../../api/apiUtils";
 import RequestType from "../../api/requestType";
 import { APPSTORE_URL } from "../../api/urls";
+import { routes } from "../../const/routes";
+import { User, UserType } from "../../mocks/common/mockUsers";
+import RootState from "../../redux/rootState";
 import AppCard from "./AppCard/AppCard";
 import AppCardData from "./AppCard/interfaces/appCardData";
 import AppForm from "./AppForm/AppForm";
+import AppFormStyles from "./AppForm/AppFormStyles";
 import { appStoreStyles } from "./styles";
-import { createAppImageUrl } from "../../api/apiUtils";
-import { User, UserType } from "../../mocks/common/mockUsers";
-import { useSelector } from "react-redux";
-import RootState from "../../redux/rootState";
 
 const AppStore = () => {
+  const buttonClasses = AppFormStyles();
   const [apps, setApps] = React.useState<AppCardData[]>([]);
   const [reload, setReload] = React.useState<boolean>(false);
   const classes = appStoreStyles();
   const theme = useTheme();
+  const history = useHistory();
   const largeWidth = useMediaQuery(theme.breakpoints.up("lg"));
   const currentUser: User = useSelector(
     (state: RootState) => state.userReducer.user
@@ -30,6 +38,10 @@ const AppStore = () => {
 
   const makeReload = () => {
     setReload(true);
+  };
+
+  const handleCreateAppButtonClick = () => {
+    history.push(routes.appDesigner);
   };
 
   const fetchApps = React.useCallback(async () => {
@@ -59,9 +71,19 @@ const AppStore = () => {
 
   return (
     <Container maxWidth="lg">
-      {currentUser.role === UserType.User ? null : (
-        <AppForm isEdit={false} makeReload={makeReload} />
-      )}
+      <Grid container>
+        {currentUser.role === UserType.User ? null : (
+          <AppForm isEdit={false} makeReload={makeReload} />
+        )}
+        <Button
+          variant="contained"
+          startIcon={<ControlPointDuplicateIcon />}
+          className={buttonClasses.editButton}
+          onClick={handleCreateAppButtonClick}
+        >
+          Create an app
+        </Button>
+      </Grid>
       <GridList cols={largeWidth ? 2 : 1}>
         {apps.map((appCard, index) => (
           <GridListTile key={index} cols={1} className={classes.root}>

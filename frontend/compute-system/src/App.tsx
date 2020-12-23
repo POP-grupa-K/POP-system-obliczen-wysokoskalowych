@@ -8,6 +8,7 @@ import DataShelf from "./components/DataShelf/DataShelf";
 import ComputationCockpit from "./components/ComputationCockpit/ComputationCockpit";
 import AppDetails from "./components/AppStore/AppDetails/AppDetails";
 import { TaskDetails } from "./components/ComputationCockpit/TaskDetails/TaskDetails";
+import AppDesigner from "./components/AppStore/AppDesigner/AppDesigner";
 
 const browserHistory = createBrowserHistory();
 
@@ -33,6 +34,7 @@ function App() {
             path={routes.taskDetails}
             render={(props) => <TaskDetails {...props} />}
           />
+          <Route exact path={routes.appDesigner} component={AppDesigner} />
         </Switch>
       </Navigation>
     </Router>
