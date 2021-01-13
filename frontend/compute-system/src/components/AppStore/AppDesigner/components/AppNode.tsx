@@ -1,19 +1,33 @@
-import { Card, CardHeader, IconButton } from "@material-ui/core";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import { ArrowDownward, Clear, Edit } from "@material-ui/icons";
 import * as React from "react";
+import AppNodeData from "../interfaces/appNodeData";
 
 interface AppNodeProps {
   formActive?: boolean;
   closeForm?: () => void;
+  nodeData: AppNodeData;
 }
 
 const AppNode = (props: AppNodeProps) => {
   return (
-    <Grid container alignItems="center" justify="center" direction="column">
+    <Grid
+      container
+      item
+      alignItems="center"
+      justify="center"
+      direction="column"
+    >
       <Card>
         <CardHeader
-          title="New node"
+          title={props.nodeData.isAppNode ? "App node" : "Action node"}
           action={
             <>
               {!props.formActive && (
@@ -29,6 +43,13 @@ const AppNode = (props: AppNodeProps) => {
             </>
           }
         />
+        <CardContent>
+          {props.nodeData.isAppNode ? (
+            <Typography variant="h3">{props.nodeData.appId}</Typography>
+          ) : (
+            <Typography variant="h3">{props.nodeData.actionId}</Typography>
+          )}
+        </CardContent>
       </Card>
       {!props.formActive && <ArrowDownward />}
     </Grid>

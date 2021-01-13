@@ -7,9 +7,10 @@ import {
 } from "@material-ui/core";
 import { Save } from "@material-ui/icons";
 import * as React from "react";
-import { JsxElement } from "typescript";
 import AppFormStyles from "../AppForm/AppFormStyles";
 import AppNode from "./components/AppNode";
+import NewAppNode from "./components/NewAppNode";
+import AppNodeData from "./interfaces/appNodeData";
 
 const AppDesigner = () => {
   const buttonClasses = AppFormStyles();
@@ -20,7 +21,7 @@ const AppDesigner = () => {
   const [description, setDescription] = React.useState<string>("");
   const [helperText, setHelperText] = React.useState<string>("");
   const [descriptionValid, setDescritpionValid] = React.useState<boolean>(true);
-  const [currentNodes, setCurrentNodes] = React.useState<JsxElement[]>([]);
+  const [currentNodes, setCurrentNodes] = React.useState<AppNodeData[]>([]);
 
   const handleNameApp = (event: React.ChangeEvent<HTMLInputElement>) => {
     var nameAppValue = event.target.value;
@@ -48,10 +49,25 @@ const AppDesigner = () => {
     setAddNewNodeActive(true);
   };
 
+  const handleAddNewNode = (dataId: string, isAppNode: boolean) => {
+    //TODO Set parent!
+    const newNode: AppNodeData = {
+      diagramId: currentNodes.length + 1,
+      isAppNode: isAppNode,
+      appId: isAppNode ? dataId : "",
+      actionId: isAppNode ? "" : dataId,
+      nextNodes: [],
+    };
+
+    const nodes = currentNodes;
+    nodes.push(newNode);
+    setCurrentNodes([...nodes]);
+  };
+
   return (
     <Container maxWidth="lg">
       <Grid container direction="column">
-        <Grid xs={6} direction="column">
+        <Grid item container xs={6} direction="column">
           <Typography variant="h5" style={{ marginBottom: "8px" }}>
             Create an app
           </Typography>
@@ -90,15 +106,17 @@ const AppDesigner = () => {
             Save
           </Button>
         </Grid>
-        <Grid container justify="center" alignItems="center">
-          <AppNode />
-          <Grid>
+        <Grid item container justify="center" alignItems="center">
+          {currentNodes.map((node) => {
+            return <AppNode key={node.diagramId} nodeData={node} />;
+          })}
+          <Grid item>
             {addNewNodeActive ? (
-              <AppNode
-                formActive={true}
+              <NewAppNode
                 closeForm={() => {
                   setAddNewNodeActive(false);
                 }}
+                addNewNode={handleAddNewNode}
               />
             ) : (
               <Button
