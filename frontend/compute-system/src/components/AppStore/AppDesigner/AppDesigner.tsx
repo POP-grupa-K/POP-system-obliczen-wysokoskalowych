@@ -45,12 +45,17 @@ const AppDesigner = () => {
     setDescription(descriptionValue);
   };
 
-  const handleAddNewNodeClick = () => {
-    setAddNewNodeActive(true);
+  const handleAddNewNodeClick = (node: AppNodeData) => {
+    node.addFormActive = !node.addFormActive;
+    setCurrentNodes([...currentNodes]);
   };
 
-  const handleAddNewNode = (dataId: string, isAppNode: boolean) => {
-    //TODO Set parent!
+  const handleAddNewNode = (
+    dataId: string,
+    branches: number,
+    isAppNode: boolean
+  ) => {
+    //TODO change end node to node, set xs/branches, new end nodes!
     const newNode: AppNodeData = {
       diagramId: currentNodes.length + 1,
       isAppNode: isAppNode,
@@ -59,10 +64,45 @@ const AppDesigner = () => {
       nextNodes: [],
     };
 
-    const nodes = currentNodes;
+    let nodes: AppNodeData[];
+    if (currentNodes[0].diagramId === 0) {
+      //todo zamień nudesa i ustaw childy
+      newNode.diagramId = 1;
+      nodes = [];
+    } else {
+      nodes = currentNodes;
+    }
+
     nodes.push(newNode);
+
+    for (let i = 1; i <= branches; i++) {
+      //todo create as many end nodes and set parent's nextNodes
+      const endNode: AppNodeData = {
+        diagramId: newNode.diagramId + i,
+        isAppNode: false,
+        actionId: "5",
+        addFormActive: false,
+        nextNodes: [],
+      };
+
+      newNode.nextNodes.push(endNode.diagramId);
+      nodes.push(endNode);
+    }
+
     setCurrentNodes([...nodes]);
   };
+
+  React.useEffect(() => {
+    const endNodeArray: AppNodeData[] = [
+      {
+        diagramId: 0,
+        isAppNode: false,
+        actionId: "5",
+        nextNodes: [],
+      },
+    ];
+    setCurrentNodes(endNodeArray);
+  }, []);
 
   return (
     <Container maxWidth="lg">
@@ -108,26 +148,29 @@ const AppDesigner = () => {
         </Grid>
         <Grid item container justify="center" alignItems="center">
           {currentNodes.map((node) => {
+            if (!node.isAppNode && node.actionId === "5") {
+              return (
+                <Grid item key={node.diagramId}>
+                  {node.addFormActive ? (
+                    <NewAppNode
+                      closeForm={() => handleAddNewNodeClick(node)}
+                      addNewNode={handleAddNewNode}
+                    />
+                  ) : (
+                    <Button
+                      variant="contained"
+                      className={buttonClasses.editButton}
+                      onClick={() => handleAddNewNodeClick(node)}
+                    >
+                      Add new node
+                    </Button>
+                  )}
+                </Grid>
+              );
+            }
+
             return <AppNode key={node.diagramId} nodeData={node} />;
           })}
-          <Grid item>
-            {addNewNodeActive ? (
-              <NewAppNode
-                closeForm={() => {
-                  setAddNewNodeActive(false);
-                }}
-                addNewNode={handleAddNewNode}
-              />
-            ) : (
-              <Button
-                variant="contained"
-                className={buttonClasses.editButton}
-                onClick={handleAddNewNodeClick}
-              >
-                Add new node
-              </Button>
-            )}
-          </Grid>
         </Grid>
       </Grid>
     </Container>

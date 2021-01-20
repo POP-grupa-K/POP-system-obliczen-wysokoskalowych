@@ -52,11 +52,15 @@ const NewNodeTab = (props: NewNodeTabProps) => {
             );
           }
 
-          return (
-            <MenuItem key={data.actionId} value={data.actionId}>
-              {data.name}
-            </MenuItem>
-          );
+          if (data.visible) {
+            return (
+              <MenuItem key={data.actionId} value={data.actionId}>
+                {data.name}
+              </MenuItem>
+            );
+          }
+
+          return null;
         })}
       </Select>
     </FormControl>

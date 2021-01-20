@@ -45,9 +45,9 @@ const AppNode = (props: AppNodeProps) => {
         />
         <CardContent>
           {props.nodeData.isAppNode ? (
-            <Typography variant="h3">{props.nodeData.appId}</Typography>
+            <Typography variant="h3">{props.nodeData.appName}</Typography>
           ) : (
-            <Typography variant="h3">{props.nodeData.actionId}</Typography>
+            <Typography variant="h3">{props.nodeData.actionName}</Typography>
           )}
         </CardContent>
       </Card>

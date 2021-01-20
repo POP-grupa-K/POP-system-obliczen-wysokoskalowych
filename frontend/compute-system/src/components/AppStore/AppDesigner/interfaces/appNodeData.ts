@@ -6,5 +6,6 @@ export default interface AppNodeData {
   appName?: string;
   actionId?: string;
   actionName?: string;
+  addFormActive?: boolean;
   nextNodes: number[];
 }

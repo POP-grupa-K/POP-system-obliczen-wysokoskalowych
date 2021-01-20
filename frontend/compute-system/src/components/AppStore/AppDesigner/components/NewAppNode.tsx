@@ -18,7 +18,7 @@ import NewNodeTab from "./NewNodeTab";
 
 interface NewAppNodeProps {
   closeForm: () => void;
-  addNewNode: (id: string, isAppNode: boolean) => void;
+  addNewNode: (id: string, branches: number, isAppNode: boolean) => void;
 }
 
 const NewAppNode = (props: NewAppNodeProps) => {
@@ -53,7 +53,7 @@ const NewAppNode = (props: NewAppNodeProps) => {
     }
 
     const isAppNode = selectedTab === 0;
-    props.addNewNode(chosenData, isAppNode);
+    props.addNewNode(chosenData, 1, isAppNode);
     setChosenData("");
   };
 
